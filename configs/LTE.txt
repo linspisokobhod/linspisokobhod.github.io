@@ -1,1 +1,1 @@
-vless://cf35aef1-cf24-488f-a952-3bfd14c15b48@217.13.105.1:1443?flow=xtls-rprx-vision&encryption=none&type=tcp&security=reality&fp=randomized&sni=alfabank.ru&pbk=cDLK-I36SU8b7H7u-ZFyoMTjVKnbfQfKjhQvzTf13Dw&sid=f6f561090bdf7bf4&spx=/#INT # alfabank.ru | TCP [LSO-LinSpisokObhod]
+vless://cf35aef1-cf24-488f-a952-3bfd14c15b48@217.13.105.1:1443?flow=xtls-rprx-vision&encryption=none&type=tcp&security=reality&fp=randomized&sni=alfabank.ru&pbk=cDLK-I36SU8b7H7u-ZFyoMTjVKnbfQfKjhQvzTf13Dw&sid=f6f561090bdf7bf4&spx=/ # alfabank.ru | TCP [#LSO® - #LinSpisokObhod®]
