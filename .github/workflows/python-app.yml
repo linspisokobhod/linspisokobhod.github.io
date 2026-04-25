@@ -1,0 +1,36 @@
+name: VPN Configs Collector
+
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: true
+        
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+        
+    - name: Run config collector
+      run: python "parser[LSO-LinSpisokObhod].py"
+        
+    - name: Commit and push if changed
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add configs/ lists/ collector.log README.md
+        git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update VPN configs ($(date +'%Y-%m-%d %H:%M:%S'))"
+        git push
