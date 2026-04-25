@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """
-VPN Config Collector v12.1 (LSO-LinSpisokObhod)
-- Только vless://, vmess://, trojan:// (без ss)
-- Единая маркировка [LSO-LinSpisokObhod]
-- Формирование имени: домен (sni) + тип (WebSocket/другое)
-- Дедупликация конфигов
-- LTE: домен в whitelist.txt И IP в whitelist.ip.txt
-- Автообновление README.md
+VPN Config Collector v12.3 (LSO-LinSpisokObhod)
+- Только vless://, vmess://, trojan://
+- Удаление старых комментариев после #
+- Маркировка [#LSO® - #LinSpisokObhod®]
+- Форматирование: # домен_из_sni | тип
 """
 
 import os
@@ -44,7 +42,7 @@ SOURCES = [
     "https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1",
 ]
 
-GLOBAL_TAG = "[LSO-LinSpisokObhod]"
+GLOBAL_TAG = "[#LSO® - #LinSpisokObhod®]"   # изменённый маркер
 SCRIPT_NAME = "parser[LSO-LinSpisokObhod].py"
 
 PROTOCOL_PATTERNS = {
@@ -205,11 +203,12 @@ def rename_config(config: str) -> str:
     if not protocol:
         return config
     
+    # Удаляем всё после последнего символа '#' вместе с ним
+    if '#' in config:
+        config = config.split('#')[0]
+    
     sni_domain = extract_sni_domain(config)
     conn_type = extract_type_from_config(config)
-    
-    if ' #' in config:
-        config = config.split(' #')[0]
     
     if sni_domain:
         new_name = f" # {sni_domain} | {conn_type}"
@@ -391,7 +390,7 @@ def update_readme(stats: Dict, sources_count: int):
         "## 🔄 Автообновление\n\n"
         f"Скрипт `{SCRIPT_NAME}` может запускаться по расписанию (например, через GitHub Actions).\n"
         f"Последнее обновление: `{now}`\n\n"
-        "---\n*Сгенерировано автоматически VPN Config Collector v12.1*\n"
+        "---\n*Сгенерировано автоматически VPN Config Collector v12.3*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -453,7 +452,7 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print(f"🚀 {SCRIPT_NAME} v12.1 (только VLESS, VMess, Trojan)")
+    print(f"🚀 {SCRIPT_NAME} v12.3 (новый маркер [#LSO® - #LinSpisokObhod®])")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
