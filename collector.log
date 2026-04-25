@@ -169,3 +169,56 @@
 2026-04-25 09:41:01,862 - INFO - 📊 Статистика сохранена в configs/stats.json
 2026-04-25 09:41:01,862 - INFO - 📄 README.md обновлён
 2026-04-25 09:41:01,871 - INFO - ✅ Сбор завершен: 43802 уникальных конфигов за 3.81с
+2026-04-25 09:43:52,090 - INFO - 🚀 Начинаю сбор из 19 источников...
+2026-04-25 09:43:52,232 - INFO - ✅ Загружен https://raw.githubusercontent.com/yaney01/telegram-collector/main/protocols/vmess (18736 символов)
+2026-04-25 09:43:52,235 - INFO - ✅ Загружен https://raw.githubusercontent.com/V2RayRoot/V2RayConfig/refs/heads/main/Config/vless.txt (56034 символов)
+2026-04-25 09:43:52,239 - INFO - 📥 +267 VLESS из https://raw.githubusercontent.com/V2RayRoot/V2RayConfig/refs/heads/main/Config/vless.txt
+2026-04-25 09:43:52,256 - WARNING - ⚠️ Ошибка загрузки https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt: 404 Client Error: Not Found for url: https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt
+2026-04-25 09:43:52,268 - WARNING - ⚠️ Ошибка загрузки https://raw.githubusercontent.com/mehdirzfx/v2ray-sub/main/All_Configs_Sub.txt: 404 Client Error: Not Found for url: https://raw.githubusercontent.com/mehdirzfx/v2ray-sub/main/All_Configs_Sub.txt
+2026-04-25 09:43:52,284 - INFO - ✅ Загружен https://raw.githubusercontent.com/yaney01/telegram-collector/main/channels/protocols/vmess (3212 символов)
+2026-04-25 09:43:52,319 - INFO - ✅ Загружен https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt (33463 символов)
+2026-04-25 09:43:52,323 - INFO - ✅ Загружен https://raw.githubusercontent.com/sevcator/5ubscrpt10n/main/protocols/vl.txt (4999842 символов)
+2026-04-25 09:43:52,325 - INFO - 📥 +60 VLESS из https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt
+2026-04-25 09:43:52,329 - INFO - 📥 +24 VMESS из https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt
+2026-04-25 09:43:52,331 - INFO - 📥 +16 TROJAN из https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt
+2026-04-25 09:43:52,525 - INFO - ✅ Загружен https://raw.githubusercontent.com/yaney01/telegram-collector/main/channels/protocols/vless (10424 символов)
+2026-04-25 09:43:52,527 - INFO - ✅ Загружен https://raw.githubusercontent.com/yaney01/telegram-collector/main/channels/protocols/trojan (2272 символов)
+2026-04-25 09:43:52,538 - INFO - 📥 +22986 VLESS из https://raw.githubusercontent.com/sevcator/5ubscrpt10n/main/protocols/vl.txt
+2026-04-25 09:43:52,557 - INFO - ✅ Загружен https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt (1377878 символов)
+2026-04-25 09:43:52,571 - WARNING - ⚠️ Ошибка загрузки https://raw.githubusercontent.com/Hidashimora/free-vpn-anti-rkn/main/configs/all.txt: 404 Client Error: Not Found for url: https://raw.githubusercontent.com/Hidashimora/free-vpn-anti-rkn/main/configs/all.txt
+2026-04-25 09:43:52,602 - INFO - ✅ Загружен https://raw.githubusercontent.com/4n0nymou3/multi-proxy-config-fetcher/refs/heads/main/configs/proxy_configs.txt (148981 символов)
+2026-04-25 09:43:52,621 - INFO - ✅ Загружен https://raw.githubusercontent.com/yaney01/telegram-collector/main/protocols/trojan (106348 символов)
+2026-04-25 09:43:52,795 - INFO - ✅ Загружен https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt (142547 символов)
+2026-04-25 09:43:52,951 - INFO - ✅ Загружен https://raw.githubusercontent.com/sakha1370/OpenRay/refs/heads/main/output/all_valid_proxies.txt (1278075 символов)
+2026-04-25 09:43:53,062 - INFO - ✅ Загружен https://raw.githubusercontent.com/Delta-Kronecker/V2ray-Config/refs/heads/main/config/all_configs.txt (1719761 символов)
+2026-04-25 09:43:53,204 - INFO - ✅ Загружен https://raw.githubusercontent.com/yitong2333/proxy-minging/refs/heads/main/v2ray.txt (2120285 символов)
+2026-04-25 09:43:53,254 - INFO - ✅ Загружен https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1 (604941 символов)
+2026-04-25 09:43:53,347 - INFO - 📥 +25 VMESS из https://raw.githubusercontent.com/sevcator/5ubscrpt10n/main/protocols/vl.txt
+2026-04-25 09:43:53,348 - INFO - 📥 +4 TROJAN из https://raw.githubusercontent.com/sevcator/5ubscrpt10n/main/protocols/vl.txt
+2026-04-25 09:43:53,399 - INFO - 📥 +2691 VLESS из https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt
+2026-04-25 09:43:53,405 - INFO - ✅ Загружен https://raw.githubusercontent.com/yaney01/telegram-collector/main/protocols/vless (854644 символов)
+2026-04-25 09:43:53,509 - INFO - 📥 +781 VMESS из https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt
+2026-04-25 09:43:53,518 - INFO - 📥 +792 TROJAN из https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt
+2026-04-25 09:43:53,552 - INFO - 📥 +375 VLESS из https://raw.githubusercontent.com/4n0nymou3/multi-proxy-config-fetcher/refs/heads/main/configs/proxy_configs.txt
+2026-04-25 09:43:53,562 - INFO - 📥 +14 VMESS из https://raw.githubusercontent.com/4n0nymou3/multi-proxy-config-fetcher/refs/heads/main/configs/proxy_configs.txt
+2026-04-25 09:43:53,562 - INFO - 📥 +161 TROJAN из https://raw.githubusercontent.com/4n0nymou3/multi-proxy-config-fetcher/refs/heads/main/configs/proxy_configs.txt
+2026-04-25 09:43:53,575 - INFO - 📥 +481 VLESS из https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt
+2026-04-25 09:43:53,641 - INFO - 📥 +2806 VLESS из https://raw.githubusercontent.com/sakha1370/OpenRay/refs/heads/main/output/all_valid_proxies.txt
+2026-04-25 09:43:53,759 - INFO - 📥 +909 VMESS из https://raw.githubusercontent.com/sakha1370/OpenRay/refs/heads/main/output/all_valid_proxies.txt
+2026-04-25 09:43:53,768 - INFO - 📥 +687 TROJAN из https://raw.githubusercontent.com/sakha1370/OpenRay/refs/heads/main/output/all_valid_proxies.txt
+2026-04-25 09:43:53,855 - INFO - 📥 +3883 VLESS из https://raw.githubusercontent.com/Delta-Kronecker/V2ray-Config/refs/heads/main/config/all_configs.txt
+2026-04-25 09:43:53,977 - INFO - 📥 +424 VMESS из https://raw.githubusercontent.com/Delta-Kronecker/V2ray-Config/refs/heads/main/config/all_configs.txt
+2026-04-25 09:43:53,982 - INFO - 📥 +732 TROJAN из https://raw.githubusercontent.com/Delta-Kronecker/V2ray-Config/refs/heads/main/config/all_configs.txt
+2026-04-25 09:43:54,083 - INFO - 📥 +4877 VLESS из https://raw.githubusercontent.com/yitong2333/proxy-minging/refs/heads/main/v2ray.txt
+2026-04-25 09:43:54,214 - INFO - 📥 +707 VMESS из https://raw.githubusercontent.com/yitong2333/proxy-minging/refs/heads/main/v2ray.txt
+2026-04-25 09:43:54,221 - INFO - 📥 +360 TROJAN из https://raw.githubusercontent.com/yitong2333/proxy-minging/refs/heads/main/v2ray.txt
+2026-04-25 09:43:54,251 - INFO - 📥 +1903 VLESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-04-25 09:43:54,294 - INFO - 📥 +506 TROJAN из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-04-25 09:43:54,404 - INFO - 💾 Общий файл configs/all.txt (43802 уникальных конфигов)
+2026-04-25 09:43:54,404 - INFO - 📋 Загружено 745 доменов из lists/whitelist.txt
+2026-04-25 09:43:54,441 - INFO - 📋 Загружено 141550 IP из lists/whitelist.ip.txt
+2026-04-25 09:43:55,863 - INFO - 📱 LTE: 1 уникальных конфигов -> configs/LTE.txt
+2026-04-25 09:43:55,911 - INFO - 📶 WiFi: 43801 уникальных конфигов -> configs/WiFi.txt
+2026-04-25 09:43:55,932 - INFO - 📊 Статистика сохранена в configs/stats.json
+2026-04-25 09:43:55,932 - INFO - 📄 README.md обновлён
+2026-04-25 09:43:55,941 - INFO - ✅ Сбор завершен: 43802 уникальных конфигов за 3.85с
