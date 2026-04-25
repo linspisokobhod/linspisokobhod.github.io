@@ -1,15 +1,12 @@
 #!/usr/bin/env python3
 """
-VPN Config Collector v12.0 (LSO-LinSpisokObhod)
+VPN Config Collector v12.1 (LSO-LinSpisokObhod)
+- Только vless://, vmess://, trojan:// (без ss)
 - Единая маркировка [LSO-LinSpisokObhod]
 - Формирование имени: домен (sni) + тип (WebSocket/другое)
-- Сбор ss://, vless://, vmess://, trojan://
 - Дедупликация конфигов
 - LTE: домен в whitelist.txt И IP в whitelist.ip.txt
-- SS всегда дублируются в LTE.txt и WiFi.txt
 - Автообновление README.md
-- Только all.txt, LTE.txt, WiFi.txt
-- Белые списки в папке lists/
 """
 
 import os
@@ -20,7 +17,7 @@ import logging
 import requests
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import parse_qs
 from typing import Dict, Set, Optional
 import base64
 
@@ -38,8 +35,6 @@ SOURCES = [
     "https://raw.githubusercontent.com/yaney01/telegram-collector/main/channels/protocols/vmess",
     "https://raw.githubusercontent.com/yaney01/telegram-collector/main/protocols/trojan",
     "https://raw.githubusercontent.com/yaney01/telegram-collector/main/channels/protocols/trojan",
-    "https://raw.githubusercontent.com/yaney01/telegram-collector/main/protocols/shadowsocks",
-    "https://raw.githubusercontent.com/yaney01/telegram-collector/main/channels/protocols/shadowsocks",
     "https://raw.githubusercontent.com/sakha1370/OpenRay/refs/heads/main/output/all_valid_proxies.txt",
     "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt",
     "https://raw.githubusercontent.com/yitong2333/proxy-minging/refs/heads/main/v2ray.txt",
@@ -53,7 +48,6 @@ GLOBAL_TAG = "[LSO-LinSpisokObhod]"
 SCRIPT_NAME = "parser[LSO-LinSpisokObhod].py"
 
 PROTOCOL_PATTERNS = {
-    'ss': re.compile(r'ss://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
     'vless': re.compile(r'vless://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
     'vmess': re.compile(r'vmess://[A-Za-z0-9+/=]+', re.IGNORECASE),
     'trojan': re.compile(r'trojan://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
@@ -127,8 +121,6 @@ def validate_config(config: str, protocol: str) -> bool:
             required_fields = ['v', 'ps', 'add', 'port', 'id']
             return all(field in decoded for field in required_fields)
         return False
-    if protocol == 'ss':
-        return '@' in config or ':' in config
     elif protocol == 'vless':
         return 'encryption=' in config or 'security=' in config or '@' in config
     elif protocol == 'trojan':
@@ -264,13 +256,13 @@ def extract_ip_from_config(config: str) -> Optional[str]:
                 return host
         return None
 
-    if protocol in ('ss', 'trojan'):
+    if protocol == 'trojan':
         if '@' in body:
             host_part = body.split('@')[1]
             host = host_part.split(':')[0]
             if re.match(r'^(\d{1,3}\.){3}\d{1,3}$', host):
                 return host
-        if protocol == 'trojan' and '?' in body:
+        if '?' in body:
             query_part = body.split('?', 1)[1]
             params = parse_qs(query_part)
             if 'sni' in params:
@@ -322,15 +314,6 @@ def load_ip_whitelist() -> Set[str]:
     return ip_whitelist
 
 def classify_config(config: str, whitelist_domains: Set[str], whitelist_ips: Set[str]) -> str:
-    protocol = None
-    for p in PROTOCOL_PATTERNS:
-        if config.startswith(p + "://"):
-            protocol = p
-            break
-
-    if protocol == 'ss':
-        return 'both'
-
     domain = extract_domain_from_config(config)
     ip = extract_ip_from_config(config)
 
@@ -386,8 +369,7 @@ def update_readme(stats: Dict, sources_count: int):
         "|----------|------------|\n"
         f"| 🔗 **VLESS** | `{stats['by_protocol'].get('vless', 0)}` |\n"
         f"| 📦 **VMess** | `{stats['by_protocol'].get('vmess', 0)}` |\n"
-        f"| 🛡️ **Trojan** | `{stats['by_protocol'].get('trojan', 0)}` |\n"
-        f"| 🌊 **Shadowsocks** | `{stats['by_protocol'].get('ss', 0)}` |\n\n"
+        f"| 🛡️ **Trojan** | `{stats['by_protocol'].get('trojan', 0)}` |\n\n"
         "## 📋 Источники (всего: {sources_count})\n\n"
         "Конфиги собираются из следующих публичных репозиториев:\n"
         "- Epodonios, barry-far, mehdirzfx, Delta-Kronecker\n"
@@ -403,14 +385,13 @@ def update_readme(stats: Dict, sources_count: int):
         "Пример: `vless://uuid@ip:port?... # example.com | WebSocket`\n\n"
         "## ⚙️ Логика фильтрации\n\n"
         "- **LTE.txt**: конфиг попадает сюда, если его **домен** есть в `lists/whitelist.txt` **И** **IP-адрес** есть в `lists/whitelist.ip.txt`\n"
-        "- **WiFi.txt**: все остальные конфиги (включая все `ss://`)\n"
-        "- `ss://` конфиги дублируются в оба файла\n\n"
+        "- **WiFi.txt**: все остальные конфиги\n\n"
         "## 📁 Структура выходных файлов\n\n"
         "```\n├── configs/\n│   ├── all.txt\n│   ├── LTE.txt\n│   ├── WiFi.txt\n│   └── stats.json\n├── lists/\n│   ├── whitelist.txt\n│   └── whitelist.ip.txt\n└── README.md\n```\n\n"
         "## 🔄 Автообновление\n\n"
         f"Скрипт `{SCRIPT_NAME}` может запускаться по расписанию (например, через GitHub Actions).\n"
         f"Последнее обновление: `{now}`\n\n"
-        "---\n*Сгенерировано автоматически VPN Config Collector v12.0*\n"
+        "---\n*Сгенерировано автоматически VPN Config Collector v12.1*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -436,10 +417,7 @@ def save_configs(all_configs_set: Set[str]):
         cat = classify_config(clean_line, whitelist_domains, whitelist_ips)
         if cat == 'lte':
             lte_set.add(line)
-        elif cat == 'wifi':
-            wifi_set.add(line)
-        elif cat == 'both':
-            lte_set.add(line)
+        else:
             wifi_set.add(line)
 
     lte_path = os.path.join(CONFIG_DIR, "LTE.txt")
@@ -475,7 +453,7 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print(f"🚀 {SCRIPT_NAME} v12.0 (LSO-LinSpisokObhod)")
+    print(f"🚀 {SCRIPT_NAME} v12.1 (только VLESS, VMess, Trojan)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
@@ -493,7 +471,7 @@ def main():
     print("=" * 60)
     print(f"📈 Всего уникальных конфигураций: {stats['total_configs']}")
     print(f"   📱 LTE (домен И IP в whitelist): {stats['filtered']['lte']}")
-    print(f"   📶 WiFi (остальные + все SS): {stats['filtered']['wifi']}")
+    print(f"   📶 WiFi (остальные): {stats['filtered']['wifi']}")
     for proto, count in stats['by_protocol'].items():
         if count:
             print(f"   {proto.upper()}: {count}")
