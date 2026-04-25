@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
 """
 VPN Config Collector v12.0 (LSO-LinSpisokObhod)
+- Единая маркировка [LSO-LinSpisokObhod]
+- Формирование имени: домен (sni) + тип (WebSocket/другое)
+- Сбор ss://, vless://, vmess://, trojan://
+- Дедупликация конфигов
+- LTE: домен в whitelist.txt И IP в whitelist.ip.txt
+- SS всегда дублируются в LTE.txt и WiFi.txt
+- Автообновление README.md
+- Только all.txt, LTE.txt, WiFi.txt
+- Белые списки в папке lists/
 """
 
 import os
@@ -12,7 +21,7 @@ import requests
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import urlparse, parse_qs
-from typing import List, Dict, Set, Optional, Tuple
+from typing import Dict, Set, Optional
 import base64
 
 # ========== НАСТРОЙКИ ==========
@@ -284,14 +293,14 @@ def load_whitelist() -> Set[str]:
         with open(WHITELIST_FILE, 'w', encoding='utf-8') as f:
             f.write("# Домены для LTE (один на строку)\n")
             f.write("example.com\n")
-        logger.info(f"📝 Создан пример {WHITELIST_FILE}")
+        logger.info(f"📝 Создан пример {WHITELIST_FILE} — отредактируйте его")
         return whitelist
     with open(WHITELIST_FILE, 'r', encoding='utf-8') as f:
         for line in f:
             line = line.strip()
             if line and not line.startswith('#'):
                 whitelist.add(line)
-    logger.info(f"📋 Загружено {len(whitelist)} доменов")
+    logger.info(f"📋 Загружено {len(whitelist)} доменов из {WHITELIST_FILE}")
     return whitelist
 
 def load_ip_whitelist() -> Set[str]:
@@ -302,14 +311,14 @@ def load_ip_whitelist() -> Set[str]:
             f.write("# IP-адреса для LTE (один на строку)\n")
             f.write("1.1.1.1\n")
             f.write("8.8.8.8\n")
-        logger.info(f"📝 Создан пример {WHITELIST_IP_FILE}")
+        logger.info(f"📝 Создан пример {WHITELIST_IP_FILE} — отредактируйте его")
         return ip_whitelist
     with open(WHITELIST_IP_FILE, 'r', encoding='utf-8') as f:
         for line in f:
             line = line.strip()
             if line and not line.startswith('#'):
                 ip_whitelist.add(line)
-    logger.info(f"📋 Загружено {len(ip_whitelist)} IP")
+    logger.info(f"📋 Загружено {len(ip_whitelist)} IP из {WHITELIST_IP_FILE}")
     return ip_whitelist
 
 def classify_config(config: str, whitelist_domains: Set[str], whitelist_ips: Set[str]) -> str:
@@ -362,35 +371,145 @@ def get_protocol_from_config(config: str) -> str:
 
 def update_readme(stats: Dict, sources_count: int):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    readme_content = (
+        "# 🚀 LinSpisokObhod\n\n"
+        "## 📅 Время последнего сбора\n"
+        f"`{now}`\n\n"
+        "## 📊 Статистика конфигов\n\n"
+        "| Файл | Количество |\n"
+        "|------|------------|\n"
+        f"| 📁 **all.txt** | `{stats['total_configs']}` |\n"
+        f"| 📱 **LTE.txt** (домен + IP в белых списках) | `{stats['filtered']['lte']}` |\n"
+        f"| 📶 **WiFi.txt** (остальные) | `{stats['filtered']['wifi']}` |\n\n"
+        "## 📡 Распределение по протоколам\n\n"
+        "| Протокол | Количество |\n"
+        "|----------|------------|\n"
+        f"| 🔗 **VLESS** | `{stats['by_protocol'].get('vless', 0)}` |\n"
+        f"| 📦 **VMess** | `{stats['by_protocol'].get('vmess', 0)}` |\n"
+        f"| 🛡️ **Trojan** | `{stats['by_protocol'].get('trojan', 0)}` |\n"
+        f"| 🌊 **Shadowsocks** | `{stats['by_protocol'].get('ss', 0)}` |\n\n"
+        "## 📋 Источники (всего: {sources_count})\n\n"
+        "Конфиги собираются из следующих публичных репозиториев:\n"
+        "- Epodonios, barry-far, mehdirzfx, Delta-Kronecker\n"
+        "- V2RayRoot, sevcator, yaney01\n"
+        "- sakha1370, roosterkid, yitong2333\n"
+        "- Hidashimora, 4n0nymou3\n"
+        "- RKPchannel\n"
+        "- EtoNeYaProject\n\n"
+        "## 🏷️ Маркировка\n\n"
+        f"Все конфиги имеют единую метку: `{GLOBAL_TAG}`\n\n"
+        "## 📝 Формат именования конфигов\n\n"
+        "```\nпротокол://... # домен_из_sni | тип_подключения\n```\n\n"
+        "Пример: `vless://uuid@ip:port?... # example.com | WebSocket`\n\n"
+        "## ⚙️ Логика фильтрации\n\n"
+        "- **LTE.txt**: конфиг попадает сюда, если его **домен** есть в `lists/whitelist.txt` **И** **IP-адрес** есть в `lists/whitelist.ip.txt`\n"
+        "- **WiFi.txt**: все остальные конфиги (включая все `ss://`)\n"
+        "- `ss://` конфиги дублируются в оба файла\n\n"
+        "## 📁 Структура выходных файлов\n\n"
+        "```\n├── configs/\n│   ├── all.txt\n│   ├── LTE.txt\n│   ├── WiFi.txt\n│   └── stats.json\n├── lists/\n│   ├── whitelist.txt\n│   └── whitelist.ip.txt\n└── README.md\n```\n\n"
+        "## 🔄 Автообновление\n\n"
+        f"Скрипт `{SCRIPT_NAME}` может запускаться по расписанию (например, через GitHub Actions).\n"
+        f"Последнее обновление: `{now}`\n\n"
+        "---\n*Сгенерировано автоматически VPN Config Collector v12.0*\n"
+    )
+    with open(README_FILE, 'w', encoding='utf-8') as f:
+        f.write(readme_content)
+    logger.info("📄 README.md обновлён")
+
+def save_configs(all_configs_set: Set[str]):
+    os.makedirs(CONFIG_DIR, exist_ok=True)
+
+    tagged_set = {f"{cfg} {GLOBAL_TAG}" for cfg in all_configs_set}
+
+    all_txt_path = os.path.join(CONFIG_DIR, "all.txt")
+    with open(all_txt_path, 'w', encoding='utf-8') as f:
+        f.write("\n".join(sorted(tagged_set)) + "\n")
+    logger.info(f"💾 Общий файл {all_txt_path} ({len(tagged_set)} уникальных конфигов)")
+
+    whitelist_domains = load_whitelist()
+    whitelist_ips = load_ip_whitelist()
+    lte_set = set()
+    wifi_set = set()
+
+    for line in tagged_set:
+        clean_line = line.replace(f" {GLOBAL_TAG}", "")
+        cat = classify_config(clean_line, whitelist_domains, whitelist_ips)
+        if cat == 'lte':
+            lte_set.add(line)
+        elif cat == 'wifi':
+            wifi_set.add(line)
+        elif cat == 'both':
+            lte_set.add(line)
+            wifi_set.add(line)
+
+    lte_path = os.path.join(CONFIG_DIR, "LTE.txt")
+    with open(lte_path, 'w', encoding='utf-8') as f:
+        f.write("\n".join(sorted(lte_set)) + "\n")
+    logger.info(f"📱 LTE: {len(lte_set)} уникальных конфигов -> {lte_path}")
+
+    wifi_path = os.path.join(CONFIG_DIR, "WiFi.txt")
+    with open(wifi_path, 'w', encoding='utf-8') as f:
+        f.write("\n".join(sorted(wifi_set)) + "\n")
+    logger.info(f"📶 WiFi: {len(wifi_set)} уникальных конфигов -> {wifi_path}")
+
+    protocol_stats = {proto: 0 for proto in PROTOCOL_PATTERNS}
+    for cfg in all_configs_set:
+        proto = get_protocol_from_config(cfg)
+        if proto in protocol_stats:
+            protocol_stats[proto] += 1
+
+    stats = {
+        "timestamp": datetime.now().isoformat(),
+        "total_configs": len(tagged_set),
+        "by_protocol": protocol_stats,
+        "filtered": {"lte": len(lte_set), "wifi": len(wifi_set)}
+    }
+    stats_path = os.path.join(CONFIG_DIR, "stats.json")
+    with open(stats_path, 'w', encoding='utf-8') as f:
+        json.dump(stats, f, indent=2, ensure_ascii=False)
+    logger.info(f"📊 Статистика сохранена в {stats_path}")
     
-    readme_content = f"""# 🚀 LinSpisokObhod
+    update_readme(stats, len(SOURCES))
+    return stats
 
-## 📅 Время последнего сбора
-`{now}`
+def main():
+    start_time = time.time()
+    print("=" * 60)
+    print(f"🚀 {SCRIPT_NAME} v12.0 (LSO-LinSpisokObhod)")
+    print("=" * 60)
+    print(f"📋 Источников: {len(SOURCES)}")
+    print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
+    print(f"📄 Whitelist доменов: {WHITELIST_FILE}")
+    print(f"🌐 Whitelist IP: {WHITELIST_IP_FILE}")
+    print(f"🏷️  Маркировка: {GLOBAL_TAG}")
+    print("=" * 60)
 
-## 📊 Статистика конфигов
+    all_configs = collect_configs()
+    stats = save_configs(all_configs)
 
-| Файл | Количество |
-|------|------------|
-| 📁 **all.txt** | `{stats['total_configs']}` |
-| 📱 **LTE.txt** (домен + IP в белых списках) | `{stats['filtered']['lte']}` |
-| 📶 **WiFi.txt** (остальные) | `{stats['filtered']['wifi']}` |
+    elapsed = time.time() - start_time
+    print("\n" + "=" * 60)
+    print("📊 ИТОГИ СБОРА:")
+    print("=" * 60)
+    print(f"📈 Всего уникальных конфигураций: {stats['total_configs']}")
+    print(f"   📱 LTE (домен И IP в whitelist): {stats['filtered']['lte']}")
+    print(f"   📶 WiFi (остальные + все SS): {stats['filtered']['wifi']}")
+    for proto, count in stats['by_protocol'].items():
+        if count:
+            print(f"   {proto.upper()}: {count}")
+    print(f"⏱️ Время выполнения: {elapsed:.2f} секунд")
+    print(f"📁 Результаты в папке '{CONFIG_DIR}/'")
+    print(f"📁 Белые списки в папке '{LISTS_DIR}/'")
+    print(f"📄 README.md обновлён")
+    print("=" * 60)
 
-## 📡 Распределение по протоколам
+    logger.info(f"✅ Сбор завершен: {stats['total_configs']} уникальных конфигов за {elapsed:.2f}с")
 
-| Протокол | Количество |
-|----------|------------|
-| 🔗 **VLESS** | `{stats['by_protocol'].get('vless', 0)}` |
-| 📦 **VMess** | `{stats['by_protocol'].get('vmess', 0)}` |
-| 🛡️ **Trojan** | `{stats['by_protocol'].get('trojan', 0)}` |
-| 🌊 **Shadowsocks** | `{stats['by_protocol'].get('ss', 0)}` |
-
-## 📋 Источники (всего: {sources_count})
-
-Конфиги собираются из 21 публичного репозитория.
-
-## 🏷️ Маркировка
-
-Все конфиги имеют единую метку: `{GLOBAL_TAG}`
-
-## 📝 Формат именования конфигов
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        logger.info("⏹️ Прерывание")
+    except Exception as e:
+        logger.error(f"❌ Ошибка: {e}")
+        raise
