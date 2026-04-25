@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
-VPN Config Collector v12.3 (LSO-LinSpisokObhod)
+VPN Config Collector v12.4 (только ваши источники)
 - Только vless://, vmess://, trojan://
 - Удаление старых комментариев после #
 - Маркировка [#LSO® - #LinSpisokObhod®]
 - Форматирование: # домен_из_sni | тип
+- Источники: RKPchannel, EtoNeYaProject
 """
 
 import os
@@ -20,29 +21,13 @@ from typing import Dict, Set, Optional
 import base64
 
 # ========== НАСТРОЙКИ ==========
+# Только ваши источники
 SOURCES = [
-    "https://raw.githubusercontent.com/Epodonios/v2ray-configs/main/All_Configs_Sub.txt",
-    "https://raw.githubusercontent.com/barry-far/V2ray-Configs/main/All_Configs_Sub.txt",
-    "https://raw.githubusercontent.com/mehdirzfx/v2ray-sub/main/All_Configs_Sub.txt",
-    "https://raw.githubusercontent.com/Delta-Kronecker/V2ray-Config/refs/heads/main/config/all_configs.txt",
-    "https://raw.githubusercontent.com/V2RayRoot/V2RayConfig/refs/heads/main/Config/vless.txt",
-    "https://raw.githubusercontent.com/sevcator/5ubscrpt10n/main/protocols/vl.txt",
-    "https://raw.githubusercontent.com/yaney01/telegram-collector/main/protocols/vless",
-    "https://raw.githubusercontent.com/yaney01/telegram-collector/main/channels/protocols/vless",
-    "https://raw.githubusercontent.com/yaney01/telegram-collector/main/protocols/vmess",
-    "https://raw.githubusercontent.com/yaney01/telegram-collector/main/channels/protocols/vmess",
-    "https://raw.githubusercontent.com/yaney01/telegram-collector/main/protocols/trojan",
-    "https://raw.githubusercontent.com/yaney01/telegram-collector/main/channels/protocols/trojan",
-    "https://raw.githubusercontent.com/sakha1370/OpenRay/refs/heads/main/output/all_valid_proxies.txt",
-    "https://raw.githubusercontent.com/roosterkid/openproxylist/main/V2RAY_RAW.txt",
-    "https://raw.githubusercontent.com/yitong2333/proxy-minging/refs/heads/main/v2ray.txt",
-    "https://raw.githubusercontent.com/Hidashimora/free-vpn-anti-rkn/main/configs/all.txt",
-    "https://raw.githubusercontent.com/4n0nymou3/multi-proxy-config-fetcher/refs/heads/main/configs/proxy_configs.txt",
     "https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt",
     "https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1",
 ]
 
-GLOBAL_TAG = "[#LSO® - #LinSpisokObhod®]"   # изменённый маркер
+GLOBAL_TAG = "[#LSO® - #LinSpisokObhod®]"
 SCRIPT_NAME = "parser[LSO-LinSpisokObhod].py"
 
 PROTOCOL_PATTERNS = {
@@ -370,11 +355,6 @@ def update_readme(stats: Dict, sources_count: int):
         f"| 📦 **VMess** | `{stats['by_protocol'].get('vmess', 0)}` |\n"
         f"| 🛡️ **Trojan** | `{stats['by_protocol'].get('trojan', 0)}` |\n\n"
         "## 📋 Источники (всего: {sources_count})\n\n"
-        "Конфиги собираются из следующих публичных репозиториев:\n"
-        "- Epodonios, barry-far, mehdirzfx, Delta-Kronecker\n"
-        "- V2RayRoot, sevcator, yaney01\n"
-        "- sakha1370, roosterkid, yitong2333\n"
-        "- Hidashimora, 4n0nymou3\n"
         "- RKPchannel\n"
         "- EtoNeYaProject\n\n"
         "## 🏷️ Маркировка\n\n"
@@ -390,7 +370,7 @@ def update_readme(stats: Dict, sources_count: int):
         "## 🔄 Автообновление\n\n"
         f"Скрипт `{SCRIPT_NAME}` может запускаться по расписанию (например, через GitHub Actions).\n"
         f"Последнее обновление: `{now}`\n\n"
-        "---\n*Сгенерировано автоматически VPN Config Collector v12.3*\n"
+        "---\n*Сгенерировано автоматически VPN Config Collector v12.4*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -452,7 +432,7 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print(f"🚀 {SCRIPT_NAME} v12.3 (новый маркер [#LSO® - #LinSpisokObhod®])")
+    print(f"🚀 {SCRIPT_NAME} v12.4 (только ваши источники)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
