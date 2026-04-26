@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-04-26T17:11:40.668523",
-  "total_configs": 3140,
+  "timestamp": "2026-04-26T19:59:51.008392",
+  "total_configs": 2815,
   "by_protocol": {
-    "vless": 2935,
+    "vless": 2610,
     "vmess": 14,
     "trojan": 191
   },
   "filtered": {
     "lte": 0,
-    "wifi": 3140
+    "wifi": 2815
   }
 }
