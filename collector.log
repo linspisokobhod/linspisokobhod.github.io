@@ -465,3 +465,18 @@
 2026-04-25 23:56:39,331 - INFO - 📊 Статистика сохранена в configs/stats.json
 2026-04-25 23:56:39,331 - INFO - 📄 README.md обновлён
 2026-04-25 23:56:39,337 - INFO - ✅ Сбор завершен: 3529 уникальных конфигов за 0.45с
+2026-04-26 06:29:44,710 - INFO - 🚀 Начинаю сбор из 2 источников...
+2026-04-26 06:29:44,880 - INFO - ✅ Загружен https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt (267411 символов)
+2026-04-26 06:29:44,889 - INFO - 📥 +912 VLESS из https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt
+2026-04-26 06:29:44,976 - INFO - ✅ Загружен https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1 (751446 символов)
+2026-04-26 06:29:45,000 - INFO - 📥 +2268 VLESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-04-26 06:29:45,049 - INFO - 📥 +14 VMESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-04-26 06:29:45,049 - INFO - 📥 +517 TROJAN из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-04-26 06:29:45,067 - INFO - 💾 Общий файл configs/all.txt (3543 уникальных конфигов)
+2026-04-26 06:29:45,067 - INFO - 📋 Загружено 745 доменов из lists/whitelist.txt
+2026-04-26 06:29:45,106 - INFO - 📋 Загружено 141550 IP из lists/whitelist.ip.txt
+2026-04-26 06:29:45,192 - INFO - 📱 LTE: 0 уникальных конфигов -> configs/LTE.txt
+2026-04-26 06:29:45,194 - INFO - 📶 WiFi: 3543 уникальных конфигов -> configs/WiFi.txt
+2026-04-26 06:29:45,196 - INFO - 📊 Статистика сохранена в configs/stats.json
+2026-04-26 06:29:45,196 - INFO - 📄 README.md обновлён
+2026-04-26 06:29:45,201 - INFO - ✅ Сбор завершен: 3543 уникальных конфигов за 0.49с
