@@ -1,5 +1,5 @@
 #profile-title: #LSO-#LinSpisokObhod
-#profile-update-interval: 0.3
+#profile-update-interval: 1
 #support-url: https://t.me/VPNLin_channel
 #announce: LinSpisokObhod подписка LTE.txt рекомендуем для использованием мобильного интернета. Время обновления: 2026-04-28 09:33:37 #LinSpisokObhod
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
