@@ -948,3 +948,24 @@
 2026-04-30 17:05:44,262 - INFO - 📊 Статистика сохранена в configs/stats.json
 2026-04-30 17:05:44,263 - INFO - 📄 README.md обновлён
 2026-04-30 17:05:44,263 - INFO - ✅ Сбор завершен: 14535 уникальных конфигов за 1.23с
+2026-04-30 20:45:18,957 - INFO - 🚀 Начинаю сбор из 4 источников...
+2026-04-30 20:45:19,145 - INFO - ✅ Загружен https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt (279341 символов)
+2026-04-30 20:45:19,159 - INFO - 📥 +924 VLESS из https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt
+2026-04-30 20:45:19,186 - INFO - 📥 +3 TROJAN из https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt
+2026-04-30 20:45:19,187 - INFO - 📥 +8 HYSTERIA2 из https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt
+2026-04-30 20:45:19,188 - INFO - ✅ Загружен https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/hysteria2.txt (98857 символов)
+2026-04-30 20:45:19,192 - INFO - 📥 +64 HYSTERIA2 из https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/hysteria2.txt
+2026-04-30 20:45:19,261 - INFO - ✅ Загружен https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/trojan.txt (1681601 символов)
+2026-04-30 20:45:19,338 - INFO - 📥 +7780 TROJAN из https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/trojan.txt
+2026-04-30 20:45:19,542 - INFO - ✅ Загружен https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1 (3509151 символов)
+2026-04-30 20:45:19,685 - INFO - 📥 +3044 VLESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-04-30 20:45:19,755 - INFO - 📥 +3 VMESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-04-30 20:45:19,758 - INFO - 📥 +7221 TROJAN из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-04-30 20:45:19,961 - INFO - 📥 +17 HYSTERIA2 из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-04-30 20:45:19,981 - INFO - 💾 Общий файл configs/all.txt (14660 уникальных конфигов)
+2026-04-30 20:45:19,981 - INFO - 📋 Загружено 745 доменов из lists/whitelist.txt для фильтрации по sni
+2026-04-30 20:45:20,159 - INFO - 📱 LTE: 891 уникальных конфигов -> configs/LTE.txt
+2026-04-30 20:45:20,173 - INFO - 📶 WiFi: 13769 уникальных конфигов -> configs/WiFi.txt
+2026-04-30 20:45:20,183 - INFO - 📊 Статистика сохранена в configs/stats.json
+2026-04-30 20:45:20,183 - INFO - 📄 README.md обновлён
+2026-04-30 20:45:20,184 - INFO - ✅ Сбор завершен: 14660 уникальных конфигов за 1.23с
