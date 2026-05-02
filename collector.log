@@ -1219,3 +1219,24 @@
 2026-05-02 20:07:41,747 - INFO - 📊 Статистика сохранена в configs/stats.json
 2026-05-02 20:07:41,748 - INFO - 📄 README.md обновлён
 2026-05-02 20:07:41,748 - INFO - ✅ Сбор завершен: 11540 уникальных конфигов за 0.88с
+2026-05-02 22:24:32,306 - INFO - 🚀 Начинаю сбор из 4 источников...
+2026-05-02 22:24:32,471 - INFO - ✅ Загружен https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/hysteria2.txt (99813 символов)
+2026-05-02 22:24:32,475 - INFO - 📥 +69 HYSTERIA2 из https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/hysteria2.txt
+2026-05-02 22:24:32,479 - INFO - ✅ Загружен https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt (659669 символов)
+2026-05-02 22:24:32,512 - INFO - 📥 +2224 VLESS из https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt
+2026-05-02 22:24:32,572 - INFO - 📥 +4 TROJAN из https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt
+2026-05-02 22:24:32,572 - INFO - 📥 +4 HYSTERIA2 из https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt
+2026-05-02 22:24:32,637 - INFO - ✅ Загружен https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1 (925129 символов)
+2026-05-02 22:24:32,687 - INFO - 📥 +3204 VLESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-02 22:24:32,752 - INFO - 📥 +103 VMESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-02 22:24:32,754 - INFO - 📥 +116 TROJAN из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-02 22:24:32,756 - INFO - 📥 +16 HYSTERIA2 из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-02 22:24:32,779 - INFO - ✅ Загружен https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/trojan.txt (1417659 символов)
+2026-05-02 22:24:32,844 - INFO - 📥 +6694 TROJAN из https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/trojan.txt
+2026-05-02 22:24:32,992 - INFO - 💾 Общий файл configs/all.txt (11774 уникальных конфигов)
+2026-05-02 22:24:32,992 - INFO - 📋 Загружено 745 доменов из lists/whitelist.txt для фильтрации по sni
+2026-05-02 22:24:33,125 - INFO - 📱 LTE: 1439 уникальных конфигов -> configs/LTE.txt
+2026-05-02 22:24:33,135 - INFO - 📶 WiFi: 10335 уникальных конфигов -> configs/WiFi.txt
+2026-05-02 22:24:33,142 - INFO - 📊 Статистика сохранена в configs/stats.json
+2026-05-02 22:24:33,142 - INFO - 📄 README.md обновлён
+2026-05-02 22:24:33,143 - INFO - ✅ Сбор завершен: 11774 уникальных конфигов за 0.84с
