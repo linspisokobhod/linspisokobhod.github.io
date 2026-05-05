@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-05-05T20:47:44.426612",
-  "total_configs": 9835,
+  "timestamp": "2026-05-05T23:35:41.047772",
+  "total_configs": 10320,
   "by_protocol": {
-    "vless": 3011,
-    "vmess": 28,
-    "trojan": 6719,
-    "hysteria2": 77
+    "vless": 3497,
+    "vmess": 35,
+    "trojan": 6713,
+    "hysteria2": 75
   },
   "filtered": {
-    "lte": 595,
-    "wifi": 9240
+    "lte": 789,
+    "wifi": 9531
   }
 }
