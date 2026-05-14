@@ -1,12 +1,10 @@
 #profile-title: #LSO-#LinSpisokObhod
 #profile-update-interval: 1
 #support-url: https://t.me/VPNLin_channel
-#announce: LinSpisokObhod подписка LTE.txt рекомендуем для использованием мобильного интернета. Время обновления: 2026-05-13 21:56:12 #LinSpisokObhod
+#announce: LinSpisokObhod подписка LTE.txt рекомендуем для использованием мобильного интернета. Время обновления: 2026-05-14 08:09:25 #LinSpisokObhod
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
 trojan://1e32fe52198848788f029c2ec244f347@212.192.14.227:9443?type=tcp&sni=ya.ru&fp=random&security=reality&pbk=GooqN94J-NNbWxkVsDb7NIQW4xXhkMGByk58ihKwX1Q&sid=aabbccdd#ya.ru | TCP [#LSO - #LinSpisokObhod]
-trojan://Fr6h3t1gZ6JCgdk8o4F667B1vYFBA5Cq@150.241.66.2:35857?type=grpc&headerType=none&security=reality&encryption=none&sni=web.max.ru&fp=chrome&pbk=qQb-sQI6jnu1PbBimM7RFDL9sE3mjIM5DHu1SR1hhT8&sid=c9168cbeb4bee2cc&serviceName=123#web.max.ru | GRPC [#LSO - #LinSpisokObhod]
-trojan://Fr6h3t1gZ6JCgdk8o4F667B1vYFBA5Cq@150.241.66.2:60800?type=xhttp&headerType=none&security=reality&encryption=none&sni=web.max.ru&fp=chrome&pbk=mQYffVOT9WjeMOt3OidRFhRHnXpPg5B4Det191XOOw0&sid=46de700d6dd1c5c8&path=%2F#web.max.ru | XHTTP [#LSO - #LinSpisokObhod]
 trojan://MeaDiUmPlkWbZJ2BON8tz@78.159.131.12:28259?sni=ads.x5.ru&peer=ads.x5.ru&security=tls#ads.x5.ru | unknown [#LSO - #LinSpisokObhod]
 vless://0eab3e6d-7202-40b4-9577-a01ef670a368@138.124.99.126:443?type=raw&security=reality&flow=xtls-rprx-vision&fp=chrome&pbk=DtzDK8MLwfzqwHqvXWJ3IgBdP9IfylggM_RxbyPcjgI&sid=8a9d&sni=ozon.ru&spx=/#ozon.ru | RAW [#LSO - #LinSpisokObhod]
 vless://0eab3e6d-7202-40b4-9577-a01ef670a368@138.124.99.126:443?type=tcp&security=reality&flow=xtls-rprx-vision&fp=chrome&pbk=DtzDK8MLwfzqwHqvXWJ3IgBdP9IfylggM_RxbyPcjgI&sid=8a9d&sni=ozon.ru&alpn=http/1.1&headerType=none#ozon.ru | TCP [#LSO - #LinSpisokObhod]
@@ -288,6 +286,7 @@ vless://ed2b309c-0c30-4caf-9cfc-a6693cb40ccc@79.174.91.100:2448?type=tcp&securit
 vless://ed2b309c-0c30-4caf-9cfc-a6693cb40ccc@79.174.91.100:2452?type=tcp&security=reality&flow=xtls-rprx-vision&fp=random&pbk=5w9AftPH_705ynMzcG03D3z61O1qegNp6WFL6jOXxRA&sid=e035146d93da51a9&sni=queuev4.vk.com&spx=/#queuev4.vk.com | TCP [#LSO - #LinSpisokObhod]
 vless://ed2b309c-0c30-4caf-9cfc-a6693cb40ccc@79.174.95.200:5443?type=tcp&security=reality&flow=xtls-rprx-vision&fp=random&pbk=OtGux0Ty5TSzfIvlHVd4q_TdYbRUHKbS8WCxmpHJx18&sid=f183a2c26a29eb46&sni=ads.x5.ru&spx=/#ads.x5.ru | TCP [#LSO - #LinSpisokObhod]
 vless://faed8940-ce1a-4613-a05b-65d833e3346b@148.253.208.98:20222?type=tcp&security=reality&fp=chrome&pbk=USzu7jEsyeyLjhJ_w8Wm76bd6bSXy8TciAojicQKAHk&sid=48e9a51281c1&sni=stats.vk-portal.net&path=/#stats.vk-portal.net | TCP [#LSO - #LinSpisokObhod]
+vless://fb89a947-0d5b-43b2-982e-20b89d48d161@51.250.96.237:443?encryption=none&fp=chrome&pbk=Hwodw89GLba65CMpzNVcUycU9n25tBZOOIlPZcwEk0o&security=reality&sid=cc015aacdfd7cfd7&sni=ads.x5.ru&type=grpc#ads.x5.ru | GRPC [#LSO - #LinSpisokObhod]
 vless://fd2bfdd2-68eb-49b0-98ad-ed82f901edde@62.60.233.178:52000?type=tcp&security=reality&flow=xtls-rprx-vision&fp=chrome&pbk=4Fs4rORU_bK5Nwy9qvmVw3dAxS91bIG5cQYOmXl7zDA&sid=3d67b0666a5e09a0&sni=ozon.ru&alpn=http/1.1#ozon.ru | TCP [#LSO - #LinSpisokObhod]
 vless://fd2bfdd2-68eb-49b0-98ad-ed82f901edde@62.60.233.178:52000?type=tcp&security=reality&flow=xtls-rprx-vision&fp=chrome&pbk=4Fs4rORU_bK5Nwy9qvmVw3dAxS91bIG5cQYOmXl7zDA&sid=3d67b0666a5e09a0&sni=ozon.ru&spx=/#ozon.ru | TCP [#LSO - #LinSpisokObhod]
 vless://fd2bfdd2-68eb-49b0-98ad-ed82f901edde@tr-1.illusion-vpn.ru:52000?type=tcp&security=reality&flow=xtls-rprx-vision&fp=chrome&pbk=4Fs4rORU_bK5Nwy9qvmVw3dAxS91bIG5cQYOmXl7zDA&sid=3d67b0666a5e09a0&sni=ozon.ru&alpn=http/1.1#ozon.ru | TCP [#LSO - #LinSpisokObhod]
