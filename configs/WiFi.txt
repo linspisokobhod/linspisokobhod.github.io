@@ -1,7 +1,7 @@
 #profile-title: #LSO-#LinSpisokObhod
 #profile-update-interval: 1
 #support-url: https://t.me/VPNLin_channel
-#announce: LinSpisokObhod подписка WIFI.txt рекомендуем для использованием вайфаем . Время обновления: 2026-05-15 20:41:07 #LinSpisokObhod
+#announce: LinSpisokObhod подписка WIFI.txt рекомендуем для использованием вайфаем . Время обновления: 2026-05-16 00:06:14 #LinSpisokObhod
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
 hysteria2://10550754-cf62-3d3b-ba6a-50be27a275d7@195.133.53.33:443?sni=s516.okgfw.top#s516.okgfw.top | HYSTERIA2 [#LSO - #LinSpisokObhod]
