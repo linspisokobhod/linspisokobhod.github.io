@@ -2883,3 +2883,20 @@
 2026-05-24 12:08:44,558 - INFO - 📊 Статистика сохранена в configs/stats.json
 2026-05-24 12:08:44,558 - INFO - 📄 README.md обновлён
 2026-05-24 12:08:44,558 - INFO - ✅ Сбор завершен: 1819 уникальных конфигов за 0.18с
+2026-05-24 16:12:49,252 - INFO - 🚀 Начинаю сбор из 4 источников...
+2026-05-24 16:12:49,392 - INFO - ✅ Загружен https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt (495 символов)
+2026-05-24 16:12:49,393 - INFO - 📥 +1 VLESS из https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/configs/url_work.txt
+2026-05-24 16:12:49,405 - WARNING - ⚠️ Ошибка загрузки https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/hysteria2.txt: 404 Client Error: Not Found for url: https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/hysteria2.txt
+2026-05-24 16:12:49,413 - WARNING - ⚠️ Ошибка загрузки https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/trojan.txt: 404 Client Error: Not Found for url: https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/trojan.txt
+2026-05-24 16:12:49,459 - INFO - ✅ Загружен https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1 (388856 символов)
+2026-05-24 16:12:49,478 - INFO - 📥 +1707 VLESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-24 16:12:49,517 - INFO - 📥 +19 VMESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-24 16:12:49,517 - INFO - 📥 +94 TROJAN из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-24 16:12:49,519 - INFO - 📥 +3 HYSTERIA2 из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-24 16:12:49,522 - INFO - 💾 Общий файл configs/all.txt (1819 уникальных конфигов)
+2026-05-24 16:12:49,522 - INFO - 📋 Загружено 745 доменов из lists/whitelist.txt для фильтрации по sni
+2026-05-24 16:12:49,551 - INFO - 📱 LTE: 288 уникальных конфигов -> configs/LTE.txt
+2026-05-24 16:12:49,552 - INFO - 📶 WiFi: 1531 уникальных конфигов -> configs/WiFi.txt
+2026-05-24 16:12:49,553 - INFO - 📊 Статистика сохранена в configs/stats.json
+2026-05-24 16:12:49,553 - INFO - 📄 README.md обновлён
+2026-05-24 16:12:49,553 - INFO - ✅ Сбор завершен: 1819 уникальных конфигов за 0.30с
