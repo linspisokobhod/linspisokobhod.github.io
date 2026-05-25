@@ -1,7 +1,7 @@
 #profile-title: #LSO-#LinSpisokObhod
 #profile-update-interval: 1
 #support-url: https://t.me/VPNLin_channel
-#announce: LinSpisokObhod подписка LTE.txt рекомендуем для использованием мобильного интернета. Время обновления: 2026-05-25 18:57:14 #LinSpisokObhod
+#announce: LinSpisokObhod подписка LTE.txt рекомендуем для использованием мобильного интернета. Время обновления: 2026-05-25 20:21:46 #LinSpisokObhod
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
 trojan://MeaDiUmPlkWbZJ2BON8tz@78.159.131.12:28259?sni=ads.x5.ru&peer=ads.x5.ru&security=tls#ads.x5.ru | unknown [#LSO - #LinSpisokObhod]
