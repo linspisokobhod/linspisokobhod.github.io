@@ -1,43 +1,35 @@
-name: parser[#LSO-#LinSpisokObhod]
+name: LinSpisokObhod
+
 on:
   schedule:
-    # Запуск каждые 2 часа
-    - cron: '0 */2 * * *'
-  workflow_dispatch:             # ручной запуск
+    - cron: '0 * * * *'   # каждый час
+  workflow_dispatch:
 
 jobs:
-  build:
+  collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 20          # 20 минут на выполнение
-
+    permissions:
+      contents: write
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: true
+        
+    - name: Setup Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
-
-    - name: Cache Xray and Hysteria2 binaries
-      id: cache-binaries
-      uses: actions/cache@v4
-      with:
-        path: vendor
-        key: ${{ runner.os }}-xray-hy2-v2
-
-    - name: Install Python dependencies
+        python-version: '3.10'
+        
+    - name: Install dependencies
       run: pip install -r requirements.txt
-
-    - name: Run collector script
-      env:
-        PYTHONHTTPSVERIFY: 0   # отключаем строгую проверку SSL для источников
-      run: python "parser[#LSO-#LinSpisokObhod].py"
-
-    - name: Commit and push results
+        
+    - name: Run LinSpisokObhod
+      run: python LinSpisokObhod.py
+        
+    - name: Commit and push if changed
       run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add sub/
-        git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update proxy configs [skip ci]"
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add configs/ lists/ collector.log README.md
+        git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update ($(date +'%Y-%m-%d %H:%M:%S'))"
         git push
