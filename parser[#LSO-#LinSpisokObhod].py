@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """
-LinSpisokObhod v1
+LinSpisokObhod v1.5
 - Протоколы: vless://, vmess://, trojan://, hysteria2://
 - Маркировка [#LSO - #LinSpisokObhod]
 - Форматирование: #домен_из_sni | тип (без пробела перед #)
 - LTE.txt: сортировка по приоритету (whitelist → CIDR → остальные)
 - WiFi.txt: конфиги, не попавшие в LTE.txt
 - Белые списки взяты из https://github.com/hxehex/russia-mobile-internet-whitelist
+- Автообновление каждый час через GitHub Actions
 """
 
 import os
@@ -23,15 +24,21 @@ from typing import Dict, Set, Optional, List
 import base64
 
 # ========== НАСТРОЙКИ ==========
-SOURCES = [
+# Основные источники
+BASE_SOURCES = [
     "https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1",
-    "https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/hysteria2.txt",
-    "https://raw.githubusercontent.com/rtwo2/FastNodes/refs/heads/main/sub/protocols/trojan.txt",
-    "https://raw.githubusercontent.com/nikita29a/FreeProxyList/refs/heads/main/mirror/1.txt",
-    "https://raw.githubusercontent.com/nikita29a/FreeProxyList/refs/heads/main/mirror/2.txt",
     "https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt",
     "https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt",
+    "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt",
+    "https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt",
+    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt",
 ]
+
+# Генерация зеркал nikita29a (1..15)
+mirror_urls = [f"https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/{i}.txt" for i in range(1, 16)]
+
+# Объединяем все источники
+SOURCES = BASE_SOURCES + mirror_urls
 
 GLOBAL_TAG = "[#LSO - #LinSpisokObhod]"
 SCRIPT_NAME = "LinSpisokObhod.py"
@@ -352,7 +359,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `configs/LTE.txt` – отсортированные по приоритету\n"
         "- `configs/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.5*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -397,12 +404,9 @@ def save_configs(all_configs_set: Set[str]):
     whitelist = load_whitelist()
     cidr_list = load_cidr_whitelist()
 
-    # Собираем все конфиги для LTE
     lte_list = list(tagged_set)
-    # Сортируем по приоритету
     lte_list.sort(key=lambda x: get_config_priority(x.replace(f" {GLOBAL_TAG}", ""), whitelist, cidr_list))
     
-    # WiFi = конфиги, которые не попали в приоритет 0 или 1
     wifi_list = []
     for cfg in tagged_set:
         clean = cfg.replace(f" {GLOBAL_TAG}", "")
@@ -422,7 +426,6 @@ def save_configs(all_configs_set: Set[str]):
         f.write("\n".join(sorted(wifi_list)) + "\n")
     logger.info(f"📶 WiFi.txt: {len(wifi_list)}")
 
-    # Статистика
     protocol_stats = {proto: 0 for proto in PROTOCOL_PATTERNS}
     for cfg in all_configs_set:
         proto = get_protocol_from_config(cfg)
@@ -446,7 +449,7 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v1")
+    print("🚀 LinSpisokObhod v1.5 (полная версия)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
@@ -462,7 +465,7 @@ def main():
     print("📊 ИТОГИ СБОРА:")
     print("=" * 60)
     print(f"📈 Всего уникальных: {stats['total_configs']}")
-    print(f"   📱 LTE (отсортированы): {stats['filtered']['lte']}")
+    print(f"   📱 LTE: {stats['filtered']['lte']}")
     print(f"   📶 WiFi: {stats['filtered']['wifi']}")
     for proto, count in stats['by_protocol'].items():
         if count:
