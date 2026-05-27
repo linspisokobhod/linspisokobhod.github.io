@@ -11,11 +11,16 @@ import shutil
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import parse_qs
-from typing import Dict, Set, Optional, List
+from typing import Dict, Set, Optional, List, Tuple
 import base64
 
 # ========== НАСТРОЙКИ ==========
-BASE_SOURCES = [
+ENABLE_REACHABILITY_CHECK = True      # Включить HTTP-проверку
+REACHABILITY_TIMEOUT = 5              # Таймаут проверки (сек)
+REACHABILITY_THREADS = 20             # Потоков для параллельной проверки
+TEST_URL = "http://www.gstatic.com/generate_204"   # URL для проверки
+
+SOURCES = [
     "https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1",
     "https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt",
     "https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt",
@@ -25,9 +30,6 @@ BASE_SOURCES = [
     "https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw",
     "https://rostunnel.vercel.app/mega.txt",
 ]
-
-mirror_urls = [f"https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/{i}.txt" for i in range(1, 16)]
-SOURCES = BASE_SOURCES + mirror_urls
 
 GLOBAL_TAG = "[#LSO - #LinSpisokObhod]"
 SCRIPT_NAME = "LinSpisokObhod.py"
@@ -297,6 +299,29 @@ def get_config_priority(config: str, whitelist: Set[str], cidr_list: List[ipaddr
         return 1
     return 2
 
+def check_config_reachability(config_line: str) -> bool:
+    """Проверяет работоспособность прокси через HTTP-запрос к gstatic."""
+    try:
+        protocol = None
+        for p in PROTOCOL_PATTERNS:
+            if config_line.startswith(p + "://"):
+                protocol = p
+                break
+        if not protocol:
+            return False
+
+        clean_config = config_line.split(f" {GLOBAL_TAG}")[0]
+
+        proxies = {
+            "http": clean_config,
+            "https": clean_config,
+        }
+
+        response = requests.get(TEST_URL, proxies=proxies, timeout=REACHABILITY_TIMEOUT)
+        return response.status_code == 204
+    except Exception:
+        return False
+
 def collect_configs() -> Set[str]:
     all_configs_set = set()
     total_raw = 0
@@ -323,11 +348,29 @@ def collect_configs() -> Set[str]:
                     all_configs_set.add(renamed_cfg)
     
     duplicates = total_raw - len(all_configs_set)
-    if duplicates > 0:
-        logger.info(f"🗑️ Удалено дубликатов: {duplicates} (осталось уникальных: {len(all_configs_set)})")
+    logger.info(f"📊 Собрано уникальных конфигов: {len(all_configs_set)} (дубликатов: {duplicates})")
+
+    if ENABLE_REACHABILITY_CHECK and all_configs_set:
+        logger.info(f"🔍 Начинаю проверку доступности {len(all_configs_set)} конфигов через {TEST_URL}...")
+        reachable_set = set()
+        total_checked = 0
+        with ThreadPoolExecutor(max_workers=REACHABILITY_THREADS) as exec:
+            future_to_cfg = {exec.submit(check_config_reachability, cfg): cfg for cfg in all_configs_set}
+            for future in as_completed(future_to_cfg):
+                cfg = future_to_cfg[future]
+                total_checked += 1
+                try:
+                    if future.result():
+                        reachable_set.add(cfg)
+                except Exception:
+                    pass
+                if total_checked % 100 == 0:
+                    logger.info(f"   Проверено {total_checked}/{len(all_configs_set)}...")
+        removed = len(all_configs_set) - len(reachable_set)
+        logger.info(f"✅ Проверка завершена. Рабочих конфигов: {len(reachable_set)} (отброшено {removed})")
+        return reachable_set
     else:
-        logger.info(f"✅ Уникальных конфигов: {len(all_configs_set)} (дубликатов нет)")
-    return all_configs_set
+        return all_configs_set
 
 def get_protocol_from_config(config: str) -> str:
     for protocol in PROTOCOL_PATTERNS:
@@ -366,7 +409,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.10*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.11*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -431,7 +474,7 @@ def save_configs(all_configs_set: Set[str]):
     with open(lte_path, 'w', encoding='utf-8') as f:
         f.write(header_lte)
         f.write("\n".join(lte_list) + "\n")
-    logger.info(f"📱 LTE.txt: {len(lte_list)} (отфильтровано по whitelist/CIDR)")
+    logger.info(f"📱 LTE.txt: {len(lte_list)} (отфильтровано по whitelist/CIDR, отсортировано)")
 
     wifi_path = os.path.join(CONFIG_DIR, "WiFi.txt")
     with open(wifi_path, 'w', encoding='utf-8') as f:
@@ -462,13 +505,17 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v1.10")
+    print("🚀 LinSpisokObhod v1.11 (удалены зеркала nikita29a)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
     print(f"📄 Whitelist: {WHITELIST_FILE}")
     print(f"🗂️ CIDR whitelist: {CIDR_WHITELIST_FILE}")
     print(f"📁 Результаты в папке: {CONFIG_DIR}")
+    if ENABLE_REACHABILITY_CHECK:
+        print(f"🔍 Проверка доступности: ВКЛ (таймаут {REACHABILITY_TIMEOUT}с, URL {TEST_URL})")
+    else:
+        print("🔍 Проверка доступности: ВЫКЛ")
     print("=" * 60)
 
     all_configs = collect_configs()
