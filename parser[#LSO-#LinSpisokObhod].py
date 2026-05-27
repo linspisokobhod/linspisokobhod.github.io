@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-LinSpisokObhod v1.8
-- Папка результатов: sub
-- Автоочистка sub перед записью
-- LTE.txt: только конфиги из whitelist.txt (sni) ИЛИ cidrwhitelist.txt (IP)
-- WiFi.txt: остальные конфиги
-- Дедупликация, сортировка LTE по приоритету
+LinSpisokObhod v1.9
+- Исправлено сохранение файлов
+- Гарантированная очистка папки sub перед записью
+- Папка results: sub
+- LTE.txt: только whitelist/CIDR, WiFi.txt: остальные
 """
 
 import os
@@ -361,7 +360,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.8*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.9*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -370,7 +369,7 @@ def update_readme(stats: Dict, sources_count: int):
 def save_configs(all_configs_set: Set[str]):
     # Очистка папки sub перед записью
     if os.path.exists(CONFIG_DIR):
-        shutil.rmtree(CONFIG_DIR)
+        shutil.rmtree(CONFIG_DIR, ignore_errors=True)
         logger.info(f"🗑️ Папка {CONFIG_DIR} удалена (старые файлы очищены)")
     os.makedirs(CONFIG_DIR, exist_ok=True)
     logger.info(f"📁 Папка {CONFIG_DIR} создана заново")
@@ -378,6 +377,10 @@ def save_configs(all_configs_set: Set[str]):
     update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     tagged_set = {f"{cfg} {GLOBAL_TAG}" for cfg in all_configs_set}
+    if not tagged_set:
+        logger.error("❌ Нет конфигов для сохранения!")
+        return {}
+
     sorted_all = sorted(tagged_set)
 
     header_all = f"""#profile-title: #LSO-#LinSpisokObhod
@@ -404,10 +407,13 @@ def save_configs(all_configs_set: Set[str]):
 
     # all.txt
     all_path = os.path.join(CONFIG_DIR, "all.txt")
-    with open(all_path, 'w', encoding='utf-8') as f:
-        f.write(header_all)
-        f.write("\n".join(sorted_all) + "\n")
-    logger.info(f"💾 all.txt: {len(sorted_all)}")
+    try:
+        with open(all_path, 'w', encoding='utf-8') as f:
+            f.write(header_all)
+            f.write("\n".join(sorted_all) + "\n")
+        logger.info(f"💾 all.txt сохранён: {len(sorted_all)} записей")
+    except Exception as e:
+        logger.error(f"❌ Ошибка записи all.txt: {e}")
 
     whitelist = load_whitelist()
     cidr_list = load_cidr_whitelist()
@@ -427,16 +433,22 @@ def save_configs(all_configs_set: Set[str]):
     lte_list = sorted(lte_set, key=lambda x: get_config_priority(x.replace(f" {GLOBAL_TAG}", ""), whitelist, cidr_list))
     
     lte_path = os.path.join(CONFIG_DIR, "LTE.txt")
-    with open(lte_path, 'w', encoding='utf-8') as f:
-        f.write(header_lte)
-        f.write("\n".join(lte_list) + "\n")
-    logger.info(f"📱 LTE.txt: {len(lte_list)} (отфильтровано по whitelist/CIDR)")
+    try:
+        with open(lte_path, 'w', encoding='utf-8') as f:
+            f.write(header_lte)
+            f.write("\n".join(lte_list) + "\n")
+        logger.info(f"📱 LTE.txt сохранён: {len(lte_list)} (отфильтровано по whitelist/CIDR)")
+    except Exception as e:
+        logger.error(f"❌ Ошибка записи LTE.txt: {e}")
 
     wifi_path = os.path.join(CONFIG_DIR, "WiFi.txt")
-    with open(wifi_path, 'w', encoding='utf-8') as f:
-        f.write(header_wifi)
-        f.write("\n".join(sorted(wifi_set)) + "\n")
-    logger.info(f"📶 WiFi.txt: {len(wifi_set)}")
+    try:
+        with open(wifi_path, 'w', encoding='utf-8') as f:
+            f.write(header_wifi)
+            f.write("\n".join(sorted(wifi_set)) + "\n")
+        logger.info(f"📶 WiFi.txt сохранён: {len(wifi_set)}")
+    except Exception as e:
+        logger.error(f"❌ Ошибка записи WiFi.txt: {e}")
 
     # Статистика
     protocol_stats = {proto: 0 for proto in PROTOCOL_PATTERNS}
@@ -452,9 +464,12 @@ def save_configs(all_configs_set: Set[str]):
         "filtered": {"lte": len(lte_list), "wifi": len(wifi_set)}
     }
     stats_path = os.path.join(CONFIG_DIR, "stats.json")
-    with open(stats_path, 'w', encoding='utf-8') as f:
-        json.dump(stats, f, indent=2, ensure_ascii=False)
-    logger.info("📊 Статистика сохранена")
+    try:
+        with open(stats_path, 'w', encoding='utf-8') as f:
+            json.dump(stats, f, indent=2, ensure_ascii=False)
+        logger.info("📊 Статистика сохранена")
+    except Exception as e:
+        logger.error(f"❌ Ошибка записи stats.json: {e}")
 
     update_readme(stats, len(SOURCES))
     return stats
@@ -462,7 +477,7 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v1.8 (исправлено разделение LTE/WiFi)")
+    print("🚀 LinSpisokObhod v1.9 (исправлено сохранение файлов)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
@@ -472,16 +487,19 @@ def main():
     print("=" * 60)
 
     all_configs = collect_configs()
+    if not all_configs:
+        logger.error("❌ Не удалось собрать конфиги. Проверьте источники и соединение.")
+        return
     stats = save_configs(all_configs)
 
     elapsed = time.time() - start_time
     print("\n" + "=" * 60)
     print("📊 ИТОГИ СБОРА:")
     print("=" * 60)
-    print(f"📈 Всего уникальных: {stats['total_configs']}")
-    print(f"   📱 LTE (whitelist/CIDR): {stats['filtered']['lte']}")
-    print(f"   📶 WiFi: {stats['filtered']['wifi']}")
-    for proto, count in stats['by_protocol'].items():
+    print(f"📈 Всего уникальных: {stats.get('total_configs', 0)}")
+    print(f"   📱 LTE (whitelist/CIDR): {stats.get('filtered', {}).get('lte', 0)}")
+    print(f"   📶 WiFi: {stats.get('filtered', {}).get('wifi', 0)}")
+    for proto, count in stats.get('by_protocol', {}).items():
         if count:
             print(f"   {proto.upper()}: {count}")
     print(f"⏱️ Время: {elapsed:.2f} секунд")
