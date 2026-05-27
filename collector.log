@@ -175,3 +175,77 @@
 2026-05-27 15:21:34,470 - INFO - 📶 WiFi.txt: 60615
 2026-05-27 15:21:34,502 - INFO - 📊 Статистика сохранена
 2026-05-27 15:21:34,502 - INFO - 📄 README.md обновлён
+2026-05-27 15:41:54,373 - INFO - 🚀 Сбор из 21 источников...
+2026-05-27 15:41:54,497 - INFO - ✅ Загружен https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1 (388856 символов)
+2026-05-27 15:41:54,525 - INFO - 📥 +1707 VLESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-27 15:41:54,538 - INFO - ✅ Загружен https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt (15265 символов)
+2026-05-27 15:41:54,555 - INFO - ✅ Загружен https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt (14327 символов)
+2026-05-27 15:41:54,577 - INFO - 📥 +19 VMESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-27 15:41:54,578 - INFO - 📥 +94 TROJAN из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-27 15:41:54,579 - INFO - 📥 +3 HYSTERIA2 из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-27 15:41:54,580 - INFO - 📥 +49 VLESS из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-05-27 15:41:54,583 - INFO - 📥 +53 VLESS из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-27 15:41:54,584 - INFO - 📥 +4 TROJAN из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-27 15:41:54,587 - INFO - ✅ Загружен https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt (102342 символов)
+2026-05-27 15:41:54,599 - INFO - 📥 +84 VLESS из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-27 15:41:54,606 - INFO - 📥 +60 TROJAN из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-27 15:41:54,608 - INFO - 📥 +84 HYSTERIA2 из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-27 15:41:54,625 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt (1287242 символов)
+2026-05-27 15:41:54,626 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt (1287242 символов)
+2026-05-27 15:41:54,706 - INFO - 📥 +754 TROJAN из https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+2026-05-27 15:41:54,802 - INFO - 📥 +754 TROJAN из https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt
+2026-05-27 15:41:54,912 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/6.txt (33743 символов)
+2026-05-27 15:41:54,919 - INFO - 📥 +35 VLESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/6.txt
+2026-05-27 15:41:54,921 - INFO - 📥 +46 VMESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/6.txt
+2026-05-27 15:41:54,921 - INFO - 📥 +5 TROJAN из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/6.txt
+2026-05-27 15:41:54,926 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/4.txt (66733 символов)
+2026-05-27 15:41:54,947 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/5.txt (303057 символов)
+2026-05-27 15:41:54,972 - INFO - 📥 +934 VLESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/5.txt
+2026-05-27 15:41:55,006 - INFO - 📥 +67 VMESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/5.txt
+2026-05-27 15:41:55,009 - INFO - 📥 +51 TROJAN из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/5.txt
+2026-05-27 15:41:55,012 - INFO - 📥 +1 HYSTERIA2 из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/5.txt
+2026-05-27 15:41:55,014 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/8.txt (9123 символов)
+2026-05-27 15:41:55,021 - INFO - 📥 +3 VLESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/8.txt
+2026-05-27 15:41:55,023 - INFO - 📥 +9 VMESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/8.txt
+2026-05-27 15:41:55,023 - INFO - 📥 +10 TROJAN из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/8.txt
+2026-05-27 15:41:55,025 - INFO - 📥 +1 HYSTERIA2 из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/8.txt
+2026-05-27 15:41:55,032 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/1.txt (2308831 символов)
+2026-05-27 15:41:55,033 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/7.txt (116793 символов)
+2026-05-27 15:41:55,152 - INFO - 📥 +2649 VLESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/1.txt
+2026-05-27 15:41:55,269 - INFO - 📥 +657 VMESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/1.txt
+2026-05-27 15:41:55,272 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/9.txt (63359 символов)
+2026-05-27 15:41:55,280 - INFO - 📥 +5860 TROJAN из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/1.txt
+2026-05-27 15:41:55,471 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/11.txt (72360 символов)
+2026-05-27 15:41:55,504 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/3.txt (1614416 символов)
+2026-05-27 15:41:55,508 - INFO - 📥 +301 VLESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/9.txt
+2026-05-27 15:41:55,520 - INFO - 📥 +93 VLESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/11.txt
+2026-05-27 15:41:55,524 - INFO - 📥 +27 VMESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/11.txt
+2026-05-27 15:41:55,525 - INFO - 📥 +65 TROJAN из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/11.txt
+2026-05-27 15:41:55,615 - INFO - 📥 +4904 VLESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/3.txt
+2026-05-27 15:41:55,650 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/13.txt (15826 символов)
+2026-05-27 15:41:55,723 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/15.txt (6421 символов)
+2026-05-27 15:41:55,742 - INFO - 📥 +627 VMESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/3.txt
+2026-05-27 15:41:55,750 - INFO - 📥 +369 TROJAN из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/3.txt
+2026-05-27 15:41:55,759 - INFO - 📥 +43 HYSTERIA2 из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/3.txt
+2026-05-27 15:41:55,761 - INFO - 📥 +62 VLESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/13.txt
+2026-05-27 15:41:55,763 - INFO - 📥 +8 VMESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/13.txt
+2026-05-27 15:41:55,764 - INFO - 📥 +7 TROJAN из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/13.txt
+2026-05-27 15:41:55,769 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/14.txt (186303 символов)
+2026-05-27 15:41:55,786 - INFO - 📥 +603 VLESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/14.txt
+2026-05-27 15:41:55,805 - INFO - 📥 +21 VMESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/14.txt
+2026-05-27 15:41:55,806 - INFO - 📥 +81 TROJAN из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/14.txt
+2026-05-27 15:41:55,823 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/10.txt (1669037 символов)
+2026-05-27 15:41:55,940 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/12.txt (4776257 символов)
+2026-05-27 15:41:56,126 - INFO - ✅ Загружен https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/2.txt (16389363 символов)
+2026-05-27 15:41:56,898 - INFO - 📥 +70453 VLESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/2.txt
+2026-05-27 15:41:58,761 - INFO - 📥 +25 VMESS из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/2.txt
+2026-05-27 15:41:58,761 - INFO - 📥 +5 TROJAN из https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/2.txt
+2026-05-27 15:41:58,763 - INFO - 🗑️ Удалено дубликатов: 24839 (осталось уникальных: 66848)
+2026-05-27 15:41:58,772 - INFO - 📁 Папка sub создана заново
+2026-05-27 15:41:58,884 - INFO - 💾 all.txt сохранён: 66848 записей
+2026-05-27 15:41:58,884 - INFO - 📋 Загружено 908 доменов
+2026-05-27 15:41:59,068 - INFO - 📋 Загружено 30228 CIDR сетей
+2026-05-27 15:48:02,101 - INFO - 📱 LTE.txt сохранён: 6233 (отфильтровано по whitelist/CIDR)
+2026-05-27 15:48:02,176 - INFO - 📶 WiFi.txt сохранён: 60615
+2026-05-27 15:48:02,209 - INFO - 📊 Статистика сохранена
+2026-05-27 15:48:02,209 - INFO - 📄 README.md обновлён
