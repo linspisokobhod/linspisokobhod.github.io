@@ -1,0 +1,43 @@
+name: parser[#LSO-#LinSpisokObhod]
+on:
+  schedule:
+    # Запуск каждые 2 часа
+    - cron: '0 */2 * * *'
+  workflow_dispatch:             # ручной запуск
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20          # 20 минут на выполнение
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Cache Xray and Hysteria2 binaries
+      id: cache-binaries
+      uses: actions/cache@v4
+      with:
+        path: vendor
+        key: ${{ runner.os }}-xray-hy2-v2
+
+    - name: Install Python dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run collector script
+      env:
+        PYTHONHTTPSVERIFY: 0   # отключаем строгую проверку SSL для источников
+      run: python "parser[#LSO-#LinSpisokObhod].py"
+
+    - name: Commit and push results
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add sub/
+        git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update proxy configs [skip ci]"
+        git push
