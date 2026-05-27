@@ -59,8 +59,22 @@ def detect_protocol(line: str) -> Optional[str]:
         return "simple_trojan_or_hy2"
     return None
 
+def clean_port(port_str: str) -> int:
+    """
+    Очищает строку порта от нецифровых символов и приводит к диапазону 1-65535.
+    Если порт вне диапазона или не определён, возвращает 443.
+    """
+    cleaned = re.sub(r'\D', '', str(port_str))
+    if not cleaned:
+        return 443
+    port = int(cleaned)
+    if port < 1 or port > 65535:
+        return 443
+    return port
+
 def parse_config(raw: str, proto: str) -> Dict[str, Any]:
     base_cfg: Dict[str, Any] = {"raw": raw, "type": proto}
+    
     if proto == "vmess" and raw.startswith("vmess://"):
         try:
             b64_str = raw[8:]
@@ -70,7 +84,8 @@ def parse_config(raw: str, proto: str) -> Dict[str, Any]:
             decoded = base64.b64decode(b64_str).decode("utf-8")
             data = json.loads(decoded)
             base_cfg["host"] = data.get("add", "")
-            base_cfg["port"] = int(data.get("port", 0))
+            port_raw = str(data.get("port", "443"))
+            base_cfg["port"] = clean_port(port_raw)
             base_cfg["uuid"] = data.get("id", "")
             base_cfg["aid"] = data.get("aid", "0")
             base_cfg["security"] = data.get("scy", "auto")
@@ -87,10 +102,12 @@ def parse_config(raw: str, proto: str) -> Dict[str, Any]:
             base_cfg["uuid"] = parts[0]
             host_port_part = parts[1].split("?")[0].split("#")[0]
             if ":" in host_port_part:
-                base_cfg["host"], base_cfg["port"] = host_port_part.split(":")
-                base_cfg["port"] = int(base_cfg["port"])
+                host_raw, port_raw = host_port_part.split(":", 1)
+                base_cfg["host"] = host_raw
+                base_cfg["port"] = clean_port(port_raw)
             else:
-                base_cfg["host"], base_cfg["port"] = host_port_part, 443
+                base_cfg["host"] = host_port_part
+                base_cfg["port"] = 443
             query_part = raw.split("?")[1] if "?" in raw else ""
             if "encryption=" in query_part:
                 base_cfg["encryption"] = "none"
@@ -104,10 +121,12 @@ def parse_config(raw: str, proto: str) -> Dict[str, Any]:
             base_cfg["password"] = parts[0]
             host_port_part = parts[1].split("?")[0].split("#")[0]
             if ":" in host_port_part:
-                base_cfg["host"], base_cfg["port"] = host_port_part.split(":")
-                base_cfg["port"] = int(base_cfg["port"])
+                host_raw, port_raw = host_port_part.split(":", 1)
+                base_cfg["host"] = host_raw
+                base_cfg["port"] = clean_port(port_raw)
             else:
-                base_cfg["host"], base_cfg["port"] = host_port_part, 443
+                base_cfg["host"] = host_port_part
+                base_cfg["port"] = 443
             if "sni=" in raw:
                 base_cfg["sni"] = raw.split("sni=")[1].split("&")[0]
     elif proto == "hy2" and (raw.startswith("hysteria2://") or raw.startswith("hy2://")):
@@ -115,7 +134,8 @@ def parse_config(raw: str, proto: str) -> Dict[str, Any]:
         match = re.search(r'([^:/?#]+):?(\d*)', clean)
         if match:
             base_cfg["host"] = match.group(1)
-            base_cfg["port"] = int(match.group(2)) if match.group(2) else 443
+            port_raw = match.group(2) or "443"
+            base_cfg["port"] = clean_port(port_raw)
         auth_match = re.search(r'auth=([^&]+)', raw)
         if auth_match:
             base_cfg["auth"] = auth_match.group(1)
@@ -128,19 +148,28 @@ def parse_config(raw: str, proto: str) -> Dict[str, Any]:
             if len(main_part) == 2:
                 method_pass = main_part[0]
                 host_port_part = main_part[1].split("#")[0]
-                base_cfg["method"] = method_pass.split(":")[0] if ":" in method_pass else ""
-                base_cfg["password"] = method_pass.split(":")[1] if ":" in method_pass else ""
-                if ":" in host_port_part:
-                    base_cfg["host"], base_cfg["port"] = host_port_part.split(":")
-                    base_cfg["port"] = int(base_cfg["port"])
+                if ":" in method_pass:
+                    base_cfg["method"] = method_pass.split(":")[0]
+                    base_cfg["password"] = method_pass.split(":")[1]
                 else:
-                    base_cfg["host"], base_cfg["port"] = host_port_part, 443
+                    base_cfg["method"] = ""
+                    base_cfg["password"] = method_pass
+                if ":" in host_port_part:
+                    host_raw, port_raw = host_port_part.split(":", 1)
+                    base_cfg["host"] = host_raw
+                    base_cfg["port"] = clean_port(port_raw)
+                else:
+                    base_cfg["host"] = host_port_part
+                    base_cfg["port"] = 443
     elif "simple_trojan_or_hy2" in proto and '|' in raw:
         parts = raw.split('|')
         host_port = parts[0].split(':')
         base_cfg["type"] = "trojan"
         base_cfg["host"] = host_port[0]
-        base_cfg["port"] = int(host_port[1]) if len(host_port) > 1 else 443
+        if len(host_port) > 1:
+            base_cfg["port"] = clean_port(host_port[1])
+        else:
+            base_cfg["port"] = 443
         base_cfg["password"] = parts[1] if len(parts) > 1 else ""
     else:
         base_cfg["type"] = None
@@ -329,7 +358,7 @@ async def run_xray(config: Dict) -> Tuple[bool, float]:
         )
         await asyncio.sleep(1.5)
         async with aiohttp.ClientSession() as session:
-            proxy = f"http://127.0.0.1:44320"
+            proxy = "http://127.0.0.1:44320"
             try:
                 async with session.get(TEST_URL, proxy=proxy, timeout=TIMEOUT) as resp:
                     if resp.status in [200, 204]:
