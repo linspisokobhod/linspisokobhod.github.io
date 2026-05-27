@@ -1,66 +1,45 @@
 # 🚀 LinSpisokObhod
 
 ## 📅 Время последнего сбора
-`2026-05-27 06:13:02`
+`2026-05-27 14:02:33`
 
-## 📊 Статистика конфигов
+## 📊 Статистика
 
 | Файл | Количество |
 |------|------------|
-| 📁 **all.txt** | `1819` |
-| 📱 **LTE.txt** (sni в whitelist.txt) | `288` |
-| 📶 **WiFi.txt** (остальные) | `1531` |
+| 📁 **all.txt** | `59947` |
+| 📱 **LTE.txt** | `59947` |
+| 📶 **WiFi.txt** | `53773` |
 
-## 📡 Распределение по протоколам
+## 📡 Протоколы
 
 | Протокол | Количество |
 |----------|------------|
-| 🔗 **VLESS** | `1703` |
-| 📦 **VMess** | `19` |
-| 🛡️ **Trojan** | `94` |
-| ⚡ **Hysteria2** | `3` |
+| 🔗 VLESS | `53216` |
+| 📦 VMess | `702` |
+| 🛡️ Trojan | `5942` |
+| ⚡ Hysteria2 | `87` |
 
-## 📋 Источники (всего: 4)
+## 🗂️ Логика LTE.txt
 
-- RKPchannel
-- EtoNeYaProject
-- rtwo2/FastNodes (hysteria2.txt)
-- rtwo2/FastNodes (trojan.txt)
+1. **Приоритет 1**: sni домен из `whitelist.txt`
+2. **Приоритет 2**: IP сервера входит в CIDR из `cidrwhitelist.txt`
+3. **Приоритет 3**: остальные конфиги
 
-## 🏷️ Маркировка
+## 📋 Источники белых списков
 
-Все конфиги имеют единую метку: `[#LSO - #LinSpisokObhod]`
+Файлы `whitelist.txt` и `cidrwhitelist.txt` взяты из репозитория:
+🔗 [hxehex/russia-mobile-internet-whitelist](https://github.com/hxehex/russia-mobile-internet-whitelist)
 
-## 📝 Формат именования конфигов
+## 📁 Файлы
 
-```
-протокол://...#sni_значение | тип_подключения
-```
-
-Пример: `vless://...#example.com | WebSocket`
-
-## ⚙️ Логика фильтрации
-
-- **LTE.txt**: конфиг попадает сюда, если его **sni** (параметр в строке запроса) есть в `lists/whitelist.txt`
-- **WiFi.txt**: все остальные конфиги
-
-## 📁 Структура выходных файлов
-
-```
-├── configs/
-│   ├── all.txt
-│   ├── LTE.txt
-│   ├── WiFi.txt
-│   └── stats.json
-├── lists/
-│   └── whitelist.txt   # домены для фильтрации по sni
-└── README.md
-```
+- `configs/all.txt` – все конфиги
+- `configs/LTE.txt` – отсортированные по приоритету
+- `configs/WiFi.txt` – остальные
 
 ## 🔄 Автообновление
 
-Скрипт `parser[LSO-LinSpisokObhod].py` запускается каждые 30 минут через GitHub Actions.
-Последнее обновление: `2026-05-27 06:13:02`
+Скрипт запускается **каждый час**.
 
 ---
-*Сгенерировано автоматически VPN Config Collector v14.2*
+*LinSpisokObhod v1*
