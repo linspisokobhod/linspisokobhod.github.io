@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 """
-LinSpisokObhod v1.5
-- Протоколы: vless://, vmess://, trojan://, hysteria2://
-- Маркировка [#LSO - #LinSpisokObhod]
-- Форматирование: #домен_из_sni | тип (без пробела перед #)
-- LTE.txt: сортировка по приоритету (whitelist → CIDR → остальные)
-- WiFi.txt: конфиги, не попавшие в LTE.txt
-- Белые списки взяты из https://github.com/hxehex/russia-mobile-internet-whitelist
-- Автообновление каждый час через GitHub Actions
+LinSpisokObhod v1.8
+- Папка результатов: sub
+- Автоочистка sub перед записью
+- LTE.txt: только конфиги из whitelist.txt (sni) ИЛИ cidrwhitelist.txt (IP)
+- WiFi.txt: остальные конфиги
+- Дедупликация, сортировка LTE по приоритету
 """
 
 import os
@@ -17,6 +15,7 @@ import time
 import logging
 import requests
 import ipaddress
+import shutil
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import parse_qs
@@ -24,7 +23,6 @@ from typing import Dict, Set, Optional, List
 import base64
 
 # ========== НАСТРОЙКИ ==========
-# Основные источники
 BASE_SOURCES = [
     "https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1",
     "https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt",
@@ -34,10 +32,7 @@ BASE_SOURCES = [
     "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt",
 ]
 
-# Генерация зеркал nikita29a (1..15)
 mirror_urls = [f"https://github.com/nikita29a/FreeProxyList/raw/refs/heads/main/mirror/{i}.txt" for i in range(1, 16)]
-
-# Объединяем все источники
 SOURCES = BASE_SOURCES + mirror_urls
 
 GLOBAL_TAG = "[#LSO - #LinSpisokObhod]"
@@ -52,7 +47,7 @@ PROTOCOL_PATTERNS = {
 
 REQUEST_TIMEOUT = 30
 MAX_WORKERS = 10
-CONFIG_DIR = "configs"
+CONFIG_DIR = "sub"
 LISTS_DIR = "lists"
 LOG_FILE = "collector.log"
 WHITELIST_FILE = os.path.join(LISTS_DIR, "whitelist.txt")
@@ -299,6 +294,7 @@ def get_config_priority(config: str, whitelist: Set[str], cidr_list: List[ipaddr
 
 def collect_configs() -> Set[str]:
     all_configs_set = set()
+    total_raw = 0
     logger.info(f"🚀 Сбор из {len(SOURCES)} источников...")
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
@@ -318,8 +314,14 @@ def collect_configs() -> Set[str]:
                 logger.info(f"📥 +{len(valid_configs)} {protocol.upper()} из {url}")
                 for cfg in valid_configs:
                     renamed_cfg = rename_config(cfg)
+                    total_raw += 1
                     all_configs_set.add(renamed_cfg)
     
+    duplicates = total_raw - len(all_configs_set)
+    if duplicates > 0:
+        logger.info(f"🗑️ Удалено дубликатов: {duplicates} (осталось уникальных: {len(all_configs_set)})")
+    else:
+        logger.info(f"✅ Уникальных конфигов: {len(all_configs_set)} (дубликатов нет)")
     return all_configs_set
 
 def get_protocol_from_config(config: str) -> str:
@@ -350,23 +352,29 @@ def update_readme(stats: Dict, sources_count: int):
         "## 🗂️ Логика LTE.txt\n\n"
         "1. **Приоритет 1**: sni домен из `whitelist.txt`\n"
         "2. **Приоритет 2**: IP сервера входит в CIDR из `cidrwhitelist.txt`\n"
-        "3. **Приоритет 3**: остальные конфиги\n\n"
+        "3. **WiFi.txt**: все остальные конфиги\n\n"
         "## 📋 Источники белых списков\n\n"
         "Файлы `whitelist.txt` и `cidrwhitelist.txt` взяты из репозитория:\n"
         "🔗 [hxehex/russia-mobile-internet-whitelist](https://github.com/hxehex/russia-mobile-internet-whitelist)\n\n"
         "## 📁 Файлы\n\n"
-        "- `configs/all.txt` – все конфиги\n"
-        "- `configs/LTE.txt` – отсортированные по приоритету\n"
-        "- `configs/WiFi.txt` – остальные\n\n"
+        "- `sub/all.txt` – все конфиги\n"
+        "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
+        "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.5*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.8*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
     logger.info("📄 README.md обновлён")
 
 def save_configs(all_configs_set: Set[str]):
+    # Очистка папки sub перед записью
+    if os.path.exists(CONFIG_DIR):
+        shutil.rmtree(CONFIG_DIR)
+        logger.info(f"🗑️ Папка {CONFIG_DIR} удалена (старые файлы очищены)")
     os.makedirs(CONFIG_DIR, exist_ok=True)
+    logger.info(f"📁 Папка {CONFIG_DIR} создана заново")
+
     update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     tagged_set = {f"{cfg} {GLOBAL_TAG}" for cfg in all_configs_set}
@@ -404,28 +412,33 @@ def save_configs(all_configs_set: Set[str]):
     whitelist = load_whitelist()
     cidr_list = load_cidr_whitelist()
 
-    lte_list = list(tagged_set)
-    lte_list.sort(key=lambda x: get_config_priority(x.replace(f" {GLOBAL_TAG}", ""), whitelist, cidr_list))
-    
-    wifi_list = []
-    for cfg in tagged_set:
-        clean = cfg.replace(f" {GLOBAL_TAG}", "")
+    # Разделяем конфиги: LTE (приоритет 0 или 1) и WiFi (приоритет 2)
+    lte_set = set()
+    wifi_set = set()
+    for line in tagged_set:
+        clean = line.replace(f" {GLOBAL_TAG}", "")
         prio = get_config_priority(clean, whitelist, cidr_list)
-        if prio == 2:
-            wifi_list.append(cfg)
+        if prio in (0, 1):
+            lte_set.add(line)
+        else:
+            wifi_set.add(line)
+
+    # Сортируем LTE: сначала приоритет 0, потом приоритет 1
+    lte_list = sorted(lte_set, key=lambda x: get_config_priority(x.replace(f" {GLOBAL_TAG}", ""), whitelist, cidr_list))
     
     lte_path = os.path.join(CONFIG_DIR, "LTE.txt")
     with open(lte_path, 'w', encoding='utf-8') as f:
         f.write(header_lte)
         f.write("\n".join(lte_list) + "\n")
-    logger.info(f"📱 LTE.txt: {len(lte_list)} (отсортирован)")
+    logger.info(f"📱 LTE.txt: {len(lte_list)} (отфильтровано по whitelist/CIDR)")
 
     wifi_path = os.path.join(CONFIG_DIR, "WiFi.txt")
     with open(wifi_path, 'w', encoding='utf-8') as f:
         f.write(header_wifi)
-        f.write("\n".join(sorted(wifi_list)) + "\n")
-    logger.info(f"📶 WiFi.txt: {len(wifi_list)}")
+        f.write("\n".join(sorted(wifi_set)) + "\n")
+    logger.info(f"📶 WiFi.txt: {len(wifi_set)}")
 
+    # Статистика
     protocol_stats = {proto: 0 for proto in PROTOCOL_PATTERNS}
     for cfg in all_configs_set:
         proto = get_protocol_from_config(cfg)
@@ -436,7 +449,7 @@ def save_configs(all_configs_set: Set[str]):
         "timestamp": datetime.now().isoformat(),
         "total_configs": len(tagged_set),
         "by_protocol": protocol_stats,
-        "filtered": {"lte": len(lte_list), "wifi": len(wifi_list)}
+        "filtered": {"lte": len(lte_list), "wifi": len(wifi_set)}
     }
     stats_path = os.path.join(CONFIG_DIR, "stats.json")
     with open(stats_path, 'w', encoding='utf-8') as f:
@@ -449,12 +462,13 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v1.5 (полная версия)")
+    print("🚀 LinSpisokObhod v1.8 (исправлено разделение LTE/WiFi)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
     print(f"📄 Whitelist: {WHITELIST_FILE}")
     print(f"🗂️ CIDR whitelist: {CIDR_WHITELIST_FILE}")
+    print(f"📁 Результаты в папке: {CONFIG_DIR}")
     print("=" * 60)
 
     all_configs = collect_configs()
@@ -465,7 +479,7 @@ def main():
     print("📊 ИТОГИ СБОРА:")
     print("=" * 60)
     print(f"📈 Всего уникальных: {stats['total_configs']}")
-    print(f"   📱 LTE: {stats['filtered']['lte']}")
+    print(f"   📱 LTE (whitelist/CIDR): {stats['filtered']['lte']}")
     print(f"   📶 WiFi: {stats['filtered']['wifi']}")
     for proto, count in stats['by_protocol'].items():
         if count:
