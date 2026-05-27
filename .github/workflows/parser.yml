@@ -1,4 +1,4 @@
-name: LinSpisokObhod
+name: LinSpisokObhod парсер
 
 on:
   schedule:
@@ -24,7 +24,7 @@ jobs:
       run: pip install -r requirements.txt
         
     - name: Run LinSpisokObhod
-      run: python LinSpisokObhod.py
+      run: python parsel[#LSO-#LinSpisokObhod].py
         
     - name: Commit and push if changed
       run: |
