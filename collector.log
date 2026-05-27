@@ -1206,3 +1206,40 @@
 2026-05-27 17:35:47,810 - INFO - 📶 WiFi.txt: 7498
 2026-05-27 17:35:47,815 - INFO - 📊 Статистика сохранена
 2026-05-27 17:35:47,815 - INFO - 📄 README.md обновлён
+2026-05-27 20:25:33,604 - INFO - 🚀 Сбор из 8 источников...
+2026-05-27 20:25:33,683 - INFO - ✅ Загружен https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt (3882 символов)
+2026-05-27 20:25:33,690 - INFO - 📥 +13 VLESS из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-05-27 20:25:33,709 - INFO - ✅ Загружен https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1 (388856 символов)
+2026-05-27 20:25:33,764 - INFO - 📥 +1692 VLESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-27 20:25:33,801 - INFO - 📥 +19 VMESS из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-27 20:25:33,803 - INFO - 📥 +72 TROJAN из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-27 20:25:33,804 - INFO - 📥 +3 HYSTERIA2 из https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1
+2026-05-27 20:25:33,804 - INFO - ✅ Загружен https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt (27757 символов)
+2026-05-27 20:25:33,809 - INFO - 📥 +91 VLESS из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-27 20:25:33,812 - INFO - 📥 +2 VMESS из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-27 20:25:33,812 - INFO - 📥 +5 TROJAN из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-27 20:25:33,830 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt (1283451 символов)
+2026-05-27 20:25:33,892 - INFO - ✅ Загружен https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw (83885 символов)
+2026-05-27 20:25:33,922 - INFO - 📥 +649 TROJAN из https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt
+2026-05-27 20:25:33,940 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt (1283451 символов)
+2026-05-27 20:25:33,947 - INFO - 📥 +267 VLESS из https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw
+2026-05-27 20:25:34,011 - INFO - ✅ Загружен https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt (102342 символов)
+2026-05-27 20:25:34,040 - INFO - 📥 +649 TROJAN из https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+2026-05-27 20:25:34,055 - INFO - 📥 +80 VLESS из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-27 20:25:34,060 - INFO - 📥 +55 TROJAN из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-27 20:25:34,063 - INFO - 📥 +80 HYSTERIA2 из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-27 20:25:34,077 - INFO - ✅ Загружен https://rostunnel.vercel.app/mega.txt (2570960 символов)
+2026-05-27 20:25:34,358 - INFO - 📥 +4473 VLESS из https://rostunnel.vercel.app/mega.txt
+2026-05-27 20:25:34,489 - INFO - 📥 +116 VMESS из https://rostunnel.vercel.app/mega.txt
+2026-05-27 20:25:34,552 - INFO - 📥 +1810 TROJAN из https://rostunnel.vercel.app/mega.txt
+2026-05-27 20:25:34,607 - INFO - 📥 +25 HYSTERIA2 из https://rostunnel.vercel.app/mega.txt
+2026-05-27 20:25:34,608 - INFO - 📊 Собрано уникальных конфигов: 9159 (дубликатов: 942)
+2026-05-27 20:25:34,611 - INFO - 🗑️ Папка sub удалена (старые файлы очищены)
+2026-05-27 20:25:34,611 - INFO - 📁 Папка sub создана заново
+2026-05-27 20:25:34,621 - INFO - 💾 all.txt: 9159
+2026-05-27 20:25:34,622 - INFO - 📋 Загружено 908 доменов
+2026-05-27 20:25:34,783 - INFO - 📋 Загружено 30228 CIDR сетей
+2026-05-27 20:26:32,412 - INFO - 📱 LTE.txt: 1638 (отфильтровано по whitelist/CIDR, отсортировано)
+2026-05-27 20:26:32,415 - INFO - 📶 WiFi.txt: 7521
+2026-05-27 20:26:32,420 - INFO - 📊 Статистика сохранена
+2026-05-27 20:26:32,420 - INFO - 📄 README.md обновлён
