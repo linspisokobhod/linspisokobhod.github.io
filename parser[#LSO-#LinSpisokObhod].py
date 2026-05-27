@@ -29,9 +29,9 @@ SOURCES: List[str] = [
     "https://raw.githubusercontent.com/nikita29a/FreeProxyList/refs/heads/main/mirror/1.txt",
     "https://raw.githubusercontent.com/nikita29a/FreeProxyList/refs/heads/main/mirror/2.txt",
     "https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt",
-    "https://gitverse.ru/RoGo/mobile-whitelist/content/master/mobile-whitelist-1.txt",
+    "https://gitverse.ru/api/repos/RoGo/mobile-whitelist/raw/branch/master/mobile-whitelist-1.txt",
     "https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt",
-    "https://tinyurl.com/SemqkaVLESS",
+    "https://gist.githubusercontent.com/sevushreal-sudo/e9bdf5deaabfe141b289baea9d1356c5/raw/9dc2eaa231de05e3276148afd1868405947e97dc/gistfile1.txt",
 ]
 
 OUTPUT_DIR: str = "sub"
