@@ -1,7 +1,7 @@
 #profile-title: #LSO-#LinSpisokObhod
 #profile-update-interval: 1
 #support-url: https://t.me/LinSpisokObhod
-#announce: LinSpisokObhod подписка LTE.txt. Здесь находится конфиги которые может подойдут для повседневного использования. Время: 2026-05-27 17:25:33
+#announce: LinSpisokObhod подписка LTE.txt. Здесь находится конфиги которые может подойдут для повседневного использования. Время: 2026-05-27 17:31:19
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
 
