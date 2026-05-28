@@ -2,7 +2,7 @@ name: LinSpisokObhod
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 * * * *'   # каждый час
   workflow_dispatch:
 
 jobs:
@@ -17,13 +17,15 @@ jobs:
       with:
         python-version: '3.10'
     - name: Install dependencies
-      run: pip install -r requirements.txt
+      run: pip install aiohttp
     - name: Run LinSpisokObhod
       run: python parser[#LSO-#LinSpisokObhod].py
+      env:
+        IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
     - name: Commit and push if changed
       run: |
         git config --local user.email "action@github.com"
-        git config --local user.name "LinSpisokObhod parser"
+        git config --local user.name "GitHub Action"
         git add sub/ lists/ collector.log README.md
         git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update ($(date +'%Y-%m-%d %H:%M:%S'))"
         git push
