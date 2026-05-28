@@ -5,17 +5,17 @@ import re
 import json
 import time
 import logging
-import requests
 import ipaddress
 import shutil
+import asyncio
+import aiohttp
 from datetime import datetime
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.parse import parse_qs
 from typing import Dict, Set, Optional, List
 import base64
 
 # ========== НАСТРОЙКИ ==========
-ENABLE_GEOIP = True          # Определение страны по IP (ip-api.com)
+ENABLE_GEOIP = True          # Геолокация включена
 GEOIP_CACHE = {}
 
 SOURCES = [
@@ -41,8 +41,8 @@ PROTOCOL_PATTERNS = {
     'hysteria2': re.compile(r'hysteria2://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
 }
 
-REQUEST_TIMEOUT = 30
-MAX_WORKERS = 100
+REQUEST_TIMEOUT = 15
+MAX_WORKERS = 20
 CONFIG_DIR = "sub"
 LISTS_DIR = "lists"
 LOG_FILE = "collector.log"
@@ -60,25 +60,28 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
-def fetch_url_content(url: str) -> Optional[str]:
+# ---------- АСИНХРОННАЯ ЗАГРУЗКА ----------
+async def fetch_url_content(session: aiohttp.ClientSession, url: str) -> Optional[str]:
     try:
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-        response = requests.get(url, timeout=REQUEST_TIMEOUT, headers=headers)
-        response.raise_for_status()
-        if 'charset' in response.headers.get('content-type', '').lower():
-            content = response.text
-        else:
-            try:
-                content = response.content.decode('utf-8')
-            except UnicodeDecodeError:
-                content = response.content.decode('utf-8', errors='ignore')
-        logger.info(f"✅ Загружен {url} ({len(content)} символов)")
-        return content
+        async with session.get(url, timeout=REQUEST_TIMEOUT, headers=headers) as response:
+            if response.status == 200:
+                content = await response.text()
+                logger.info(f"✅ Загружен {url} ({len(content)} символов)")
+                return content
+            else:
+                logger.warning(f"⚠️ Ошибка {response.status} при загрузке {url}")
     except Exception as e:
         logger.warning(f"⚠️ Ошибка загрузки {url}: {e}")
-        return None
+    return None
 
+async def fetch_all_sources():
+    async with aiohttp.ClientSession() as session:
+        tasks = [fetch_url_content(session, url) for url in SOURCES]
+        results = await asyncio.gather(*tasks)
+    return dict(zip(SOURCES, results))
+
+# ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
 def extract_configs_from_text(text: str, source_url: str) -> Dict[str, Set[str]]:
     configs = {proto: set() for proto in PROTOCOL_PATTERNS}
     for protocol, pattern in PROTOCOL_PATTERNS.items():
@@ -190,9 +193,12 @@ def extract_ip_from_config(config: str) -> Optional[str]:
     return None
 
 def get_country_by_ip(ip: str) -> str:
+    if not ENABLE_GEOIP:
+        return ''
     if ip in GEOIP_CACHE:
         return GEOIP_CACHE[ip]
     try:
+        import requests
         resp = requests.get(f"http://ip-api.com/json/{ip}?fields=countryCode", timeout=3)
         if resp.status_code == 200:
             data = resp.json()
@@ -238,7 +244,6 @@ def rename_config(config: str) -> str:
     if not protocol:
         return config
     
-    # Удаляем старый комментарий
     if '#' in config:
         config = config.rsplit('#', 1)[0].rstrip()
     
@@ -246,14 +251,11 @@ def rename_config(config: str) -> str:
     ip = extract_ip_from_config(config)
     conn_type = extract_type_from_config(config)
     
-    # Определяем страну (только если есть IP и включена геолокация)
-    country = None
-    if ip and ENABLE_GEOIP:
-        country = get_country_by_ip(ip)
-    
     parts = []
-    if country and country != 'XX':
-        parts.append(country)
+    if ENABLE_GEOIP and ip:
+        country = get_country_by_ip(ip)
+        if country and country != 'XX':
+            parts.append(country)
     if sni:
         parts.append(sni)
     elif ip:
@@ -327,31 +329,22 @@ def get_config_priority(config: str, whitelist: Set[str], cidr_list: List[ipaddr
         return 1
     return 2
 
-def collect_configs() -> Set[str]:
+def collect_configs_sync(contents: Dict[str, Optional[str]]) -> Set[str]:
     all_configs_set = set()
     total_raw = 0
-    logger.info(f"🚀 Сбор из {len(SOURCES)} источников...")
-
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        future_to_url = {executor.submit(fetch_url_content, url): url for url in SOURCES}
-        for future in as_completed(future_to_url):
-            url = future_to_url[future]
-            content = future.result()
-            if not content:
+    for url, content in contents.items():
+        if not content:
+            continue
+        configs_by_proto = extract_configs_from_text(content, url)
+        for protocol, config_set in configs_by_proto.items():
+            valid_configs = {cfg for cfg in config_set if validate_config(cfg, protocol)}
+            if not valid_configs:
                 continue
-
-            configs_by_proto = extract_configs_from_text(content, url)
-
-            for protocol, config_set in configs_by_proto.items():
-                valid_configs = {cfg for cfg in config_set if validate_config(cfg, protocol)}
-                if not valid_configs:
-                    continue
-                logger.info(f"📥 +{len(valid_configs)} {protocol.upper()} из {url}")
-                for cfg in valid_configs:
-                    renamed_cfg = rename_config(cfg)
-                    total_raw += 1
-                    all_configs_set.add(renamed_cfg)
-    
+            logger.info(f"📥 +{len(valid_configs)} {protocol.upper()} из {url}")
+            for cfg in valid_configs:
+                renamed_cfg = rename_config(cfg)
+                total_raw += 1
+                all_configs_set.add(renamed_cfg)
     duplicates = total_raw - len(all_configs_set)
     logger.info(f"📊 Собрано уникальных конфигов: {len(all_configs_set)} (дубликатов: {duplicates})")
     return all_configs_set
@@ -393,7 +386,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v2.2*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v2.4*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -486,10 +479,10 @@ def save_configs(all_configs_set: Set[str]):
     update_readme(stats, len(SOURCES))
     return stats
 
-def main():
+async def main_async():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v2.2 (геолокация включена, комментарий: страна | sni/ip | тип)")
+    print("🚀 LinSpisokObhod v2.4 (асинхронный сбор, геолокация включена)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
@@ -499,7 +492,8 @@ def main():
     print("🌍 Геолокация: ВКЛЮЧЕНА (ip-api.com)")
     print("=" * 60)
 
-    all_configs = collect_configs()
+    contents = await fetch_all_sources()
+    all_configs = collect_configs_sync(contents)
     stats = save_configs(all_configs)
 
     elapsed = time.time() - start_time
@@ -514,6 +508,9 @@ def main():
             print(f"   {proto.upper()}: {count}")
     print(f"⏱️ Время: {elapsed:.2f} секунд")
     print("=" * 60)
+
+def main():
+    asyncio.run(main_async())
 
 if __name__ == "__main__":
     try:
