@@ -125,7 +125,6 @@ def validate_config(config: str, protocol: str) -> bool:
             return False
         return '@' in config
     elif protocol == 'ss':
-        # Shadowsocks: должен быть формат ss://method:password@host:port
         return '@' in config
     return True
 
@@ -154,7 +153,6 @@ def extract_sni_domain(config: str) -> Optional[str]:
             return decoded['add']
         return None
     
-    # Для Shadowsocks sni нет
     return None
 
 def extract_ip_from_config(config: str) -> Optional[str]:
@@ -176,7 +174,7 @@ def extract_ip_from_config(config: str) -> Optional[str]:
                 ipaddress.ip_address(host)
                 return host
             except ValueError:
-                return host  # может быть доменом, но для CIDR это не сработает
+                return host
         return None
     
     if protocol == 'vmess':
@@ -228,7 +226,16 @@ def rename_config(config: str) -> str:
     if not protocol:
         return config
     
-    # Удаляем старый комментарий (всё после последнего символа '#')
+    # Для Shadowsocks удаляем старый комментарий и добавляем #unknown | SHADOWSOCKS
+    if protocol == 'ss':
+        # Удаляем старый комментарий (всё после последнего '#')
+        if '#' in config:
+            config = config.rsplit('#', 1)[0].rstrip()
+        # Добавляем новый комментарий
+        new_comment = "#unknown | SHADOWSOCKS"
+        return config + new_comment
+    
+    # Для остальных протоколов
     if '#' in config:
         config = config.rsplit('#', 1)[0].rstrip()
     
@@ -372,7 +379,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.15*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.19*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -387,6 +394,7 @@ def save_configs(all_configs_set: Set[str]):
 
     update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+    # Добавляем маркер для всех конфигов (в конец)
     tagged_set = {f"{cfg} {GLOBAL_TAG}" for cfg in all_configs_set}
     sorted_all = sorted(tagged_set)
 
@@ -424,6 +432,7 @@ def save_configs(all_configs_set: Set[str]):
     lte_set = set()
     wifi_set = set()
     for line in tagged_set:
+        # Убираем маркер для классификации
         clean = line.replace(f" {GLOBAL_TAG}", "")
         prio = get_config_priority(clean, whitelist, cidr_list)
         if prio in (0, 1):
@@ -468,7 +477,7 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v1.15 (исправлен rename_config: удаление по последнему #)")
+    print("🚀 LinSpisokObhod v1.19 (shadowsocks: удаление старого комментария, добавление #unknown | SHADOWSOCKS, затем маркер)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
