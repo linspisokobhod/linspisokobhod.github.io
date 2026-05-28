@@ -15,13 +15,15 @@ from typing import Dict, Set, Optional, List
 import base64
 
 # ========== НАСТРОЙКИ ==========
-ENABLE_GEOIP = True          # Геолокация по IP (только для конфигов с IP)
-GEOIP_BATCH_SIZE = 100
+ENABLE_GEOIP = True
+GEOIP_PARALLEL = 10          # количество одновременных запросов к API
+GEOIP_DELAY = 0.1            # задержка между запросами (сек)
 IPINFO_TOKEN = os.environ.get("IPINFO_TOKEN")
 if ENABLE_GEOIP and not IPINFO_TOKEN:
     raise ValueError("IPINFO_TOKEN not set. Please add it to GitHub Secrets.")
 
 GEOIP_CACHE = {}
+GEOIP_SEMAPHORE = asyncio.Semaphore(GEOIP_PARALLEL)
 
 SOURCES = [
     "https://alley.serv00.net/1",
@@ -86,7 +88,7 @@ async def fetch_all_sources():
         results = await asyncio.gather(*tasks)
     return dict(zip(SOURCES, results))
 
-# ---------- ИЗВЛЕЧЕНИЕ IP ИЗ КОНФИГА ----------
+# ---------- ИЗВЛЕЧЕНИЕ IP ----------
 def extract_ip_from_config(config: str) -> Optional[str]:
     protocol = None
     for p in PROTOCOL_PATTERNS:
@@ -95,7 +97,6 @@ def extract_ip_from_config(config: str) -> Optional[str]:
             break
     if not protocol:
         return None
-
     body = config[len(protocol)+3:]
     if '@' in body:
         host_part = body.split('@')[1]
@@ -104,41 +105,39 @@ def extract_ip_from_config(config: str) -> Optional[str]:
             ipaddress.ip_address(host)
             return host
         except ValueError:
-            return None   # домен, а не IP
+            return None
     return None
 
-# ---------- АСИНХРОННАЯ ПАКЕТНАЯ ГЕОЛОКАЦИЯ (IPinfo) ----------
-async def resolve_countries_batch(ips: List[str], session: aiohttp.ClientSession):
+# ---------- ОДИНОЧНАЯ АСИНХРОННАЯ ГЕОЛОКАЦИЯ ----------
+async def resolve_country(ip: str, session: aiohttp.ClientSession) -> str:
+    async with GEOIP_SEMAPHORE:
+        if ip in GEOIP_CACHE:
+            return GEOIP_CACHE[ip]
+        try:
+            url = f"https://api.ipinfo.io/{ip}/country?token={IPINFO_TOKEN}"
+            async with session.get(url, timeout=5) as resp:
+                if resp.status == 200:
+                    country = (await resp.text()).strip()
+                    if country:
+                        GEOIP_CACHE[ip] = country
+                        return country
+        except Exception as e:
+            logger.debug(f"Ошибка геолокации для {ip}: {e}")
+        GEOIP_CACHE[ip] = 'XX'
+        return 'XX'
+
+async def resolve_countries_parallel(ips: List[str]) -> Dict[str, str]:
     if not ips:
-        return
+        return {}
     unique_ips = [ip for ip in set(ips) if ip not in GEOIP_CACHE]
     if not unique_ips:
-        return
-    logger.info(f"🌍 Запрос геолокации для {len(unique_ips)} уникальных IP (пачками по {GEOIP_BATCH_SIZE})")
-    for i in range(0, len(unique_ips), GEOIP_BATCH_SIZE):
-        batch = unique_ips[i:i+GEOIP_BATCH_SIZE]
-        try:
-            url = f"https://api.ipinfo.io/batch?token={IPINFO_TOKEN}"
-            async with session.post(url, json=batch, timeout=10) as resp:
-                if resp.status == 200:
-                    data = await resp.json()
-                    for ip in batch:
-                        info = data.get(ip, {})
-                        country = info.get("countryCode", "XX")
-                        GEOIP_CACHE[ip] = country
-                        logger.debug(f"🌍 {ip} -> {country}")
-                else:
-                    logger.warning(f"⚠️ Batch геолокация ошибка HTTP {resp.status}, IP: {batch[:3]}...")
-                    for ip in batch:
-                        GEOIP_CACHE[ip] = 'XX'
-        except Exception as e:
-            logger.warning(f"⚠️ Batch геолокация исключение: {e}")
-            for ip in batch:
-                GEOIP_CACHE[ip] = 'XX'
-    logger.info("✅ Геолокация завершена")
-
-def get_country_from_cache(ip: str) -> str:
-    return GEOIP_CACHE.get(ip, '')
+        return GEOIP_CACHE.copy()
+    logger.info(f"🌍 Определяю страны для {len(unique_ips)} уникальных IP (одиночные запросы, параллельно {GEOIP_PARALLEL})")
+    async with aiohttp.ClientSession() as session:
+        tasks = [resolve_country(ip, session) for ip in unique_ips]
+        await asyncio.gather(*tasks)
+        await asyncio.sleep(GEOIP_DELAY)  # небольшая задержка после пачки
+    return GEOIP_CACHE.copy()
 
 # ---------- ОСТАЛЬНЫЕ ФУНКЦИИ ----------
 def extract_configs_from_text(text: str, source_url: str) -> Dict[str, Set[str]]:
@@ -198,9 +197,7 @@ def extract_sni_domain(config: str) -> Optional[str]:
             break
     if not protocol:
         return None
-
     body = config[len(protocol)+3:]
-    
     if protocol in ('vless', 'trojan', 'hysteria2'):
         if '?' in body:
             query_part = body.split('?', 1)[1]
@@ -208,13 +205,11 @@ def extract_sni_domain(config: str) -> Optional[str]:
             if 'sni' in params:
                 return params['sni'][0]
         return None
-    
     if protocol == 'vmess':
         decoded = decode_vmess_config(config)
         if decoded and 'add' in decoded:
             return decoded['add']
         return None
-    
     return None
 
 def extract_type_from_config(config: str) -> str:
@@ -225,9 +220,7 @@ def extract_type_from_config(config: str) -> str:
             break
     if not protocol:
         return "unknown"
-    
     body = config[len(protocol)+3:]
-    
     if '?' in body:
         query_part = body.split('?', 1)[1]
         params = parse_qs(query_part)
@@ -236,10 +229,8 @@ def extract_type_from_config(config: str) -> str:
             if t == 'ws':
                 return "WebSocket"
             return t.upper()
-    
     if protocol == 'hysteria2':
         return "HYSTERIA2"
-    
     return "unknown"
 
 def rename_config(config: str, country: str = '') -> str:
@@ -250,19 +241,16 @@ def rename_config(config: str, country: str = '') -> str:
             break
     if not protocol:
         return config
-    
     if '#' in config:
         config = config.rsplit('#', 1)[0].rstrip()
-    
     sni = extract_sni_domain(config)
     ip = extract_ip_from_config(config)
     conn_type = extract_type_from_config(config)
-    
     parts = []
-    # Добавляем страну только если она есть и не 'XX' (т.е. успешно определена)
-    if country and country != 'XX':
+    if ip and country and country != 'XX':
         parts.append(country)
-    # Далее добавляем sni или ip, если нет – unknown
+    else:
+        parts.append("unknown")
     if sni:
         parts.append(sni)
     elif ip:
@@ -270,7 +258,6 @@ def rename_config(config: str, country: str = '') -> str:
     else:
         parts.append("unknown")
     parts.append(conn_type)
-    
     comment = "#" + " | ".join(parts)
     return config + comment
 
@@ -353,21 +340,18 @@ async def collect_configs_async(contents: Dict[str, Optional[str]]) -> Set[str]:
                 ip = extract_ip_from_config(cfg)
                 if ip:
                     all_ips.add(ip)
-
     total_raw = len(raw_configs)
     logger.info(f"🔄 Всего валидных конфигов (до переименования): {total_raw}")
 
     if ENABLE_GEOIP and all_ips:
-        logger.info(f"🌍 Определяю страны для {len(all_ips)} уникальных IP через IPinfo batch API...")
-        async with aiohttp.ClientSession() as session:
-            await resolve_countries_batch(list(all_ips), session)
+        await resolve_countries_parallel(list(all_ips))
     elif ENABLE_GEOIP:
         logger.info("🌍 Геолокация включена, но IP для определения не найдены")
 
     renamed_configs = []
     for i, cfg in enumerate(raw_configs, 1):
         ip = extract_ip_from_config(cfg)
-        country = get_country_from_cache(ip) if ip and ENABLE_GEOIP else ''
+        country = GEOIP_CACHE.get(ip, '') if ip and ENABLE_GEOIP else ''
         renamed_cfg = rename_config(cfg, country)
         renamed_configs.append(renamed_cfg)
         if i % 500 == 0 or i == total_raw:
@@ -411,11 +395,11 @@ def update_readme(stats: Dict, sources_count: int):
         "Файлы `whitelist.txt` и `cidrwhitelist.txt` взяты из репозитория:\n"
         "🔗 [hxehex/russia-mobile-internet-whitelist](https://github.com/hxehex/russia-mobile-internet-whitelist)\n\n"
         "## 📁 Файлы\n\n"
-        "- `sub/all.txt` – все конфиги (геолокация только для IP, для доменов – unknown)\n"
+        "- `sub/all.txt` – все конфиги\n"
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v3.2*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v3.5*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -511,7 +495,7 @@ def save_configs(all_configs_set: Set[str]):
 async def main_async():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v3.2 (геолокация только по IP, для доменов unknown)")
+    print("🚀 LinSpisokObhod v3.5 (одиночные запросы геолокации, параллельно)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
@@ -519,7 +503,7 @@ async def main_async():
     print(f"🗂️ CIDR whitelist: {CIDR_WHITELIST_FILE}")
     print(f"📁 Результаты в папке: {CONFIG_DIR}")
     if ENABLE_GEOIP:
-        print("🌍 Геолокация: ВКЛЮЧЕНА (только для IP, batch API)")
+        print(f"🌍 Геолокация: ВКЛЮЧЕНА (одиночные запросы, параллельно {GEOIP_PARALLEL})")
     else:
         print("🌍 Геолокация: ВЫКЛЮЧЕНА")
     print("=" * 60)
