@@ -15,9 +15,13 @@ from typing import Dict, Set, Optional, List
 import base64
 
 # ========== НАСТРОЙКИ ==========
-ENABLE_GEOIP = True               # Геолокация (batch API, быстро)
-GEOIP_BATCH_SIZE = 100            # Максимум IP в одном batch-запросе
-GEOIP_CACHE = {}                  # IP -> countryCode
+ENABLE_GEOIP = True
+GEOIP_BATCH_SIZE = 100          # IPinfo позволяет до 100 IP в одном batch-запросе
+IPINFO_TOKEN = os.environ.get("IPINFO_TOKEN")
+if ENABLE_GEOIP and not IPINFO_TOKEN:
+    raise ValueError("IPINFO_TOKEN not set. Please add it to GitHub Secrets.")
+
+GEOIP_CACHE = {}
 
 SOURCES = [
     "https://alley.serv00.net/1",
@@ -82,33 +86,25 @@ async def fetch_all_sources():
         results = await asyncio.gather(*tasks)
     return dict(zip(SOURCES, results))
 
-# ---------- BATCH ГЕОЛОКАЦИЯ ----------
+# ---------- АСИНХРОННАЯ ПАКЕТНАЯ ГЕОЛОКАЦИЯ (IPinfo) ----------
 async def resolve_countries_batch(ips: List[str], session: aiohttp.ClientSession):
-    """Отправляет batch-запрос для списка IP и сохраняет результат в кэш."""
     if not ips:
         return
-    # Уникальные IP, которых ещё нет в кэше
     unique_ips = [ip for ip in set(ips) if ip not in GEOIP_CACHE]
     if not unique_ips:
         return
-    # Разбиваем на пачки
+    logger.info(f"🌍 Запрос геолокации для {len(unique_ips)} уникальных IP (пачками по {GEOIP_BATCH_SIZE})")
     for i in range(0, len(unique_ips), GEOIP_BATCH_SIZE):
         batch = unique_ips[i:i+GEOIP_BATCH_SIZE]
         try:
-            async with session.post(
-                "http://ip-api.com/batch?fields=countryCode",
-                json=batch,
-                timeout=5
-            ) as resp:
+            url = f"https://api.ipinfo.io/batch?token={IPINFO_TOKEN}"
+            async with session.post(url, json=batch, timeout=10) as resp:
                 if resp.status == 200:
-                    results = await resp.json()
-                    for idx, ip in enumerate(batch):
-                        if idx < len(results):
-                            country = results[idx].get('countryCode', 'XX')
-                            GEOIP_CACHE[ip] = country
-                            logger.debug(f"🌍 {ip} -> {country}")
-                        else:
-                            GEOIP_CACHE[ip] = 'XX'
+                    data = await resp.json()
+                    for ip in batch:
+                        info = data.get(ip, {})
+                        country = info.get("countryCode", "XX")
+                        GEOIP_CACHE[ip] = country
                 else:
                     logger.warning(f"⚠️ Batch геолокация ошибка HTTP {resp.status}, IP: {batch[:3]}...")
                     for ip in batch:
@@ -117,9 +113,9 @@ async def resolve_countries_batch(ips: List[str], session: aiohttp.ClientSession
             logger.warning(f"⚠️ Batch геолокация исключение: {e}")
             for ip in batch:
                 GEOIP_CACHE[ip] = 'XX'
+    logger.info("✅ Геолокация завершена")
 
 def get_country_from_cache(ip: str) -> str:
-    """Возвращает страну из кэша (синхронно)."""
     return GEOIP_CACHE.get(ip, '')
 
 # ---------- ОСТАЛЬНЫЕ ФУНКЦИИ ----------
@@ -259,7 +255,6 @@ def extract_type_from_config(config: str) -> str:
     return "unknown"
 
 def rename_config(config: str, country: str = '') -> str:
-    """Переименовывает конфиг, используя переданную страну (синхронно)."""
     protocol = None
     for p in PROTOCOL_PATTERNS:
         if config.startswith(p + "://"):
@@ -352,7 +347,6 @@ def get_config_priority(config: str, whitelist: Set[str], cidr_list: List[ipaddr
     return 2
 
 async def collect_configs_async(contents: Dict[str, Optional[str]]) -> Set[str]:
-    # 1. Извлечь все валидные сырые конфиги и собрать все уникальные IP
     raw_configs = []
     all_ips = set()
     for url, content in contents.items():
@@ -369,20 +363,17 @@ async def collect_configs_async(contents: Dict[str, Optional[str]]) -> Set[str]:
                 ip = extract_ip_from_config(cfg)
                 if ip:
                     all_ips.add(ip)
-    
+
     total_raw = len(raw_configs)
     logger.info(f"🔄 Всего валидных конфигов (до переименования): {total_raw}")
-    
-    # 2. Batch геолокация (если включена)
+
     if ENABLE_GEOIP and all_ips:
-        logger.info(f"🌍 Определяю страны для {len(all_ips)} уникальных IP через batch API...")
+        logger.info(f"🌍 Определяю страны для {len(all_ips)} уникальных IP через IPinfo batch API...")
         async with aiohttp.ClientSession() as session:
             await resolve_countries_batch(list(all_ips), session)
-        logger.info("✅ Геолокация завершена")
     elif ENABLE_GEOIP:
         logger.info("🌍 Геолокация включена, но IP для определения не найдены")
-    
-    # 3. Переименование конфигов (используем кэш)
+
     renamed_configs = []
     for i, cfg in enumerate(raw_configs, 1):
         ip = extract_ip_from_config(cfg)
@@ -391,7 +382,7 @@ async def collect_configs_async(contents: Dict[str, Optional[str]]) -> Set[str]:
         renamed_configs.append(renamed_cfg)
         if i % 500 == 0 or i == total_raw:
             logger.info(f"⏳ Прогресс переименования: {i}/{total_raw} конфигов")
-    
+
     all_configs_set = set(renamed_configs)
     duplicates = total_raw - len(all_configs_set)
     logger.info(f"📊 Собрано уникальных конфигов: {len(all_configs_set)} (дубликатов: {duplicates})")
@@ -434,7 +425,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v2.8*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v2.9*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -530,7 +521,7 @@ def save_configs(all_configs_set: Set[str]):
 async def main_async():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v2.8 (batch геолокация, очень быстро)")
+    print("🚀 LinSpisokObhod v2.9 (IPinfo batch, асинхронно)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
@@ -538,7 +529,7 @@ async def main_async():
     print(f"🗂️ CIDR whitelist: {CIDR_WHITELIST_FILE}")
     print(f"📁 Результаты в папке: {CONFIG_DIR}")
     if ENABLE_GEOIP:
-        print("🌍 Геолокация: ВКЛЮЧЕНА (batch API, пачками)")
+        print("🌍 Геолокация: ВКЛЮЧЕНА (IPinfo batch API)")
     else:
         print("🌍 Геолокация: ВЫКЛЮЧЕНА")
     print("=" * 60)
