@@ -16,14 +16,21 @@ import base64
 
 # ========== НАСТРОЙКИ ==========
 ENABLE_GEOIP = True
-GEOIP_PARALLEL = 10          # количество одновременных запросов к API
-GEOIP_DELAY = 0.1            # задержка между запросами (сек)
-IPINFO_TOKEN = os.environ.get("IPINFO_TOKEN")
-if ENABLE_GEOIP and not IPINFO_TOKEN:
-    raise ValueError("IPINFO_TOKEN not set. Please add it to GitHub Secrets.")
+GEOIP_PARALLEL = 10          # количество одновременных запросов
+GEOIP_DELAY = 0.1            # задержка между пачками (сек)
+IPINFO_TOKENS = [
+    os.environ.get("IPINFO_TOKEN"),        # основной токен из секретов
+    "a94d8c011ca891"                       # второй токен (добавлен)
+]
+# Убираем None из списка
+IPINFO_TOKENS = [t for t in IPINFO_TOKENS if t]
+if ENABLE_GEOIP and not IPINFO_TOKENS:
+    raise ValueError("No IPINFO_TOKEN provided. Please add at least one token.")
 
 GEOIP_CACHE = {}
 GEOIP_SEMAPHORE = asyncio.Semaphore(GEOIP_PARALLEL)
+TOKEN_INDEX = 0
+TOKEN_LOCK = asyncio.Lock()
 
 SOURCES = [
     "https://alley.serv00.net/1",
@@ -108,23 +115,42 @@ def extract_ip_from_config(config: str) -> Optional[str]:
             return None
     return None
 
-# ---------- ОДИНОЧНАЯ АСИНХРОННАЯ ГЕОЛОКАЦИЯ ----------
+# ---------- ГЕОЛОКАЦИЯ С РОТАЦИЕЙ ТОКЕНОВ ----------
+async def get_next_token():
+    global TOKEN_INDEX
+    async with TOKEN_LOCK:
+        token = IPINFO_TOKENS[TOKEN_INDEX % len(IPINFO_TOKENS)]
+        TOKEN_INDEX += 1
+        return token
+
 async def resolve_country(ip: str, session: aiohttp.ClientSession) -> str:
     async with GEOIP_SEMAPHORE:
         if ip in GEOIP_CACHE:
             return GEOIP_CACHE[ip]
+
+        country = 'XX'
+        token = await get_next_token()
         try:
-            url = f"https://api.ipinfo.io/{ip}/country?token={IPINFO_TOKEN}"
+            url = f"https://api.ipinfo.io/lite/{ip}/country?token={token}"
             async with session.get(url, timeout=5) as resp:
                 if resp.status == 200:
                     country = (await resp.text()).strip()
-                    if country:
-                        GEOIP_CACHE[ip] = country
-                        return country
+                    if not country:
+                        country = 'XX'
+                    if len(GEOIP_CACHE) < 5 and country != 'XX':
+                        logger.info(f"✅ IPinfo (token {token[:4]}...): {ip} -> {country}")
+                elif resp.status == 429:
+                    # Too Many Requests – попробуем другой токен
+                    logger.warning(f"⚠️ Токен {token[:4]}... лимит, переключаюсь")
+                    # Повторно запросим с новым токеном (без увеличения счётчика в кэше)
+                    return await resolve_country(ip, session)
+                else:
+                    logger.debug(f"⚠️ IPinfo ошибка {resp.status} для {ip} (токен {token[:4]}...)")
         except Exception as e:
-            logger.debug(f"Ошибка геолокации для {ip}: {e}")
-        GEOIP_CACHE[ip] = 'XX'
-        return 'XX'
+            logger.debug(f"Ошибка IPinfo для {ip}: {e}")
+
+        GEOIP_CACHE[ip] = country
+        return country
 
 async def resolve_countries_parallel(ips: List[str]) -> Dict[str, str]:
     if not ips:
@@ -132,14 +158,21 @@ async def resolve_countries_parallel(ips: List[str]) -> Dict[str, str]:
     unique_ips = [ip for ip in set(ips) if ip not in GEOIP_CACHE]
     if not unique_ips:
         return GEOIP_CACHE.copy()
-    logger.info(f"🌍 Определяю страны для {len(unique_ips)} уникальных IP (одиночные запросы, параллельно {GEOIP_PARALLEL})")
+    total = len(unique_ips)
+    logger.info(f"🌍 Определяю страны для {total} уникальных IP через IPinfo (параллельно {GEOIP_PARALLEL})")
+    processed = 0
     async with aiohttp.ClientSession() as session:
         tasks = [resolve_country(ip, session) for ip in unique_ips]
-        await asyncio.gather(*tasks)
-        await asyncio.sleep(GEOIP_DELAY)  # небольшая задержка после пачки
+        for future in asyncio.as_completed(tasks):
+            await future
+            processed += 1
+            if processed % 100 == 0 or processed == total:
+                logger.info(f"   Прогресс геолокации: {processed}/{total} IP обработано")
+            await asyncio.sleep(GEOIP_DELAY)
+    logger.info("✅ Геолокация завершена")
     return GEOIP_CACHE.copy()
 
-# ---------- ОСТАЛЬНЫЕ ФУНКЦИИ ----------
+# ---------- ОСТАЛЬНЫЕ ФУНКЦИИ (без изменений) ----------
 def extract_configs_from_text(text: str, source_url: str) -> Dict[str, Set[str]]:
     configs = {proto: set() for proto in PROTOCOL_PATTERNS}
     for protocol, pattern in PROTOCOL_PATTERNS.items():
@@ -399,7 +432,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v3.5*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v3.8*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -495,7 +528,7 @@ def save_configs(all_configs_set: Set[str]):
 async def main_async():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v3.5 (одиночные запросы геолокации, параллельно)")
+    print("🚀 LinSpisokObhod v3.8 (ротация токенов IPinfo, без ip-api.com)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
@@ -503,7 +536,7 @@ async def main_async():
     print(f"🗂️ CIDR whitelist: {CIDR_WHITELIST_FILE}")
     print(f"📁 Результаты в папке: {CONFIG_DIR}")
     if ENABLE_GEOIP:
-        print(f"🌍 Геолокация: ВКЛЮЧЕНА (одиночные запросы, параллельно {GEOIP_PARALLEL})")
+        print(f"🌍 Геолокация: ВКЛЮЧЕНА (IPinfo, токенов: {len(IPINFO_TOKENS)})")
     else:
         print("🌍 Геолокация: ВЫКЛЮЧЕНА")
     print("=" * 60)
