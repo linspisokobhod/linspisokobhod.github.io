@@ -15,8 +15,8 @@ from typing import Dict, Set, Optional, List
 import base64
 
 # ========== НАСТРОЙКИ ==========
-ENABLE_GEOIP = True
-GEOIP_BATCH_SIZE = 100          # IPinfo позволяет до 100 IP в одном batch-запросе
+ENABLE_GEOIP = True          # Геолокация по IP (только для конфигов с IP)
+GEOIP_BATCH_SIZE = 100
 IPINFO_TOKEN = os.environ.get("IPINFO_TOKEN")
 if ENABLE_GEOIP and not IPINFO_TOKEN:
     raise ValueError("IPINFO_TOKEN not set. Please add it to GitHub Secrets.")
@@ -86,6 +86,27 @@ async def fetch_all_sources():
         results = await asyncio.gather(*tasks)
     return dict(zip(SOURCES, results))
 
+# ---------- ИЗВЛЕЧЕНИЕ IP ИЗ КОНФИГА ----------
+def extract_ip_from_config(config: str) -> Optional[str]:
+    protocol = None
+    for p in PROTOCOL_PATTERNS:
+        if config.startswith(p + "://"):
+            protocol = p
+            break
+    if not protocol:
+        return None
+
+    body = config[len(protocol)+3:]
+    if '@' in body:
+        host_part = body.split('@')[1]
+        host = host_part.split(':')[0]
+        try:
+            ipaddress.ip_address(host)
+            return host
+        except ValueError:
+            return None   # домен, а не IP
+    return None
+
 # ---------- АСИНХРОННАЯ ПАКЕТНАЯ ГЕОЛОКАЦИЯ (IPinfo) ----------
 async def resolve_countries_batch(ips: List[str], session: aiohttp.ClientSession):
     if not ips:
@@ -105,6 +126,7 @@ async def resolve_countries_batch(ips: List[str], session: aiohttp.ClientSession
                         info = data.get(ip, {})
                         country = info.get("countryCode", "XX")
                         GEOIP_CACHE[ip] = country
+                        logger.debug(f"🌍 {ip} -> {country}")
                 else:
                     logger.warning(f"⚠️ Batch геолокация ошибка HTTP {resp.status}, IP: {batch[:3]}...")
                     for ip in batch:
@@ -195,40 +217,6 @@ def extract_sni_domain(config: str) -> Optional[str]:
     
     return None
 
-def extract_ip_from_config(config: str) -> Optional[str]:
-    protocol = None
-    for p in PROTOCOL_PATTERNS:
-        if config.startswith(p + "://"):
-            protocol = p
-            break
-    if not protocol:
-        return None
-
-    body = config[len(protocol)+3:]
-    
-    if protocol in ('vless', 'trojan', 'hysteria2'):
-        if '@' in body:
-            host_part = body.split('@')[1]
-            host = host_part.split(':')[0]
-            try:
-                ipaddress.ip_address(host)
-                return host
-            except ValueError:
-                return None
-        return None
-    
-    if protocol == 'vmess':
-        decoded = decode_vmess_config(config)
-        if decoded and 'add' in decoded:
-            try:
-                ipaddress.ip_address(decoded['add'])
-                return decoded['add']
-            except ValueError:
-                pass
-        return None
-    
-    return None
-
 def extract_type_from_config(config: str) -> str:
     protocol = None
     for p in PROTOCOL_PATTERNS:
@@ -271,8 +259,10 @@ def rename_config(config: str, country: str = '') -> str:
     conn_type = extract_type_from_config(config)
     
     parts = []
+    # Добавляем страну только если она есть и не 'XX' (т.е. успешно определена)
     if country and country != 'XX':
         parts.append(country)
+    # Далее добавляем sni или ip, если нет – unknown
     if sni:
         parts.append(sni)
     elif ip:
@@ -421,11 +411,11 @@ def update_readme(stats: Dict, sources_count: int):
         "Файлы `whitelist.txt` и `cidrwhitelist.txt` взяты из репозитория:\n"
         "🔗 [hxehex/russia-mobile-internet-whitelist](https://github.com/hxehex/russia-mobile-internet-whitelist)\n\n"
         "## 📁 Файлы\n\n"
-        "- `sub/all.txt` – все конфиги\n"
+        "- `sub/all.txt` – все конфиги (геолокация только для IP, для доменов – unknown)\n"
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v2.9*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v3.2*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -521,7 +511,7 @@ def save_configs(all_configs_set: Set[str]):
 async def main_async():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v2.9 (IPinfo batch, асинхронно)")
+    print("🚀 LinSpisokObhod v3.2 (геолокация только по IP, для доменов unknown)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
@@ -529,7 +519,7 @@ async def main_async():
     print(f"🗂️ CIDR whitelist: {CIDR_WHITELIST_FILE}")
     print(f"📁 Результаты в папке: {CONFIG_DIR}")
     if ENABLE_GEOIP:
-        print("🌍 Геолокация: ВКЛЮЧЕНА (IPinfo batch API)")
+        print("🌍 Геолокация: ВКЛЮЧЕНА (только для IP, batch API)")
     else:
         print("🌍 Геолокация: ВЫКЛЮЧЕНА")
     print("=" * 60)
