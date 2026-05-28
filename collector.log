@@ -1608,3 +1608,58 @@
 2026-05-28 08:59:28,926 - INFO - 📶 WiFi.txt: 14793
 2026-05-28 08:59:28,938 - INFO - 📊 Статистика сохранена
 2026-05-28 08:59:28,939 - INFO - 📄 README.md обновлён
+2026-05-28 10:02:03,058 - INFO - ✅ Загружен https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt (9021 символов)
+2026-05-28 10:02:03,064 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt (1243253 символов)
+2026-05-28 10:02:03,071 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt (1243253 символов)
+2026-05-28 10:02:03,110 - INFO - ✅ Загружен https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hy2_001.txt (343 символов)
+2026-05-28 10:02:03,114 - INFO - ✅ Загружен https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw (11823 символов)
+2026-05-28 10:02:03,149 - INFO - ✅ Загружен https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt (102342 символов)
+2026-05-28 10:02:03,172 - INFO - ✅ Загружен https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt (10953 символов)
+2026-05-28 10:02:03,201 - INFO - ✅ Загружен https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt (1561 символов)
+2026-05-28 10:02:03,294 - INFO - ✅ Загружен https://rostunnel.vercel.app/mega.txt (2604213 символов)
+2026-05-28 10:02:04,414 - INFO - ✅ Загружен https://alley.serv00.net/1 (303666 символов)
+2026-05-28 10:02:04,443 - INFO - 📥 +897 VLESS из https://alley.serv00.net/1
+2026-05-28 10:02:04,444 - INFO - 📥 +41 TROJAN из https://alley.serv00.net/1
+2026-05-28 10:02:04,452 - INFO - 📥 +80 VLESS из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 10:02:04,453 - INFO - 📥 +55 TROJAN из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 10:02:04,455 - INFO - 📥 +80 HYSTERIA2 из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 10:02:04,457 - INFO - 📥 +36 VLESS из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-28 10:02:04,457 - INFO - 📥 +1 TROJAN из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-28 10:02:04,536 - INFO - 📥 +569 TROJAN из https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt
+2026-05-28 10:02:04,615 - INFO - 📥 +569 TROJAN из https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+2026-05-28 10:02:04,616 - INFO - 📥 +29 VLESS из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-05-28 10:02:04,618 - INFO - 📥 +41 VLESS из https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw
+2026-05-28 10:02:04,902 - INFO - 📥 +4573 VLESS из https://rostunnel.vercel.app/mega.txt
+2026-05-28 10:02:04,903 - INFO - 📥 +124 VMESS из https://rostunnel.vercel.app/mega.txt
+2026-05-28 10:02:04,965 - INFO - 📥 +1800 TROJAN из https://rostunnel.vercel.app/mega.txt
+2026-05-28 10:02:04,966 - INFO - 📥 +22 HYSTERIA2 из https://rostunnel.vercel.app/mega.txt
+2026-05-28 10:02:04,967 - INFO - 📥 +9 HYSTERIA2 из https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt
+2026-05-28 10:02:04,967 - INFO - 🔄 Всего валидных конфигов (до переименования): 8926
+2026-05-28 10:02:05,117 - INFO - ⏳ Прогресс: обработано 500/8926 конфигов (осталось 8426)
+2026-05-28 10:02:06,201 - INFO - ⏳ Прогресс: обработано 1000/8926 конфигов (осталось 7926)
+2026-05-28 10:02:09,329 - INFO - ⏳ Прогресс: обработано 1500/8926 конфигов (осталось 7426)
+2026-05-28 10:02:12,345 - INFO - ⏳ Прогресс: обработано 2000/8926 конфигов (осталось 6926)
+2026-05-28 10:02:15,373 - INFO - ⏳ Прогресс: обработано 2500/8926 конфигов (осталось 6426)
+2026-05-28 10:02:18,498 - INFO - ⏳ Прогресс: обработано 3000/8926 конфигов (осталось 5926)
+2026-05-28 10:02:21,669 - INFO - ⏳ Прогресс: обработано 3500/8926 конфигов (осталось 5426)
+2026-05-28 10:02:24,689 - INFO - ⏳ Прогресс: обработано 4000/8926 конфигов (осталось 4926)
+2026-05-28 10:02:27,814 - INFO - ⏳ Прогресс: обработано 4500/8926 конфигов (осталось 4426)
+2026-05-28 10:02:30,931 - INFO - ⏳ Прогресс: обработано 5000/8926 конфигов (осталось 3926)
+2026-05-28 10:02:33,949 - INFO - ⏳ Прогресс: обработано 5500/8926 конфигов (осталось 3426)
+2026-05-28 10:02:37,062 - INFO - ⏳ Прогресс: обработано 6000/8926 конфигов (осталось 2926)
+2026-05-28 10:02:43,145 - INFO - ⏳ Прогресс: обработано 6500/8926 конфигов (осталось 2426)
+2026-05-28 10:02:46,256 - INFO - ⏳ Прогресс: обработано 7000/8926 конфигов (осталось 1926)
+2026-05-28 10:02:52,270 - INFO - ⏳ Прогресс: обработано 7500/8926 конфигов (осталось 1426)
+2026-05-28 10:02:58,347 - INFO - ⏳ Прогресс: обработано 8000/8926 конфигов (осталось 926)
+2026-05-28 10:03:04,416 - INFO - ⏳ Прогресс: обработано 8500/8926 конфигов (осталось 426)
+2026-05-28 10:03:07,537 - INFO - ⏳ Прогресс: обработано 8926/8926 конфигов (осталось 0)
+2026-05-28 10:03:07,539 - INFO - 📊 Собрано уникальных конфигов: 8246 (дубликатов: 680)
+2026-05-28 10:03:07,540 - INFO - 🗑️ Папка sub удалена (старые файлы очищены)
+2026-05-28 10:03:07,540 - INFO - 📁 Папка sub создана заново
+2026-05-28 10:03:07,548 - INFO - 💾 all.txt: 8246
+2026-05-28 10:03:07,549 - INFO - 📋 Загружено 2600 доменов
+2026-05-28 10:03:07,708 - INFO - 📋 Загружено 30228 CIDR сетей
+2026-05-28 10:04:00,031 - INFO - 📱 LTE.txt: 1315 (отфильтровано по whitelist/CIDR, отсортировано)
+2026-05-28 10:04:00,034 - INFO - 📶 WiFi.txt: 6931
+2026-05-28 10:04:00,039 - INFO - 📊 Статистика сохранена
+2026-05-28 10:04:00,039 - INFO - 📄 README.md обновлён
