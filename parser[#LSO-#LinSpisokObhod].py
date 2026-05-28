@@ -16,7 +16,7 @@ import base64
 
 # ========== НАСТРОЙКИ ==========
 SOURCES = [
-    "https://alley.serv00.net/1",   # заменённая ссылка
+    "https://alley.serv00.net/1",
     "https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt",
     "https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt",
     "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt",
@@ -31,13 +31,12 @@ SOURCES = [
 GLOBAL_TAG = "[#LSO - #LinSpisokObhod]"
 SCRIPT_NAME = "LinSpisokObhod.py"
 
-# Добавляем Shadowsocks в список протоколов
 PROTOCOL_PATTERNS = {
     'vless': re.compile(r'vless://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
     'vmess': re.compile(r'vmess://[A-Za-z0-9+/=]+', re.IGNORECASE),
     'trojan': re.compile(r'trojan://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
     'hysteria2': re.compile(r'hysteria2://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
-    'ss': re.compile(r'ss://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),   # Shadowsocks
+    'ss': re.compile(r'ss://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
 }
 
 REQUEST_TIMEOUT = 30
@@ -173,14 +172,11 @@ def extract_ip_from_config(config: str) -> Optional[str]:
         if '@' in body:
             host_part = body.split('@')[1]
             host = host_part.split(':')[0]
-            # Пытаемся привести к IP
             try:
                 ipaddress.ip_address(host)
                 return host
             except ValueError:
-                # Если это не IP, возвращаем как есть (может быть домен)
-                # Для проверки CIDR нужен IP, но оставим для возможного расширения
-                return host
+                return host  # может быть доменом, но для CIDR это не сработает
         return None
     
     if protocol == 'vmess':
@@ -232,8 +228,9 @@ def rename_config(config: str) -> str:
     if not protocol:
         return config
     
+    # Удаляем старый комментарий (всё после последнего символа '#')
     if '#' in config:
-        config = config.split('#')[0].rstrip()
+        config = config.rsplit('#', 1)[0].rstrip()
     
     sni_domain = extract_sni_domain(config)
     conn_type = extract_type_from_config(config)
@@ -292,7 +289,6 @@ def load_cidr_whitelist() -> List[ipaddress.ip_network]:
 def is_ip_in_cidr_list(ip_str: str, cidr_list: List[ipaddress.ip_network]) -> bool:
     if not ip_str or not cidr_list:
         return False
-    # Пытаемся распарсить как IP
     try:
         ip = ipaddress.ip_address(ip_str)
         return any(ip in net for net in cidr_list)
@@ -376,7 +372,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.14*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.15*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -472,7 +468,7 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v1.14 (shadowsocks добавлен, ссылка обновлена)")
+    print("🚀 LinSpisokObhod v1.15 (исправлен rename_config: удаление по последнему #)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
