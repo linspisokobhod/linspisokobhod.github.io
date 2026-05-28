@@ -16,7 +16,7 @@ import base64
 
 # ========== НАСТРОЙКИ ==========
 SOURCES = [
-    "https://etoneya.best/1",  # замена
+    "https://alley.serv00.net/1",
     "https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt",
     "https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt",
     "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt",
@@ -458,7 +458,7 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v1.13 (обновлён источник etoneya.best)")
+    print("🚀 LinSpisokObhod v1.13 (замена ссылки)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
