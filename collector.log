@@ -1518,3 +1518,48 @@
 2026-05-28 08:09:23,317 - INFO - 📶 WiFi.txt: 14757
 2026-05-28 08:09:23,329 - INFO - 📊 Статистика сохранена
 2026-05-28 08:09:23,330 - INFO - 📄 README.md обновлён
+2026-05-28 08:27:43,949 - INFO - 🚀 Сбор из 10 источников...
+2026-05-28 08:27:44,008 - INFO - ✅ Загружен https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt (22240 символов)
+2026-05-28 08:27:44,016 - INFO - 📥 +86 VLESS из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-28 08:27:44,022 - INFO - 📥 +5 TROJAN из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-28 08:27:44,022 - INFO - 📥 +97 SS из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-28 08:27:44,045 - INFO - ✅ Загружен https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt (9905 символов)
+2026-05-28 08:27:44,047 - INFO - 📥 +33 VLESS из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-05-28 08:27:44,048 - INFO - 📥 +33 SS из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-05-28 08:27:44,055 - INFO - ✅ Загружен https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hy2_001.txt (343 символов)
+2026-05-28 08:27:44,101 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt (1243253 символов)
+2026-05-28 08:27:44,190 - INFO - 📥 +668 TROJAN из https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt
+2026-05-28 08:27:44,201 - INFO - 📥 +1948 SS из https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt
+2026-05-28 08:27:44,207 - INFO - ✅ Загружен https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt (102342 символов)
+2026-05-28 08:27:44,215 - INFO - 📥 +84 VLESS из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 08:27:44,218 - INFO - 📥 +60 TROJAN из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 08:27:44,220 - INFO - 📥 +84 HYSTERIA2 из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 08:27:44,221 - INFO - 📥 +168 SS из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 08:27:44,232 - INFO - ✅ Загружен https://rostunnel.vercel.app/mega.txt (2595705 символов)
+2026-05-28 08:27:44,379 - INFO - ✅ Загружен https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt (1561 символов)
+2026-05-28 08:27:44,395 - INFO - ✅ Загружен https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw (11823 символов)
+2026-05-28 08:27:44,491 - INFO - 📥 +4692 VLESS из https://rostunnel.vercel.app/mega.txt
+2026-05-28 08:27:44,589 - INFO - 📥 +124 VMESS из https://rostunnel.vercel.app/mega.txt
+2026-05-28 08:27:44,634 - INFO - 📥 +1801 TROJAN из https://rostunnel.vercel.app/mega.txt
+2026-05-28 08:27:44,671 - INFO - 📥 +29 HYSTERIA2 из https://rostunnel.vercel.app/mega.txt
+2026-05-28 08:27:44,674 - INFO - 📥 +5032 SS из https://rostunnel.vercel.app/mega.txt
+2026-05-28 08:27:44,688 - INFO - 📥 +9 HYSTERIA2 из https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt
+2026-05-28 08:27:44,690 - INFO - 📥 +41 VLESS из https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw
+2026-05-28 08:27:44,691 - INFO - 📥 +41 SS из https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw
+2026-05-28 08:27:44,695 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt (1243253 символов)
+2026-05-28 08:27:44,775 - INFO - 📥 +668 TROJAN из https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+2026-05-28 08:27:44,781 - INFO - 📥 +1948 SS из https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+2026-05-28 08:27:45,883 - INFO - ✅ Загружен https://alley.serv00.net/1 (303666 символов)
+2026-05-28 08:27:45,909 - INFO - 📥 +897 VLESS из https://alley.serv00.net/1
+2026-05-28 08:27:45,924 - INFO - 📥 +41 TROJAN из https://alley.serv00.net/1
+2026-05-28 08:27:45,925 - INFO - 📥 +1251 SS из https://alley.serv00.net/1
+2026-05-28 08:27:45,929 - INFO - 📊 Собрано уникальных конфигов: 16865 (дубликатов: 2975)
+2026-05-28 08:27:45,931 - INFO - 🗑️ Папка sub удалена (старые файлы очищены)
+2026-05-28 08:27:45,932 - INFO - 📁 Папка sub создана заново
+2026-05-28 08:27:45,942 - INFO - 💾 all.txt: 16865
+2026-05-28 08:27:45,943 - INFO - 📋 Загружено 2600 доменов
+2026-05-28 08:27:46,070 - INFO - 📋 Загружено 30228 CIDR сетей
+2026-05-28 08:29:06,995 - INFO - 📱 LTE.txt: 2072 (отфильтровано по whitelist/CIDR, отсортировано)
+2026-05-28 08:29:07,000 - INFO - 📶 WiFi.txt: 14793
+2026-05-28 08:29:07,010 - INFO - 📊 Статистика сохранена
+2026-05-28 08:29:07,010 - INFO - 📄 README.md обновлён
