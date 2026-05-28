@@ -41,8 +41,8 @@ PROTOCOL_PATTERNS = {
     'hysteria2': re.compile(r'hysteria2://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
 }
 
-REQUEST_TIMEOUT = 15
-MAX_WORKERS = 20
+REQUEST_TIMEOUT = 100
+MAX_WORKERS = 100
 CONFIG_DIR = "sub"
 LISTS_DIR = "lists"
 LOG_FILE = "collector.log"
