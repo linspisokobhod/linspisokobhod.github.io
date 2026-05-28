@@ -1719,3 +1719,97 @@
 2026-05-28 10:18:13,471 - INFO - 📶 WiFi.txt: 6946
 2026-05-28 10:18:13,476 - INFO - 📊 Статистика сохранена
 2026-05-28 10:18:13,476 - INFO - 📄 README.md обновлён
+2026-05-28 10:34:50,737 - INFO - ✅ Загружен https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt (9021 символов)
+2026-05-28 10:34:50,773 - INFO - ✅ Загружен https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hy2_001.txt (343 символов)
+2026-05-28 10:34:50,781 - INFO - ✅ Загружен https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt (13310 символов)
+2026-05-28 10:34:50,785 - INFO - ✅ Загружен https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt (1561 символов)
+2026-05-28 10:34:50,862 - INFO - ✅ Загружен https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt (102342 символов)
+2026-05-28 10:34:50,921 - INFO - ✅ Загружен https://rostunnel.vercel.app/mega.txt (2604431 символов)
+2026-05-28 10:34:50,936 - INFO - ✅ Загружен https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw (11823 символов)
+2026-05-28 10:34:50,970 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt (1243253 символов)
+2026-05-28 10:34:50,979 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt (1243253 символов)
+2026-05-28 10:34:52,446 - INFO - ✅ Загружен https://alley.serv00.net/1 (303666 символов)
+2026-05-28 10:34:52,474 - INFO - 📥 +897 VLESS из https://alley.serv00.net/1
+2026-05-28 10:34:52,478 - INFO - 📥 +41 TROJAN из https://alley.serv00.net/1
+2026-05-28 10:34:52,485 - INFO - 📥 +80 VLESS из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 10:34:52,487 - INFO - 📥 +55 TROJAN из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 10:34:52,489 - INFO - 📥 +80 HYSTERIA2 из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 10:34:52,492 - INFO - 📥 +43 VLESS из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-28 10:34:52,492 - INFO - 📥 +1 VMESS из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-28 10:34:52,493 - INFO - 📥 +3 TROJAN из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-28 10:34:52,573 - INFO - 📥 +569 TROJAN из https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt
+2026-05-28 10:34:52,659 - INFO - 📥 +569 TROJAN из https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+2026-05-28 10:34:52,664 - INFO - 📥 +29 VLESS из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-05-28 10:34:52,666 - INFO - 📥 +41 VLESS из https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw
+2026-05-28 10:34:52,932 - INFO - 📥 +4574 VLESS из https://rostunnel.vercel.app/mega.txt
+2026-05-28 10:34:52,955 - INFO - 📥 +124 VMESS из https://rostunnel.vercel.app/mega.txt
+2026-05-28 10:34:53,013 - INFO - 📥 +1800 TROJAN из https://rostunnel.vercel.app/mega.txt
+2026-05-28 10:34:53,023 - INFO - 📥 +22 HYSTERIA2 из https://rostunnel.vercel.app/mega.txt
+2026-05-28 10:34:53,024 - INFO - 📥 +9 HYSTERIA2 из https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt
+2026-05-28 10:34:53,024 - INFO - 🔄 Всего валидных конфигов (до переименования): 8937
+2026-05-28 10:34:53,024 - INFO - 🌍 Определяю страны для 6279 уникальных IP через batch API...
+2026-05-28 10:34:53,619 - WARNING - ⚠️ Batch геолокация ошибка HTTP 429, IP: ['85.237.207.189', '23.226.135.232', '45.131.4.192']...
+2026-05-28 10:34:53,637 - WARNING - ⚠️ Batch геолокация ошибка HTTP 429, IP: ['18.140.116.23', '194.164.205.110', '188.166.43.158']...
+2026-05-28 10:34:53,655 - WARNING - ⚠️ Batch геолокация ошибка HTTP 429, IP: ['212.118.52.236', '154.36.130.71', '151.236.93.64']...
+2026-05-28 10:34:53,723 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:34:59,349 - WARNING - ⚠️ Batch геолокация исключение: 
+2026-05-28 10:35:05,347 - WARNING - ⚠️ Batch геолокация исключение: 
+2026-05-28 10:35:11,346 - WARNING - ⚠️ Batch геолокация исключение: 
+2026-05-28 10:35:11,419 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:17,348 - WARNING - ⚠️ Batch геолокация исключение: 
+2026-05-28 10:35:17,443 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:23,349 - WARNING - ⚠️ Batch геолокация исключение: 
+2026-05-28 10:35:23,422 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:23,495 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:29,349 - WARNING - ⚠️ Batch геолокация исключение: 
+2026-05-28 10:35:29,443 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:29,516 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:35,348 - WARNING - ⚠️ Batch геолокация исключение: 
+2026-05-28 10:35:35,421 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:35,494 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:35,567 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:35,640 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:35,713 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:35,786 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:35,865 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:35,938 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:36,014 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:36,088 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:36,161 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:36,235 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:36,308 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:36,384 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:42,349 - WARNING - ⚠️ Batch геолокация исключение: 
+2026-05-28 10:35:42,425 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:42,498 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:42,571 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:42,644 - WARNING - ⚠️ Batch геолокация исключение: [Errno 104] Connection reset by peer
+2026-05-28 10:35:42,645 - INFO - ✅ Геолокация завершена
+2026-05-28 10:35:42,660 - INFO - ⏳ Прогресс переименования: 500/8937 конфигов
+2026-05-28 10:35:42,676 - INFO - ⏳ Прогресс переименования: 1000/8937 конфигов
+2026-05-28 10:35:42,688 - INFO - ⏳ Прогресс переименования: 1500/8937 конфигов
+2026-05-28 10:35:42,699 - INFO - ⏳ Прогресс переименования: 2000/8937 конфигов
+2026-05-28 10:35:42,713 - INFO - ⏳ Прогресс переименования: 2500/8937 конфигов
+2026-05-28 10:35:42,732 - INFO - ⏳ Прогресс переименования: 3000/8937 конфигов
+2026-05-28 10:35:42,750 - INFO - ⏳ Прогресс переименования: 3500/8937 конфигов
+2026-05-28 10:35:42,769 - INFO - ⏳ Прогресс переименования: 4000/8937 конфигов
+2026-05-28 10:35:42,788 - INFO - ⏳ Прогресс переименования: 4500/8937 конфигов
+2026-05-28 10:35:42,807 - INFO - ⏳ Прогресс переименования: 5000/8937 конфигов
+2026-05-28 10:35:42,826 - INFO - ⏳ Прогресс переименования: 5500/8937 конфигов
+2026-05-28 10:35:42,844 - INFO - ⏳ Прогресс переименования: 6000/8937 конфигов
+2026-05-28 10:35:42,863 - INFO - ⏳ Прогресс переименования: 6500/8937 конфигов
+2026-05-28 10:35:42,881 - INFO - ⏳ Прогресс переименования: 7000/8937 конфигов
+2026-05-28 10:35:42,899 - INFO - ⏳ Прогресс переименования: 7500/8937 конфигов
+2026-05-28 10:35:42,918 - INFO - ⏳ Прогресс переименования: 8000/8937 конфигов
+2026-05-28 10:35:42,937 - INFO - ⏳ Прогресс переименования: 8500/8937 конфигов
+2026-05-28 10:35:42,953 - INFO - ⏳ Прогресс переименования: 8937/8937 конфигов
+2026-05-28 10:35:42,955 - INFO - 📊 Собрано уникальных конфигов: 8256 (дубликатов: 681)
+2026-05-28 10:35:42,956 - INFO - 🗑️ Папка sub удалена (старые файлы очищены)
+2026-05-28 10:35:42,956 - INFO - 📁 Папка sub создана заново
+2026-05-28 10:35:42,963 - INFO - 💾 all.txt: 8256
+2026-05-28 10:35:42,964 - INFO - 📋 Загружено 2600 доменов
+2026-05-28 10:35:43,130 - INFO - 📋 Загружено 30228 CIDR сетей
+2026-05-28 10:36:34,239 - INFO - 📱 LTE.txt: 1308 (отфильтровано по whitelist/CIDR, отсортировано)
+2026-05-28 10:36:34,242 - INFO - 📶 WiFi.txt: 6948
+2026-05-28 10:36:34,247 - INFO - 📊 Статистика сохранена
+2026-05-28 10:36:34,247 - INFO - 📄 README.md обновлён
