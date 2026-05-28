@@ -1353,3 +1353,39 @@
 2026-05-28 05:14:17,622 - INFO - 📶 WiFi.txt: 7568
 2026-05-28 05:14:17,628 - INFO - 📊 Статистика сохранена
 2026-05-28 05:14:17,628 - INFO - 📄 README.md обновлён
+2026-05-28 07:30:01,953 - INFO - 🚀 Сбор из 10 источников...
+2026-05-28 07:30:02,124 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt (1243253 символов)
+2026-05-28 07:30:02,206 - INFO - 📥 +569 TROJAN из https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+2026-05-28 07:30:02,214 - INFO - ✅ Загружен https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt (9354 символов)
+2026-05-28 07:30:02,215 - INFO - ✅ Загружен https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt (20990 символов)
+2026-05-28 07:30:02,217 - INFO - 📥 +31 VLESS из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-28 07:30:02,218 - INFO - 📥 +4 TROJAN из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-05-28 07:30:02,222 - INFO - 📥 +66 VLESS из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-05-28 07:30:02,224 - INFO - 📥 +1 TROJAN из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-05-28 07:30:02,278 - INFO - ✅ Загружен https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hy2_001.txt (343 символов)
+2026-05-28 07:30:02,346 - INFO - ✅ Загружен https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt (1561 символов)
+2026-05-28 07:30:02,347 - INFO - 📥 +9 HYSTERIA2 из https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt
+2026-05-28 07:30:02,428 - INFO - ✅ Загружен https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt (102342 символов)
+2026-05-28 07:30:02,435 - INFO - 📥 +80 VLESS из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 07:30:02,440 - INFO - 📥 +55 TROJAN из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 07:30:02,443 - INFO - 📥 +80 HYSTERIA2 из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-05-28 07:30:02,445 - INFO - ✅ Загружен https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw (11823 символов)
+2026-05-28 07:30:02,448 - INFO - 📥 +41 VLESS из https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw
+2026-05-28 07:30:02,476 - WARNING - ⚠️ Ошибка загрузки https://etoneya.best/1: 502 Server Error: Bad Gateway for url: https://etoneya.best/1
+2026-05-28 07:30:02,486 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt (1243253 символов)
+2026-05-28 07:30:02,558 - INFO - 📥 +569 TROJAN из https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt
+2026-05-28 07:30:02,616 - INFO - ✅ Загружен https://rostunnel.vercel.app/mega.txt (2594890 символов)
+2026-05-28 07:30:02,875 - INFO - 📥 +4558 VLESS из https://rostunnel.vercel.app/mega.txt
+2026-05-28 07:30:02,996 - INFO - 📥 +123 VMESS из https://rostunnel.vercel.app/mega.txt
+2026-05-28 07:30:03,051 - INFO - 📥 +1796 TROJAN из https://rostunnel.vercel.app/mega.txt
+2026-05-28 07:30:03,097 - INFO - 📥 +23 HYSTERIA2 из https://rostunnel.vercel.app/mega.txt
+2026-05-28 07:30:03,099 - INFO - 📊 Собрано уникальных конфигов: 7343 (дубликатов: 662)
+2026-05-28 07:30:03,101 - INFO - 🗑️ Папка sub удалена (старые файлы очищены)
+2026-05-28 07:30:03,101 - INFO - 📁 Папка sub создана заново
+2026-05-28 07:30:03,110 - INFO - 💾 all.txt: 7343
+2026-05-28 07:30:03,110 - INFO - 📋 Загружено 908 доменов
+2026-05-28 07:30:03,271 - INFO - 📋 Загружено 30228 CIDR сетей
+2026-05-28 07:30:53,980 - INFO - 📱 LTE.txt: 1136 (отфильтровано по whitelist/CIDR, отсортировано)
+2026-05-28 07:30:53,983 - INFO - 📶 WiFi.txt: 6207
+2026-05-28 07:30:53,987 - INFO - 📊 Статистика сохранена
+2026-05-28 07:30:53,987 - INFO - 📄 README.md обновлён
