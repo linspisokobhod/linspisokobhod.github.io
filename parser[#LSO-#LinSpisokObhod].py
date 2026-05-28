@@ -15,8 +15,11 @@ from typing import Dict, Set, Optional, List
 import base64
 
 # ========== НАСТРОЙКИ ==========
-ENABLE_GEOIP = True          # Геолокация включена
+ENABLE_GEOIP = True
 GEOIP_CACHE = {}
+GEOIP_LOCK = asyncio.Lock()
+GEOIP_CONCURRENCY = 100
+GEOIP_SEMAPHORE = None
 
 SOURCES = [
     "https://alley.serv00.net/1",
@@ -81,7 +84,29 @@ async def fetch_all_sources():
         results = await asyncio.gather(*tasks)
     return dict(zip(SOURCES, results))
 
-# ---------- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----------
+# ---------- АСИНХРОННАЯ ГЕОЛОКАЦИЯ ----------
+async def get_country_by_ip_async(session: aiohttp.ClientSession, ip: str) -> str:
+    if not ENABLE_GEOIP:
+        return ''
+    async with GEOIP_LOCK:
+        if ip in GEOIP_CACHE:
+            return GEOIP_CACHE[ip]
+    async with GEOIP_SEMAPHORE:
+        try:
+            async with session.get(f"http://ip-api.com/json/{ip}?fields=countryCode", timeout=3) as resp:
+                if resp.status == 200:
+                    data = await resp.json()
+                    country = data.get('countryCode', 'XX')
+                    async with GEOIP_LOCK:
+                        GEOIP_CACHE[ip] = country
+                    return country
+        except Exception as e:
+            logger.debug(f"Ошибка геолокации для {ip}: {e}")
+    async with GEOIP_LOCK:
+        GEOIP_CACHE[ip] = 'XX'
+    return 'XX'
+
+# ---------- ОСТАЛЬНЫЕ ФУНКЦИИ ----------
 def extract_configs_from_text(text: str, source_url: str) -> Dict[str, Set[str]]:
     configs = {proto: set() for proto in PROTOCOL_PATTERNS}
     for protocol, pattern in PROTOCOL_PATTERNS.items():
@@ -192,24 +217,6 @@ def extract_ip_from_config(config: str) -> Optional[str]:
     
     return None
 
-def get_country_by_ip(ip: str) -> str:
-    if not ENABLE_GEOIP:
-        return ''
-    if ip in GEOIP_CACHE:
-        return GEOIP_CACHE[ip]
-    try:
-        import requests
-        resp = requests.get(f"http://ip-api.com/json/{ip}?fields=countryCode", timeout=3)
-        if resp.status_code == 200:
-            data = resp.json()
-            country = data.get('countryCode', 'XX')
-            GEOIP_CACHE[ip] = country
-            return country
-    except Exception as e:
-        logger.debug(f"Ошибка геолокации для {ip}: {e}")
-    GEOIP_CACHE[ip] = 'XX'
-    return 'XX'
-
 def extract_type_from_config(config: str) -> str:
     protocol = None
     for p in PROTOCOL_PATTERNS:
@@ -235,7 +242,7 @@ def extract_type_from_config(config: str) -> str:
     
     return "unknown"
 
-def rename_config(config: str) -> str:
+async def rename_config_async(config: str, session: aiohttp.ClientSession) -> str:
     protocol = None
     for p in PROTOCOL_PATTERNS:
         if config.startswith(p + "://"):
@@ -253,7 +260,7 @@ def rename_config(config: str) -> str:
     
     parts = []
     if ENABLE_GEOIP and ip:
-        country = get_country_by_ip(ip)
+        country = await get_country_by_ip_async(session, ip)
         if country and country != 'XX':
             parts.append(country)
     if sni:
@@ -329,9 +336,8 @@ def get_config_priority(config: str, whitelist: Set[str], cidr_list: List[ipaddr
         return 1
     return 2
 
-def collect_configs_sync(contents: Dict[str, Optional[str]]) -> Set[str]:
-    all_configs_set = set()
-    total_raw = 0
+async def collect_configs_async(contents: Dict[str, Optional[str]]) -> Set[str]:
+    raw_configs = []
     for url, content in contents.items():
         if not content:
             continue
@@ -341,10 +347,27 @@ def collect_configs_sync(contents: Dict[str, Optional[str]]) -> Set[str]:
             if not valid_configs:
                 continue
             logger.info(f"📥 +{len(valid_configs)} {protocol.upper()} из {url}")
-            for cfg in valid_configs:
-                renamed_cfg = rename_config(cfg)
-                total_raw += 1
-                all_configs_set.add(renamed_cfg)
+            raw_configs.extend(valid_configs)
+    total_raw = len(raw_configs)
+    logger.info(f"🔄 Всего валидных конфигов (до переименования): {total_raw}")
+    
+    global GEOIP_SEMAPHORE
+    GEOIP_SEMAPHORE = asyncio.Semaphore(GEOIP_CONCURRENCY)
+    
+    renamed_configs = []
+    batch_size = 500
+    for i in range(0, total_raw, batch_size):
+        batch = raw_configs[i:i+batch_size]
+        async with aiohttp.ClientSession() as session:
+            tasks = [rename_config_async(cfg, session) for cfg in batch]
+            batch_results = await asyncio.gather(*tasks)
+            renamed_configs.extend(batch_results)
+        processed = len(renamed_configs)
+        if processed % 100 == 0 or processed == total_raw:
+            remaining = total_raw - processed
+            logger.info(f"⏳ Прогресс: обработано {processed}/{total_raw} конфигов (осталось {remaining})")
+    
+    all_configs_set = set(renamed_configs)
     duplicates = total_raw - len(all_configs_set)
     logger.info(f"📊 Собрано уникальных конфигов: {len(all_configs_set)} (дубликатов: {duplicates})")
     return all_configs_set
@@ -386,7 +409,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v2.4*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v2.7*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -482,18 +505,21 @@ def save_configs(all_configs_set: Set[str]):
 async def main_async():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v2.4 (асинхронный сбор, геолокация включена)")
+    print("🚀 LinSpisokObhod v2.7 (прогресс каждые 100 конфигов)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
     print(f"📄 Whitelist: {WHITELIST_FILE}")
     print(f"🗂️ CIDR whitelist: {CIDR_WHITELIST_FILE}")
     print(f"📁 Результаты в папке: {CONFIG_DIR}")
-    print("🌍 Геолокация: ВКЛЮЧЕНА (ip-api.com)")
+    if ENABLE_GEOIP:
+        print(f"🌍 Геолокация: ВКЛЮЧЕНА (параллельных запросов макс. {GEOIP_CONCURRENCY})")
+    else:
+        print("🌍 Геолокация: ВЫКЛЮЧЕНА")
     print("=" * 60)
 
     contents = await fetch_all_sources()
-    all_configs = collect_configs_sync(contents)
+    all_configs = await collect_configs_async(contents)
     stats = save_configs(all_configs)
 
     elapsed = time.time() - start_time
