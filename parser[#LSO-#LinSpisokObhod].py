@@ -15,6 +15,9 @@ from typing import Dict, Set, Optional, List
 import base64
 
 # ========== НАСТРОЙКИ ==========
+ENABLE_GEOIP = True          # Определение страны по IP (ip-api.com)
+GEOIP_CACHE = {}
+
 SOURCES = [
     "https://alley.serv00.net/1",
     "https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt",
@@ -36,7 +39,6 @@ PROTOCOL_PATTERNS = {
     'vmess': re.compile(r'vmess://[A-Za-z0-9+/=]+', re.IGNORECASE),
     'trojan': re.compile(r'trojan://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
     'hysteria2': re.compile(r'hysteria2://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
-    'ss': re.compile(r'ss://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
 }
 
 REQUEST_TIMEOUT = 30
@@ -124,8 +126,6 @@ def validate_config(config: str, protocol: str) -> bool:
         if not (ip or sni):
             return False
         return '@' in config
-    elif protocol == 'ss':
-        return '@' in config
     return True
 
 def extract_sni_domain(config: str) -> Optional[str]:
@@ -166,7 +166,7 @@ def extract_ip_from_config(config: str) -> Optional[str]:
 
     body = config[len(protocol)+3:]
     
-    if protocol in ('vless', 'trojan', 'hysteria2', 'ss'):
+    if protocol in ('vless', 'trojan', 'hysteria2'):
         if '@' in body:
             host_part = body.split('@')[1]
             host = host_part.split(':')[0]
@@ -174,7 +174,7 @@ def extract_ip_from_config(config: str) -> Optional[str]:
                 ipaddress.ip_address(host)
                 return host
             except ValueError:
-                return host
+                return None
         return None
     
     if protocol == 'vmess':
@@ -189,6 +189,21 @@ def extract_ip_from_config(config: str) -> Optional[str]:
     
     return None
 
+def get_country_by_ip(ip: str) -> str:
+    if ip in GEOIP_CACHE:
+        return GEOIP_CACHE[ip]
+    try:
+        resp = requests.get(f"http://ip-api.com/json/{ip}?fields=countryCode", timeout=3)
+        if resp.status_code == 200:
+            data = resp.json()
+            country = data.get('countryCode', 'XX')
+            GEOIP_CACHE[ip] = country
+            return country
+    except Exception as e:
+        logger.debug(f"Ошибка геолокации для {ip}: {e}")
+    GEOIP_CACHE[ip] = 'XX'
+    return 'XX'
+
 def extract_type_from_config(config: str) -> str:
     protocol = None
     for p in PROTOCOL_PATTERNS:
@@ -197,9 +212,6 @@ def extract_type_from_config(config: str) -> str:
             break
     if not protocol:
         return "unknown"
-    
-    if protocol == 'ss':
-        return "SHADOWSOCKS"
     
     body = config[len(protocol)+3:]
     
@@ -226,28 +238,32 @@ def rename_config(config: str) -> str:
     if not protocol:
         return config
     
-    # Для Shadowsocks удаляем старый комментарий и добавляем #unknown | SHADOWSOCKS
-    if protocol == 'ss':
-        # Удаляем старый комментарий (всё после последнего '#')
-        if '#' in config:
-            config = config.rsplit('#', 1)[0].rstrip()
-        # Добавляем новый комментарий
-        new_comment = "#unknown | SHADOWSOCKS"
-        return config + new_comment
-    
-    # Для остальных протоколов
+    # Удаляем старый комментарий
     if '#' in config:
         config = config.rsplit('#', 1)[0].rstrip()
     
-    sni_domain = extract_sni_domain(config)
+    sni = extract_sni_domain(config)
+    ip = extract_ip_from_config(config)
     conn_type = extract_type_from_config(config)
     
-    if sni_domain:
-        new_name = f"#{sni_domain} | {conn_type}"
-    else:
-        new_name = f"#unknown | {conn_type}"
+    # Определяем страну (только если есть IP и включена геолокация)
+    country = None
+    if ip and ENABLE_GEOIP:
+        country = get_country_by_ip(ip)
     
-    return config + new_name
+    parts = []
+    if country and country != 'XX':
+        parts.append(country)
+    if sni:
+        parts.append(sni)
+    elif ip:
+        parts.append(ip)
+    else:
+        parts.append("unknown")
+    parts.append(conn_type)
+    
+    comment = "#" + " | ".join(parts)
+    return config + comment
 
 def ensure_lists_dir():
     if not os.path.exists(LISTS_DIR):
@@ -303,7 +319,6 @@ def is_ip_in_cidr_list(ip_str: str, cidr_list: List[ipaddress.ip_network]) -> bo
         return False
 
 def get_config_priority(config: str, whitelist: Set[str], cidr_list: List[ipaddress.ip_network]) -> int:
-    """0 - whitelist, 1 - CIDR, 2 - остальные"""
     sni = extract_sni_domain(config)
     if sni and sni in whitelist:
         return 0
@@ -365,8 +380,7 @@ def update_readme(stats: Dict, sources_count: int):
         f"| 🔗 VLESS | `{stats['by_protocol'].get('vless', 0)}` |\n"
         f"| 📦 VMess | `{stats['by_protocol'].get('vmess', 0)}` |\n"
         f"| 🛡️ Trojan | `{stats['by_protocol'].get('trojan', 0)}` |\n"
-        f"| ⚡ Hysteria2 | `{stats['by_protocol'].get('hysteria2', 0)}` |\n"
-        f"| 🌊 Shadowsocks | `{stats['by_protocol'].get('ss', 0)}` |\n\n"
+        f"| ⚡ Hysteria2 | `{stats['by_protocol'].get('hysteria2', 0)}` |\n\n"
         "## 🗂️ Логика LTE.txt\n\n"
         "1. **Приоритет 1**: sni домен из `whitelist.txt`\n"
         "2. **Приоритет 2**: IP сервера входит в CIDR из `cidrwhitelist.txt`\n"
@@ -379,7 +393,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.19*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v2.2*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -394,7 +408,6 @@ def save_configs(all_configs_set: Set[str]):
 
     update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    # Добавляем маркер для всех конфигов (в конец)
     tagged_set = {f"{cfg} {GLOBAL_TAG}" for cfg in all_configs_set}
     sorted_all = sorted(tagged_set)
 
@@ -432,7 +445,6 @@ def save_configs(all_configs_set: Set[str]):
     lte_set = set()
     wifi_set = set()
     for line in tagged_set:
-        # Убираем маркер для классификации
         clean = line.replace(f" {GLOBAL_TAG}", "")
         prio = get_config_priority(clean, whitelist, cidr_list)
         if prio in (0, 1):
@@ -477,13 +489,14 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v1.19 (shadowsocks: удаление старого комментария, добавление #unknown | SHADOWSOCKS, затем маркер)")
+    print("🚀 LinSpisokObhod v2.2 (геолокация включена, комментарий: страна | sni/ip | тип)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
     print(f"📄 Whitelist: {WHITELIST_FILE}")
     print(f"🗂️ CIDR whitelist: {CIDR_WHITELIST_FILE}")
     print(f"📁 Результаты в папке: {CONFIG_DIR}")
+    print("🌍 Геолокация: ВКЛЮЧЕНА (ip-api.com)")
     print("=" * 60)
 
     all_configs = collect_configs()
