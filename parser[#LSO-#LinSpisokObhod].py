@@ -16,7 +16,7 @@ import base64
 
 # ========== НАСТРОЙКИ ==========
 SOURCES = [
-    "https://raw.githubusercontent.com/EtoNeYaProject/etoneyaproject.github.io/refs/heads/main/1",
+    "https://etoneya.best/1",  # замена
     "https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt",
     "https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt",
     "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt",
@@ -24,6 +24,8 @@ SOURCES = [
     "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt",
     "https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw",
     "https://rostunnel.vercel.app/mega.txt",
+    "https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt",
+    "https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hy2_001.txt",
 ]
 
 GLOBAL_TAG = "[#LSO - #LinSpisokObhod]"
@@ -37,7 +39,7 @@ PROTOCOL_PATTERNS = {
 }
 
 REQUEST_TIMEOUT = 30
-MAX_WORKERS = 20
+MAX_WORKERS = 10
 CONFIG_DIR = "sub"
 LISTS_DIR = "lists"
 LOG_FILE = "collector.log"
@@ -360,7 +362,7 @@ def update_readme(stats: Dict, sources_count: int):
         "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
         "- `sub/WiFi.txt` – остальные\n\n"
         "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.12*\n"
+        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v1.13*\n"
     )
     with open(README_FILE, 'w', encoding='utf-8') as f:
         f.write(readme_content)
@@ -456,7 +458,7 @@ def save_configs(all_configs_set: Set[str]):
 def main():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v1.12")
+    print("🚀 LinSpisokObhod v1.13 (обновлён источник etoneya.best)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
