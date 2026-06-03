@@ -6728,3 +6728,99 @@
 2026-06-03 04:58:38,091 - INFO - 📶 WiFi.txt: 4088
 2026-06-03 04:58:38,093 - INFO - 📊 Статистика сохранена
 2026-06-03 04:58:38,094 - INFO - 📄 README.md обновлён
+2026-06-03 09:58:51,540 - INFO - ✅ Загружен https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt (10537 символов)
+2026-06-03 09:58:51,618 - INFO - ✅ Загружен https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt (50077 символов)
+2026-06-03 09:58:51,666 - INFO - ✅ Загружен https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt (102342 символов)
+2026-06-03 09:58:51,704 - INFO - ✅ Загружен https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt (4943 символов)
+2026-06-03 09:58:51,727 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt (1228034 символов)
+2026-06-03 09:58:51,732 - INFO - ✅ Загружен https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt (1228034 символов)
+2026-06-03 09:58:51,732 - INFO - ✅ Загружен https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hy2_001.txt (189 символов)
+2026-06-03 09:58:51,733 - INFO - ✅ Загружен https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw (25398 символов)
+2026-06-03 09:58:51,737 - INFO - ✅ Загружен https://rostunnel.vercel.app/mega.txt (1641253 символов)
+2026-06-03 09:58:52,694 - INFO - ✅ Загружен https://alley.serv00.net/1 (100196 символов)
+2026-06-03 09:58:52,707 - INFO - 📥 +316 VLESS из https://alley.serv00.net/1
+2026-06-03 09:58:52,708 - INFO - 📥 +16 TROJAN из https://alley.serv00.net/1
+2026-06-03 09:58:52,709 - INFO - 📥 +27 HYSTERIA2 из https://alley.serv00.net/1
+2026-06-03 09:58:52,716 - INFO - 📥 +80 VLESS из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-06-03 09:58:52,718 - INFO - 📥 +55 TROJAN из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-06-03 09:58:52,720 - INFO - 📥 +80 HYSTERIA2 из https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt
+2026-06-03 09:58:52,728 - INFO - 📥 +168 VLESS из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-06-03 09:58:52,729 - INFO - 📥 +29 TROJAN из https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt
+2026-06-03 09:58:52,807 - INFO - 📥 +586 TROJAN из https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt
+2026-06-03 09:58:52,895 - INFO - 📥 +586 TROJAN из https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt
+2026-06-03 09:58:52,900 - INFO - 📥 +29 VLESS из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-06-03 09:58:52,900 - INFO - 📥 +2 VMESS из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-06-03 09:58:52,900 - INFO - 📥 +1 TROJAN из https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt
+2026-06-03 09:58:52,904 - INFO - 📥 +92 VLESS из https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw
+2026-06-03 09:58:53,107 - INFO - 📥 +3527 VLESS из https://rostunnel.vercel.app/mega.txt
+2026-06-03 09:58:53,124 - INFO - 📥 +116 VMESS из https://rostunnel.vercel.app/mega.txt
+2026-06-03 09:58:53,132 - INFO - 📥 +221 TROJAN из https://rostunnel.vercel.app/mega.txt
+2026-06-03 09:58:53,134 - INFO - 📥 +12 HYSTERIA2 из https://rostunnel.vercel.app/mega.txt
+2026-06-03 09:58:53,135 - INFO - 📥 +29 HYSTERIA2 из https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt
+2026-06-03 09:58:53,135 - INFO - 🔄 Всего валидных конфигов (до переименования): 5972
+2026-06-03 09:58:53,136 - INFO - 🌍 Определяю страны для 3667 уникальных IP через IPinfo (параллельно 10)
+2026-06-03 09:58:53,266 - INFO - ✅ IPinfo (token 99b9...): 178.154.202.184 -> Russia
+2026-06-03 09:58:53,268 - INFO - ✅ IPinfo (token 99b9...): 82.40.33.241 -> Japan
+2026-06-03 09:58:53,269 - INFO - ✅ IPinfo (token 99b9...): 46.225.51.154 -> Germany
+2026-06-03 09:58:53,271 - INFO - ✅ IPinfo (token a94d...): 81.29.156.195 -> The Netherlands
+2026-06-03 09:58:53,272 - INFO - ✅ IPinfo (token 99b9...): 104.16.1.25 -> United States
+2026-06-03 09:59:03,208 - INFO -    Прогресс геолокации: 100/3667 IP обработано
+2026-06-03 09:59:13,238 - INFO -    Прогресс геолокации: 200/3667 IP обработано
+2026-06-03 09:59:23,269 - INFO -    Прогресс геолокации: 300/3667 IP обработано
+2026-06-03 09:59:33,300 - INFO -    Прогресс геолокации: 400/3667 IP обработано
+2026-06-03 09:59:43,329 - INFO -    Прогресс геолокации: 500/3667 IP обработано
+2026-06-03 09:59:53,356 - INFO -    Прогресс геолокации: 600/3667 IP обработано
+2026-06-03 10:00:03,382 - INFO -    Прогресс геолокации: 700/3667 IP обработано
+2026-06-03 10:00:13,408 - INFO -    Прогресс геолокации: 800/3667 IP обработано
+2026-06-03 10:00:23,433 - INFO -    Прогресс геолокации: 900/3667 IP обработано
+2026-06-03 10:00:33,462 - INFO -    Прогресс геолокации: 1000/3667 IP обработано
+2026-06-03 10:00:43,486 - INFO -    Прогресс геолокации: 1100/3667 IP обработано
+2026-06-03 10:00:53,509 - INFO -    Прогресс геолокации: 1200/3667 IP обработано
+2026-06-03 10:01:03,537 - INFO -    Прогресс геолокации: 1300/3667 IP обработано
+2026-06-03 10:01:13,567 - INFO -    Прогресс геолокации: 1400/3667 IP обработано
+2026-06-03 10:01:23,596 - INFO -    Прогресс геолокации: 1500/3667 IP обработано
+2026-06-03 10:01:33,623 - INFO -    Прогресс геолокации: 1600/3667 IP обработано
+2026-06-03 10:01:43,650 - INFO -    Прогресс геолокации: 1700/3667 IP обработано
+2026-06-03 10:01:53,676 - INFO -    Прогресс геолокации: 1800/3667 IP обработано
+2026-06-03 10:02:03,700 - INFO -    Прогресс геолокации: 1900/3667 IP обработано
+2026-06-03 10:02:13,723 - INFO -    Прогресс геолокации: 2000/3667 IP обработано
+2026-06-03 10:02:23,746 - INFO -    Прогресс геолокации: 2100/3667 IP обработано
+2026-06-03 10:02:33,772 - INFO -    Прогресс геолокации: 2200/3667 IP обработано
+2026-06-03 10:02:43,803 - INFO -    Прогресс геолокации: 2300/3667 IP обработано
+2026-06-03 10:02:53,833 - INFO -    Прогресс геолокации: 2400/3667 IP обработано
+2026-06-03 10:03:03,863 - INFO -    Прогресс геолокации: 2500/3667 IP обработано
+2026-06-03 10:03:13,894 - INFO -    Прогресс геолокации: 2600/3667 IP обработано
+2026-06-03 10:03:23,926 - INFO -    Прогресс геолокации: 2700/3667 IP обработано
+2026-06-03 10:03:33,957 - INFO -    Прогресс геолокации: 2800/3667 IP обработано
+2026-06-03 10:03:43,987 - INFO -    Прогресс геолокации: 2900/3667 IP обработано
+2026-06-03 10:03:54,018 - INFO -    Прогресс геолокации: 3000/3667 IP обработано
+2026-06-03 10:04:04,048 - INFO -    Прогресс геолокации: 3100/3667 IP обработано
+2026-06-03 10:04:14,078 - INFO -    Прогресс геолокации: 3200/3667 IP обработано
+2026-06-03 10:04:24,107 - INFO -    Прогресс геолокации: 3300/3667 IP обработано
+2026-06-03 10:04:34,138 - INFO -    Прогресс геолокации: 3400/3667 IP обработано
+2026-06-03 10:04:44,170 - INFO -    Прогресс геолокации: 3500/3667 IP обработано
+2026-06-03 10:04:54,204 - INFO -    Прогресс геолокации: 3600/3667 IP обработано
+2026-06-03 10:05:00,926 - INFO -    Прогресс геолокации: 3667/3667 IP обработано
+2026-06-03 10:05:01,027 - INFO - ✅ Геолокация завершена
+2026-06-03 10:05:01,043 - INFO - ⏳ Прогресс переименования: 500/5972 конфигов
+2026-06-03 10:05:01,058 - INFO - ⏳ Прогресс переименования: 1000/5972 конфигов
+2026-06-03 10:05:01,070 - INFO - ⏳ Прогресс переименования: 1500/5972 конфигов
+2026-06-03 10:05:01,083 - INFO - ⏳ Прогресс переименования: 2000/5972 конфигов
+2026-06-03 10:05:01,103 - INFO - ⏳ Прогресс переименования: 2500/5972 конфигов
+2026-06-03 10:05:01,123 - INFO - ⏳ Прогресс переименования: 3000/5972 конфигов
+2026-06-03 10:05:01,144 - INFO - ⏳ Прогресс переименования: 3500/5972 конфигов
+2026-06-03 10:05:01,164 - INFO - ⏳ Прогресс переименования: 4000/5972 конфигов
+2026-06-03 10:05:01,184 - INFO - ⏳ Прогресс переименования: 4500/5972 конфигов
+2026-06-03 10:05:01,204 - INFO - ⏳ Прогресс переименования: 5000/5972 конфигов
+2026-06-03 10:05:01,225 - INFO - ⏳ Прогресс переименования: 5500/5972 конфигов
+2026-06-03 10:05:01,239 - INFO - ⏳ Прогресс переименования: 5972/5972 конфигов
+2026-06-03 10:05:01,240 - INFO - 📊 Собрано уникальных конфигов: 5170 (дубликатов: 802)
+2026-06-03 10:05:01,241 - INFO - 🗑️ Папка sub удалена (старые файлы очищены)
+2026-06-03 10:05:01,242 - INFO - 📁 Папка sub создана заново
+2026-06-03 10:05:01,246 - INFO - 💾 all.txt: 5170
+2026-06-03 10:05:01,247 - INFO - 📋 Загружено 2600 доменов
+2026-06-03 10:05:01,408 - INFO - 📋 Загружено 30228 CIDR сетей
+2026-06-03 10:05:31,006 - INFO - 📱 LTE.txt: 1117 (отфильтровано по whitelist/CIDR, отсортировано)
+2026-06-03 10:05:31,008 - INFO - 📶 WiFi.txt: 4053
+2026-06-03 10:05:31,011 - INFO - 📊 Статистика сохранена
+2026-06-03 10:05:31,011 - INFO - 📄 README.md обновлён
