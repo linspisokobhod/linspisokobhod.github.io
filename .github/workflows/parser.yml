@@ -72,22 +72,30 @@ jobs:
         git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
         git push
         cd ..
-    # ============================================================
-    # Синхронизация с gitflic.ru
-    # ============================================================
+    # ========== gitflic.ru (HTTPS с авторизацией по Email и паролю через .netrc) ==========
+    - name: Configure gitflic.ru auth via .netrc
+      env:
+        GITFLIC_EMAIL: ${{ secrets.GITFLIC_EMAIL }}
+        GITFLIC_PASSWORD: ${{ secrets.GITFLIC_PASSWORD }}
+      if: env.GITFLIC_EMAIL != '' && env.GITFLIC_PASSWORD != ''
+      run: |
+        echo "machine gitflic.ru login ${GITFLIC_EMAIL} password ${GITFLIC_PASSWORD}" >> ~/.netrc
+        chmod 600 ~/.netrc
+
     - name: Sync to gitflic.ru
       env:
-        TOKEN: ${{ secrets.GITFLIC_TOKEN }}
-      if: env.TOKEN != ''
+        GITFLIC_EMAIL: ${{ secrets.GITFLIC_EMAIL }}
+        GITFLIC_PASSWORD: ${{ secrets.GITFLIC_PASSWORD }}
+      if: env.GITFLIC_EMAIL != '' && env.GITFLIC_PASSWORD != ''
       run: |
-        git clone https://oauth2:${TOKEN}@gitflic.ru/project/liniptv/lso.git gitflic-repo
+        git clone https://gitflic.ru/project/liniptv/lso.git gitflic-repo
         cd gitflic-repo
         rm -rf sub README.md
         cp -r ../sub ./
         cp ../README.md ./
         git add sub README.md
         git config user.name "github-actions[bot]"
-        git config.user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
         git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
         git push
         cd ..
