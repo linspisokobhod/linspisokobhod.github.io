@@ -1,31 +1,94 @@
-name: LinSpisokObhod
+name: Collect & Sync Proxies
 
 on:
   schedule:
-    - cron: '0 * * * *'   # каждый час
+    - cron: '0 */2 * * *'
   workflow_dispatch:
 
 jobs:
-  collect:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    timeout-minutes: 10
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup Python
+    - name: Checkout GitHub repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
-    - name: Install dependencies
+        python-version: '3.11'
+
+    - name: Install Python dependencies
       run: pip install aiohttp
-    - name: Run LinSpisokObhod
+
+    - name: Run collector script
       run: python parser[#LSO-#LinSpisokObhod].py
-      env:
-        IPINFO_TOKEN: ${{ secrets.IPINFO_TOKEN }}
-    - name: Commit and push if changed
+
+    - name: Commit and push results to GitHub
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add sub/ lists/ collector.log README.md
-        git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update ($(date +'%Y-%m-%d %H:%M:%S'))"
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add sub/ README.md
+        git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update proxy configs [skip ci]"
         git push
+
+    # ============================================================
+    # Синхронизация с hub.mos.ru
+    # ============================================================
+    - name: Sync to hub.mos.ru
+      env:
+        TOKEN: ${{ secrets.MOS_HUB_TOKEN }}
+      if: env.TOKEN != ''
+      run: |
+        git clone https://oauth2:${TOKEN}@hub.mos.ru/LinSpisokObhod/LInSpisokObhod.git mos-repo
+        cd mos-repo
+        rm -rf sub README.md
+        cp -r ../sub ./
+        cp ../README.md ./
+        git add sub README.md
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
+        git push
+        cd ..
+
+    # ============================================================
+    # Синхронизация с gitverse.ru
+    # ============================================================
+    - name: Sync to gitverse.ru
+      env:
+        TOKEN: ${{ secrets.GITVERSE_TOKEN }}
+      if: env.TOKEN != ''
+      run: |
+        git clone https://oauth2:${TOKEN}@gitverse.ru/LinSpisokObhod/LSO.git gitverse-repo
+        cd gitverse-repo
+        rm -rf sub README.md
+        cp -r ../sub ./
+        cp ../README.md ./
+        git add sub README.md
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
+        git push
+        cd ..
+
+    # ============================================================
+    # Синхронизация с gitflic.ru
+    # ============================================================
+    - name: Sync to gitflic.ru
+      env:
+        TOKEN: ${{ secrets.GITFLIC_TOKEN }}
+      if: env.TOKEN != ''
+      run: |
+        git clone https://token:${TOKEN}@gitflic.ru/git/liniptv/lso.git gitflic-repo
+        cd gitflic-repo
+        rm -rf sub README.md
+        cp -r ../sub ./
+        cp ../README.md ./
+        git add sub README.md
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
+        git push
+        cd ..
