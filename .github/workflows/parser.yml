@@ -2,7 +2,7 @@ name: Collect & Sync Proxies
 
 on:
   schedule:
-    - cron: '0 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 * * *'
+    - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -23,9 +23,10 @@ jobs:
       run: pip install aiohttp
 
     - name: Run collector script
-      run: python parser[#LSO-#LinSpisokObhod].py
+      run: python LinSpisokObhod.py
 
-    - name: Commit and push results to GitHub
+    # ========== Сохраняем обычные файлы для GitHub ==========
+    - name: Commit and push plain text files to GitHub
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -33,9 +34,7 @@ jobs:
         git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update proxy configs [skip ci]"
         git push
 
-    # ============================================================
-    # Синхронизация с hub.mos.ru
-    # ============================================================
+    # ========== Синхронизация с hub.mos.ru (base64 под именами .txt) ==========
     - name: Sync to hub.mos.ru
       env:
         TOKEN: ${{ secrets.MOS_HUB_TOKEN }}
@@ -43,19 +42,22 @@ jobs:
       run: |
         git clone https://oauth2:${TOKEN}@hub.mos.ru/LinSpisokObhod/LInSpisokObhod.git mos-repo
         cd mos-repo
-        rm -rf sub README.md
-        cp -r ../sub ./
+        # Удаляем старые текстовые файлы (если есть)
+        rm -f ALL.txt LTE.txt WiFi.txt
+        # Копируем base64-файлы как обычные .txt
+        cp ../sub/ALL.64.txt ./ALL.txt
+        cp ../sub/LTE.64.txt ./LTE.txt
+        cp ../sub/WIFI.64.txt ./WiFi.txt
+        # Копируем README как есть (можно оставить текстовый)
         cp ../README.md ./
-        git add sub README.md
+        git add ALL.txt LTE.txt WiFi.txt README.md
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
         git push
         cd ..
 
-    # ============================================================
-    # Синхронизация с gitverse.ru
-    # ============================================================
+    # ========== Синхронизация с gitverse.ru (base64 под именами .txt) ==========
     - name: Sync to gitverse.ru
       env:
         TOKEN: ${{ secrets.GITVERSE_TOKEN }}
@@ -63,17 +65,20 @@ jobs:
       run: |
         git clone https://oauth2:${TOKEN}@gitverse.ru/LinSpisokObhod/LSO.git gitverse-repo
         cd gitverse-repo
-        rm -rf sub README.md
-        cp -r ../sub ./
+        rm -f ALL.txt LTE.txt WiFi.txt
+        cp ../sub/ALL.64.txt ./ALL.txt
+        cp ../sub/LTE.64.txt ./LTE.txt
+        cp ../sub/WIFI.64.txt ./WiFi.txt
         cp ../README.md ./
-        git add sub README.md
+        git add ALL.txt LTE.txt WiFi.txt README.md
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
         git push
         cd ..
-    # ========== gitflic.ru (HTTPS с авторизацией по Email и паролю через .netrc) ==========
-    - name: Configure gitflic.ru auth via .netrc
+
+    # ========== gitflic.ru (HTTPS через .netrc) ==========
+    - name: Setup gitflic.ru auth via .netrc
       env:
         GITFLIC_EMAIL: ${{ secrets.GITFLIC_EMAIL }}
         GITFLIC_PASSWORD: ${{ secrets.GITFLIC_PASSWORD }}
@@ -90,10 +95,12 @@ jobs:
       run: |
         git clone https://gitflic.ru/project/liniptv/lso.git gitflic-repo
         cd gitflic-repo
-        rm -rf sub README.md
-        cp -r ../sub ./
+        rm -f ALL.txt LTE.txt WiFi.txt
+        cp ../sub/ALL.64.txt ./ALL.txt
+        cp ../sub/LTE.64.txt ./LTE.txt
+        cp ../sub/WIFI.64.txt ./WiFi.txt
         cp ../README.md ./
-        git add sub README.md
+        git add ALL.txt LTE.txt WiFi.txt README.md
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
