@@ -10,12 +10,11 @@ import shutil
 import asyncio
 import aiohttp
 import base64
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from urllib.parse import parse_qs
 from typing import Dict, Set, Optional, List
 
 # ========== НАСТРОЙКИ ==========
-ENABLE_GEOIP = True
 GEOIP_PARALLEL = 10
 GEOIP_DELAY = 0.1
 IPINFO_TOKENS = [
@@ -23,7 +22,7 @@ IPINFO_TOKENS = [
     "a94d8c011ca891"
 ]
 IPINFO_TOKENS = [t for t in IPINFO_TOKENS if t]
-if ENABLE_GEOIP and not IPINFO_TOKENS:
+if not IPINFO_TOKENS:
     raise ValueError("No IPINFO_TOKEN provided. Please add at least one token.")
 
 GEOIP_CACHE = {}
@@ -43,7 +42,7 @@ SOURCES = [
     "https://mifa.world/ss",
     "https://gist.github.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc.txt",
     "https://internet-tenshi.kangel.tech/2",
-    "https://raw.githubusercontent.com/ksenkovsolo/HardVPN-bypass-WhiteLists-/refs/heads/main/vpn-lte/WHITELIST-ALL.txt"  # ваш новый источник
+    "https://raw.githubusercontent.com/ksenkovsolo/HardVPN-bypass-WhiteLists-/refs/heads/main/vpn-lte/WHITELIST-ALL.txt"
 ]
 
 REQUEST_TIMEOUT = 15
@@ -58,9 +57,9 @@ PROTOCOL_PATTERNS = {
     'vmess': re.compile(r'vmess://[A-Za-z0-9+/=]+', re.IGNORECASE),
     'trojan': re.compile(r'trojan://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
     'hysteria2': re.compile(r'hysteria2://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
+    'ss': re.compile(r'ss://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
 }
 
-# Настройка логирования: только вывод в консоль, без файла
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
@@ -104,14 +103,24 @@ def extract_ip_from_config(config: str) -> Optional[str]:
     if not protocol:
         return None
     body = config[len(protocol)+3:]
-    if '@' in body:
-        host_part = body.split('@')[1]
-        host = host_part.split(':')[0]
-        try:
-            ipaddress.ip_address(host)
-            return host
-        except ValueError:
-            return None
+    if protocol in ('vless', 'trojan', 'hysteria2', 'vmess'):
+        if '@' in body:
+            host_part = body.split('@')[1]
+            host = host_part.split(':')[0]
+            try:
+                ipaddress.ip_address(host)
+                return host
+            except ValueError:
+                return None
+    elif protocol == 'ss':
+        if '@' in body:
+            host_part = body.split('@')[1].split('?')[0].split('#')[0]
+            host = host_part.split(':')[0]
+            try:
+                ipaddress.ip_address(host)
+                return host
+            except ValueError:
+                return None
     return None
 
 def extract_sni_domain(config: str) -> Optional[str]:
@@ -121,6 +130,8 @@ def extract_sni_domain(config: str) -> Optional[str]:
             protocol = p
             break
     if not protocol:
+        return None
+    if protocol == 'ss':
         return None
     body = config[len(protocol)+3:]
     if protocol in ('vless', 'trojan', 'hysteria2'):
@@ -173,6 +184,8 @@ def validate_config(config: str, protocol: str) -> bool:
         if not (ip or sni):
             return False
         return True
+    elif protocol == 'ss':
+        return '@' in config and len(config) > 10
     return True
 
 # === ГЕОЛОКАЦИЯ (IPinfo с ротацией токенов) ===
@@ -228,7 +241,7 @@ async def resolve_countries_parallel(ips: List[str]) -> Dict[str, str]:
     logger.info("✅ Геолокация завершена")
     return GEOIP_CACHE.copy()
 
-# === ФУНКЦИЯ ПЕРЕИМЕНОВАНИЯ (ДОБАВЛЯЕТ СТРАНУ В КОММЕНТАРИЙ) ===
+# === ФУНКЦИЯ ПЕРЕИМЕНОВАНИЯ (ДОБАВЛЯЕТ СТРАНУ И IP/SNI В КОММЕНТАРИЙ) ===
 def rename_config(config: str, country: str = '') -> str:
     protocol = None
     for p in PROTOCOL_PATTERNS:
@@ -242,18 +255,21 @@ def rename_config(config: str, country: str = '') -> str:
     sni = extract_sni_domain(config)
     ip = extract_ip_from_config(config)
     conn_type = "unknown"
-    body = config[len(protocol)+3:]
-    if '?' in body:
-        query_part = body.split('?', 1)[1]
-        params = parse_qs(query_part)
-        if 'type' in params:
-            t = params['type'][0].lower()
-            if t == 'ws':
-                conn_type = "WebSocket"
-            else:
-                conn_type = t.upper()
+    if protocol not in ('ss', 'vmess'):
+        body = config[len(protocol)+3:]
+        if '?' in body:
+            query_part = body.split('?', 1)[1]
+            params = parse_qs(query_part)
+            if 'type' in params:
+                t = params['type'][0].lower()
+                if t == 'ws':
+                    conn_type = "WebSocket"
+                else:
+                    conn_type = t.upper()
     if protocol == 'hysteria2':
         conn_type = "HYSTERIA2"
+    if protocol == 'ss':
+        conn_type = "SHADOWSOCKS"
     parts = []
     if ip and country and country != 'XX':
         parts.append(country)
@@ -368,15 +384,15 @@ async def collect_configs_async(contents: Dict[str, Optional[str]]) -> Set[str]:
     total_raw = len(raw_configs)
     logger.info(f"🔄 Всего валидных конфигов (до переименования): {total_raw}")
 
-    if ENABLE_GEOIP and all_ips:
+    if all_ips:
         await resolve_countries_parallel(list(all_ips))
-    elif ENABLE_GEOIP:
-        logger.info("🌍 Геолокация включена, но IP для определения не найдены")
+    else:
+        logger.info("🌍 Геолокация: IP для определения не найдены")
 
     renamed_configs = []
     for i, cfg in enumerate(raw_configs, 1):
         ip = extract_ip_from_config(cfg)
-        country = GEOIP_CACHE.get(ip, '') if ip and ENABLE_GEOIP else ''
+        country = GEOIP_CACHE.get(ip, '') if ip else ''
         renamed_cfg = rename_config(cfg, country)
         renamed_configs.append(renamed_cfg)
         if i % 500 == 0 or i == total_raw:
@@ -387,15 +403,68 @@ async def collect_configs_async(contents: Dict[str, Optional[str]]) -> Set[str]:
     logger.info(f"📊 Собрано уникальных конфигов: {len(all_configs_set)} (дубликатов: {duplicates})")
     return all_configs_set
 
-# === СОХРАНЕНИЕ И ФИЛЬТРАЦИЯ ===
-def save_base64_encoded(original_path: str, encoded_path: str):
-    if os.path.exists(original_path):
-        with open(original_path, 'rb') as f:
-            data = f.read()
-        b64_data = base64.b64encode(data).decode('ascii')
-        with open(encoded_path, 'w', encoding='ascii') as f:
-            f.write(b64_data)
-        logger.info(f"🔐 Base64 сохранён: {encoded_path}")
+# === ФУНКЦИЯ ДЛЯ СОЗДАНИЯ README.md ===
+def update_readme(total: int, lte: int, wifi: int, protocols: Dict[str, int]):
+    moscow_time = get_moscow_time()
+    readme_content = f"""# 🚀 LinSpisokObhod
+
+## 📅 Время последнего сбора
+
+`{moscow_time} (UTC+3)`
+
+## 📊 Статистика
+
+| Файл | Количество |
+|------|------------|
+| 📁 ALL.txt / ALL.64.txt | `{total}` |
+| 📱 LTE.txt / LTE.64.txt | `{lte}` |
+| 📶 WiFi.txt / WIFI.64.txt | `{wifi}` |
+
+## 📡 Протоколы
+
+| Протокол | Количество |
+|----------|------------|
+| 🔗 VLESS | `{protocols.get('vless', 0)}` |
+| 📦 VMess | `{protocols.get('vmess', 0)}` |
+| 🛡️ Trojan | `{protocols.get('trojan', 0)}` |
+| ⚡ Hysteria2 | `{protocols.get('hysteria2', 0)}` |
+| 🔒 Shadowsocks | `{protocols.get('ss', 0)}` |
+
+## 🗂️ Логика LTE.txt
+
+1. **Приоритет 1**: sni домен из `whitelist.txt`
+2. **Приоритет 2**: IP сервера входит в CIDR из `cidrwhitelist.txt`
+3. **WiFi.txt**: все остальные конфиги
+
+## 🗂️ Логика ALL/LTE/WIFI .64.txt
+
+1. Берётся конфиг ALL/LTE/WIFI
+2. Шифрование в правильный base64 (конфиги не ломаются)
+
+## 📁 Файлы
+
+- `sub/ALL.txt` – все конфиги
+- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные
+- `sub/WiFi.txt` – остальные
+- `sub/ALL.64.txt` – все конфиги, зашифрованные в base64
+- `sub/LTE.64.txt` – отфильтрованные, зашифрованные в base64
+- `sub/WiFi.64.txt` – остальные, зашифрованные в base64
+
+## 🔄 Автообновление
+
+Скрипт запускается **каждый час**.
+
+---
+*LinSpisokObhod v3.8*
+"""
+    with open("README.md", 'w', encoding='utf-8') as f:
+        f.write(readme_content)
+    logger.info("📄 README.md обновлён")
+
+def get_moscow_time() -> str:
+    moscow_tz = timezone(timedelta(hours=3))
+    now_msk = datetime.now(moscow_tz)
+    return now_msk.strftime("%Y-%m-%d %H:%M:%S")
 
 def save_configs(all_configs_set: Set[str]):
     if os.path.exists(CONFIG_DIR):
@@ -404,10 +473,10 @@ def save_configs(all_configs_set: Set[str]):
     os.makedirs(CONFIG_DIR, exist_ok=True)
     logger.info(f"📁 Папка {CONFIG_DIR} создана заново")
 
-    update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
+    update_time = get_moscow_time()
     tagged_set = {f"{cfg} {GLOBAL_TAG}" for cfg in all_configs_set}
-    
+
+    # Заголовки для обычных файлов (ALL.txt, LTE.txt, WiFi.txt)
     header_all = f"""#profile-title: #LSO-#LinSpisokObhod
 #profile-update-interval: 1
 #support-url: https://t.me/LinSpisokObhod
@@ -429,6 +498,30 @@ def save_configs(all_configs_set: Set[str]):
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
 """
+    # Заголовки для base64-файлов (ALL.64.txt, LTE.64.txt, WIFI.64.txt)
+    header_all_b64 = f"""#profile-title: #LSO-#LinSpisokObhod
+#profile-update-interval: 1
+#support-url: https://t.me/LinSpisokObhod
+#announce: LinSpisokObhod подписка all.txt. Здесь находится конфиги WIFI.txt и LTE.txt. Подписка зашифрованная в Base 64. Время: {update_time}
+#subscription-userinfo: upload=0; download=0; total=0; expire=0
+
+"""
+    header_lte_b64 = f"""#profile-title: #LSO-#LinSpisokObhod
+#profile-update-interval: 1
+#support-url: https://t.me/LinSpisokObhod
+#announce: LinSpisokObhod подписка LTE.64.txt. Здесь находится конфиги которые может подойдут для повседневного использования. Подписка зашифрованная в Base 64. Время: {update_time}
+#subscription-userinfo: upload=0; download=0; total=0; expire=0
+
+"""
+    header_wifi_b64 = f"""#profile-title: #LSO-#LinSpisokObhod
+#profile-update-interval: 1
+#support-url: https://t.me/LinSpisokObhod
+#announce: LinSpisokObhod подписка WIFI.64.txt. Здесь находится конфиги которые может подойдут для вайфай но может и для мобильного интернета Подписка зашифрованная в Base 64. Время: {update_time}
+#subscription-userinfo: upload=0; download=0; total=0; expire=0
+
+"""
+
+    # Сохраняем ALL.txt
     all_path = os.path.join(CONFIG_DIR, "ALL.txt")
     with open(all_path, 'w', encoding='utf-8') as f:
         f.write(header_all)
@@ -449,39 +542,71 @@ def save_configs(all_configs_set: Set[str]):
 
     lte_list = sorted(lte_set, key=lambda x: get_config_priority(x.replace(f" {GLOBAL_TAG}", ""), whitelist, cidr_list))
     wifi_list = sorted(wifi_set)
-    
+
+    # Сохраняем LTE.txt
     lte_path = os.path.join(CONFIG_DIR, "LTE.txt")
     with open(lte_path, 'w', encoding='utf-8') as f:
         f.write(header_lte)
         f.write("\n".join(lte_list) + "\n")
     logger.info(f"📱 LTE.txt: {len(lte_list)} (отфильтровано)")
 
+    # Сохраняем WiFi.txt
     wifi_path = os.path.join(CONFIG_DIR, "WiFi.txt")
     with open(wifi_path, 'w', encoding='utf-8') as f:
         f.write(header_wifi)
         f.write("\n".join(wifi_list) + "\n")
     logger.info(f"📶 WiFi.txt: {len(wifi_list)}")
 
-    # Base64
-    save_base64_encoded(all_path, os.path.join(CONFIG_DIR, "ALL.64.txt"))
-    save_base64_encoded(lte_path, os.path.join(CONFIG_DIR, "LTE.64.txt"))
-    save_base64_encoded(wifi_path, os.path.join(CONFIG_DIR, "WIFI.64.txt"))
+    # --- Base64 файлы с собственными заголовками ---
+    # ALL.64.txt
+    all_content_b64 = header_all_b64 + "\n".join(sorted(tagged_set)) + "\n"
+    all_b64_data = base64.b64encode(all_content_b64.encode('utf-8')).decode('ascii')
+    all_b64_path = os.path.join(CONFIG_DIR, "ALL.64.txt")
+    with open(all_b64_path, 'w', encoding='ascii') as f:
+        f.write(all_b64_data)
+    logger.info(f"🔐 ALL.64.txt: base64 закодирован (длина строки {len(all_b64_data)})")
 
-    # Статистика НЕ СОЗДАЁТСЯ
+    # LTE.64.txt
+    lte_content_b64 = header_lte_b64 + "\n".join(lte_list) + "\n"
+    lte_b64_data = base64.b64encode(lte_content_b64.encode('utf-8')).decode('ascii')
+    lte_b64_path = os.path.join(CONFIG_DIR, "LTE.64.txt")
+    with open(lte_b64_path, 'w', encoding='ascii') as f:
+        f.write(lte_b64_data)
+    logger.info(f"🔐 LTE.64.txt: base64 закодирован (длина строки {len(lte_b64_data)})")
+
+    # WIFI.64.txt
+    wifi_content_b64 = header_wifi_b64 + "\n".join(wifi_list) + "\n"
+    wifi_b64_data = base64.b64encode(wifi_content_b64.encode('utf-8')).decode('ascii')
+    wifi_b64_path = os.path.join(CONFIG_DIR, "WIFI.64.txt")
+    with open(wifi_b64_path, 'w', encoding='ascii') as f:
+        f.write(wifi_b64_data)
+    logger.info(f"🔐 WIFI.64.txt: base64 закодирован (длина строки {len(wifi_b64_data)})")
+
+    # Подсчёт протоколов
+    protocol_counts = {p: 0 for p in PROTOCOL_PATTERNS}
+    for cfg in all_configs_set:
+        proto = None
+        for p in PROTOCOL_PATTERNS:
+            if cfg.startswith(p + "://"):
+                proto = p
+                break
+        if proto:
+            protocol_counts[proto] += 1
+
+    # Обновление README.md
+    update_readme(len(tagged_set), len(lte_list), len(wifi_list), protocol_counts)
+
     logger.info("✅ Готово. Файлы stats.json и collector.log не создавались.")
 
 # === ЗАПУСК ===
 async def main_async():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod (геолокация, поддержка субдоменов и .yandex, base64)")
+    print("🚀 LinSpisokObhod (геолокация, shadowsocks, base64, README.md)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
     print(f"📁 Результаты в папке: {CONFIG_DIR}")
-    if ENABLE_GEOIP:
-        print(f"🌍 Геолокация: ВКЛЮЧЕНА (IPinfo, токенов: {len(IPINFO_TOKENS)})")
-    else:
-        print("🌍 Геолокация: ВЫКЛЮЧЕНА")
+    print(f"🌍 Геолокация: ВКЛЮЧЕНА (IPinfo, токенов: {len(IPINFO_TOKENS)})")
     print("=" * 60)
 
     contents = await fetch_all_sources()
