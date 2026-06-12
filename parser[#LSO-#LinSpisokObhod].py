@@ -42,7 +42,8 @@ SOURCES = [
     "https://mifa.world/ss",
     "https://gist.github.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc.txt",
     "https://internet-tenshi.kangel.tech/2",
-    "https://raw.githubusercontent.com/ksenkovsolo/HardVPN-bypass-WhiteLists-/refs/heads/main/vpn-lte/WHITELIST-ALL.txt"
+    "https://raw.githubusercontent.com/ksenkovsolo/HardVPN-bypass-WhiteLists-/refs/heads/main/vpn-lte/WHITELIST-ALL.txt",
+    "https://rostunnel.vercel.app/mega.txt"   # новая подписка
 ]
 
 REQUEST_TIMEOUT = 15
