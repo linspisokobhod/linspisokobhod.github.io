@@ -23,7 +23,7 @@ jobs:
       run: pip install aiohttp
 
     - name: Run collector script
-      run: python LinSpisokObhod.py
+      run: python parser[#LSO-#LinSpisokObhod].py
 
     # ========== Сохраняем обычные файлы для GitHub ==========
     - name: Commit and push plain text files to GitHub
