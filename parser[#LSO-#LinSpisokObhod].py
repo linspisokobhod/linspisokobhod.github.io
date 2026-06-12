@@ -43,7 +43,7 @@ SOURCES = [
     "https://gist.github.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc.txt",
     "https://internet-tenshi.kangel.tech/2",
     "https://raw.githubusercontent.com/ksenkovsolo/HardVPN-bypass-WhiteLists-/refs/heads/main/vpn-lte/WHITELIST-ALL.txt",
-    "https://rostunnel.vercel.app/mega.txt"   # новая подписка
+    "https://rostunnel.vercel.app/mega.txt"
 ]
 
 REQUEST_TIMEOUT = 15
@@ -64,13 +64,41 @@ PROTOCOL_PATTERNS = {
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# === АСИНХРОННАЯ ЗАГРУЗКА ===
+# === ДЕКОДИРОВАНИЕ BASE64 (если строка закодирована) ===
+def decode_base64_if_needed(content: str) -> str:
+    """
+    Проверяет, является ли содержимое строкой Base64.
+    Если да, декодирует и возвращает расшифрованный текст.
+    Если нет, возвращает исходную строку.
+    """
+    content = content.strip()
+    # Проверяем, что строка похожа на Base64 (только допустимые символы и правильная длина)
+    if not re.match(r'^[A-Za-z0-9+/]*={0,2}$', content):
+        return content
+    try:
+        decoded_bytes = base64.b64decode(content)
+        decoded_str = decoded_bytes.decode('utf-8', errors='ignore')
+        # Проверяем, что декодированная строка выглядит как осмысленный текст
+        if len(decoded_str) > 0 and any(c.isprintable() for c in decoded_str):
+            # Если в декодированной строке есть символы '://' (признак URL конфига)
+            if '://' in decoded_str:
+                return decoded_str
+            # Если нет явных признаков конфигов, но текст выглядит осмысленно
+            if decoded_str.isprintable() and len(decoded_str) > 20:
+                return decoded_str
+    except Exception:
+        pass
+    return content
+
+# === АСИНХРОННАЯ ЗАГРУЗКА С ДЕКОДИРОВАНИЕМ ===
 async def fetch_url_content(session: aiohttp.ClientSession, url: str) -> Optional[str]:
     try:
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
         async with session.get(url, timeout=REQUEST_TIMEOUT, headers=headers) as response:
             if response.status == 200:
                 content = await response.text()
+                # Пробуем декодировать Base64
+                content = decode_base64_if_needed(content)
                 logger.info(f"✅ Загружен {url} ({len(content)} символов)")
                 return content
             else:
