@@ -1,24 +1,26 @@
 # 🚀 LinSpisokObhod
 
 ## 📅 Время последнего сбора
-`2026-06-12 09:11:06`
+
+`2026-06-12 20:46:55 (UTC+3)`
 
 ## 📊 Статистика
 
 | Файл | Количество |
 |------|------------|
-| 📁 **all.txt** | `5510` |
-| 📱 **LTE.txt** | `1133` |
-| 📶 **WiFi.txt** | `4377` |
+| 📁 ALL.txt / ALL.64.txt | `11062` |
+| 📱 LTE.txt / LTE.64.txt | `2548` |
+| 📶 WiFi.txt / WIFI.64.txt | `8514` |
 
 ## 📡 Протоколы
 
 | Протокол | Количество |
 |----------|------------|
-| 🔗 VLESS | `4410` |
-| 📦 VMess | `123` |
-| 🛡️ Trojan | `805` |
-| ⚡ Hysteria2 | `172` |
+| 🔗 VLESS | `4967` |
+| 📦 VMess | `114` |
+| 🛡️ Trojan | `289` |
+| ⚡ Hysteria2 | `135` |
+| 🔒 Shadowsocks | `5557` |
 
 ## 🗂️ Логика LTE.txt
 
@@ -26,16 +28,19 @@
 2. **Приоритет 2**: IP сервера входит в CIDR из `cidrwhitelist.txt`
 3. **WiFi.txt**: все остальные конфиги
 
-## 📋 Источники белых списков
+## 🗂️ Логика ALL/LTE/WIFI .64.txt
 
-Файлы `whitelist.txt` и `cidrwhitelist.txt` взяты из репозитория:
-🔗 [hxehex/russia-mobile-internet-whitelist](https://github.com/hxehex/russia-mobile-internet-whitelist)
+1. Берётся конфиг ALL/LTE/WIFI
+2. Шифрование в правильный base64 (конфиги не ломаются)
 
 ## 📁 Файлы
 
-- `sub/all.txt` – все конфиги
+- `sub/ALL.txt` – все конфиги
 - `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные
 - `sub/WiFi.txt` – остальные
+- `sub/ALL.64.txt` – все конфиги, зашифрованные в base64
+- `sub/LTE.64.txt` – отфильтрованные, зашифрованные в base64
+- `sub/WiFi.64.txt` – остальные, зашифрованные в base64
 
 ## 🔄 Автообновление
 
