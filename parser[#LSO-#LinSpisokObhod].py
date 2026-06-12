@@ -9,20 +9,19 @@ import ipaddress
 import shutil
 import asyncio
 import aiohttp
+import base64
 from datetime import datetime
 from urllib.parse import parse_qs
 from typing import Dict, Set, Optional, List
-import base64
 
 # ========== НАСТРОЙКИ ==========
 ENABLE_GEOIP = True
-GEOIP_PARALLEL = 10          # количество одновременных запросов
-GEOIP_DELAY = 0.1            # задержка между пачками (сек)
+GEOIP_PARALLEL = 10
+GEOIP_DELAY = 0.1
 IPINFO_TOKENS = [
-    os.environ.get("IPINFO_TOKEN"),        # основной токен из секретов
-    "a94d8c011ca891"                       # второй токен (добавлен)
+    os.environ.get("IPINFO_TOKEN"),
+    "a94d8c011ca891"
 ]
-# Убираем None из списка
 IPINFO_TOKENS = [t for t in IPINFO_TOKENS if t]
 if ENABLE_GEOIP and not IPINFO_TOKENS:
     raise ValueError("No IPINFO_TOKEN provided. Please add at least one token.")
@@ -33,20 +32,24 @@ TOKEN_INDEX = 0
 TOKEN_LOCK = asyncio.Lock()
 
 SOURCES = [
-    "https://alley.serv00.net/1",
     "https://raw.githubusercontent.com/tahmaseb73/Telegram_config_collector/refs/heads/main/configs/proxy_configs.txt",
+    "https://gitverse.ru/RoGo/mobile-whitelist/content/master/mobile-whitelist-1.txt",
     "https://raw.githubusercontent.com/v0id9/vpn-configs/refs/heads/main/vpn.txt",
-    "https://raw.githubusercontent.com/mahdibland/V2RayAggregator/master/sub/sub_merge.txt",
-    "https://raw.githubusercontent.com/mahdibland/SSAggregator/master/sub/sub_merge.txt",
-    "https://raw.githubusercontent.com/igareck/vpn-configs-for-russia/refs/heads/main/WHITE-CIDR-RU-all.txt",
-    "https://gist.githubusercontent.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc/raw",
-    "https://rostunnel.vercel.app/mega.txt",
-    "https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hysteria2_001.txt",
-    "https://raw.githubusercontent.com/kort0881/sbornik-vless/refs/heads/main/subs/hy2_001.txt",
+    "https://tinyurl.com/SemqkaVLESS",
+    "https://mifa.world/vless",
+    "https://mifa.world/hysteria",
+    "https://mifa.world/vmess",
+    "https://mifa.world/trojan",
+    "https://mifa.world/ss",
+    "https://gist.github.com/DestroyST6767/50af50221ca1858ba2084efc0f524fbc.txt"
 ]
 
+REQUEST_TIMEOUT = 15
+CONFIG_DIR = "sub"
+LISTS_DIR = "lists"
+WHITELIST_FILE = os.path.join(LISTS_DIR, "whitelist.txt")
+CIDR_WHITELIST_FILE = os.path.join(LISTS_DIR, "cidrwhitelist.txt")
 GLOBAL_TAG = "[#LSO - #LinSpisokObhod]"
-SCRIPT_NAME = "LinSpisokObhod.py"
 
 PROTOCOL_PATTERNS = {
     'vless': re.compile(r'vless://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
@@ -55,26 +58,11 @@ PROTOCOL_PATTERNS = {
     'hysteria2': re.compile(r'hysteria2://[A-Za-z0-9+/=@:;,\?&%#\.\-_~!$*()]+', re.IGNORECASE),
 }
 
-REQUEST_TIMEOUT = 15
-MAX_WORKERS = 20
-CONFIG_DIR = "sub"
-LISTS_DIR = "lists"
-LOG_FILE = "collector.log"
-WHITELIST_FILE = os.path.join(LISTS_DIR, "whitelist.txt")
-CIDR_WHITELIST_FILE = os.path.join(LISTS_DIR, "cidrwhitelist.txt")
-README_FILE = "README.md"
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(LOG_FILE, encoding='utf-8'),
-        logging.StreamHandler()
-    ]
-)
+# Настройка логирования: только вывод в консоль, без файла
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# ---------- АСИНХРОННАЯ ЗАГРУЗКА ----------
+# === АСИНХРОННАЯ ЗАГРУЗКА ===
 async def fetch_url_content(session: aiohttp.ClientSession, url: str) -> Optional[str]:
     try:
         headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
@@ -95,7 +83,16 @@ async def fetch_all_sources():
         results = await asyncio.gather(*tasks)
     return dict(zip(SOURCES, results))
 
-# ---------- ИЗВЛЕЧЕНИЕ IP ----------
+# === ПАРСИНГ КОНФИГОВ ===
+def extract_configs_from_text(text: str, source_url: str) -> Dict[str, Set[str]]:
+    configs = {proto: set() for proto in PROTOCOL_PATTERNS}
+    for protocol, pattern in PROTOCOL_PATTERNS.items():
+        matches = pattern.findall(text)
+        for match in matches:
+            if 50 < len(match) < 5000:
+                configs[protocol].add(match)
+    return configs
+
 def extract_ip_from_config(config: str) -> Optional[str]:
     protocol = None
     for p in PROTOCOL_PATTERNS:
@@ -114,113 +111,6 @@ def extract_ip_from_config(config: str) -> Optional[str]:
         except ValueError:
             return None
     return None
-
-# ---------- ГЕОЛОКАЦИЯ С РОТАЦИЕЙ ТОКЕНОВ ----------
-async def get_next_token():
-    global TOKEN_INDEX
-    async with TOKEN_LOCK:
-        token = IPINFO_TOKENS[TOKEN_INDEX % len(IPINFO_TOKENS)]
-        TOKEN_INDEX += 1
-        return token
-
-async def resolve_country(ip: str, session: aiohttp.ClientSession) -> str:
-    async with GEOIP_SEMAPHORE:
-        if ip in GEOIP_CACHE:
-            return GEOIP_CACHE[ip]
-
-        country = 'XX'
-        token = await get_next_token()
-        try:
-            url = f"https://api.ipinfo.io/lite/{ip}/country?token={token}"
-            async with session.get(url, timeout=5) as resp:
-                if resp.status == 200:
-                    country = (await resp.text()).strip()
-                    if not country:
-                        country = 'XX'
-                    if len(GEOIP_CACHE) < 5 and country != 'XX':
-                        logger.info(f"✅ IPinfo (token {token[:4]}...): {ip} -> {country}")
-                elif resp.status == 429:
-                    # Too Many Requests – попробуем другой токен
-                    logger.warning(f"⚠️ Токен {token[:4]}... лимит, переключаюсь")
-                    # Повторно запросим с новым токеном (без увеличения счётчика в кэше)
-                    return await resolve_country(ip, session)
-                else:
-                    logger.debug(f"⚠️ IPinfo ошибка {resp.status} для {ip} (токен {token[:4]}...)")
-        except Exception as e:
-            logger.debug(f"Ошибка IPinfo для {ip}: {e}")
-
-        GEOIP_CACHE[ip] = country
-        return country
-
-async def resolve_countries_parallel(ips: List[str]) -> Dict[str, str]:
-    if not ips:
-        return {}
-    unique_ips = [ip for ip in set(ips) if ip not in GEOIP_CACHE]
-    if not unique_ips:
-        return GEOIP_CACHE.copy()
-    total = len(unique_ips)
-    logger.info(f"🌍 Определяю страны для {total} уникальных IP через IPinfo (параллельно {GEOIP_PARALLEL})")
-    processed = 0
-    async with aiohttp.ClientSession() as session:
-        tasks = [resolve_country(ip, session) for ip in unique_ips]
-        for future in asyncio.as_completed(tasks):
-            await future
-            processed += 1
-            if processed % 100 == 0 or processed == total:
-                logger.info(f"   Прогресс геолокации: {processed}/{total} IP обработано")
-            await asyncio.sleep(GEOIP_DELAY)
-    logger.info("✅ Геолокация завершена")
-    return GEOIP_CACHE.copy()
-
-# ---------- ОСТАЛЬНЫЕ ФУНКЦИИ (без изменений) ----------
-def extract_configs_from_text(text: str, source_url: str) -> Dict[str, Set[str]]:
-    configs = {proto: set() for proto in PROTOCOL_PATTERNS}
-    for protocol, pattern in PROTOCOL_PATTERNS.items():
-        matches = pattern.findall(text)
-        for match in matches:
-            if 50 < len(match) < 5000:
-                configs[protocol].add(match)
-        if matches:
-            logger.debug(f"Найдено {len(matches)} конфигураций {protocol} в {source_url}")
-    return configs
-
-def decode_vmess_config(config: str) -> Optional[Dict]:
-    try:
-        if config.startswith('vmess://'):
-            encoded = config[8:]
-            decoded = base64.b64decode(encoded).decode('utf-8')
-            return json.loads(decoded)
-    except Exception:
-        pass
-    return None
-
-def validate_config(config: str, protocol: str) -> bool:
-    if len(config) < 20:
-        return False
-    if protocol == 'vmess':
-        decoded = decode_vmess_config(config)
-        if decoded and all(k in decoded for k in ('v', 'ps', 'add', 'port', 'id')):
-            return True
-        return False
-    elif protocol == 'vless':
-        sni = extract_sni_domain(config)
-        ip = extract_ip_from_config(config)
-        if not (sni or ip):
-            return False
-        return 'encryption=' in config or 'security=' in config or '@' in config
-    elif protocol == 'trojan':
-        sni = extract_sni_domain(config)
-        ip = extract_ip_from_config(config)
-        if not (sni or ip):
-            return False
-        return '@' in config or 'password' in config or 'sni' in config
-    elif protocol == 'hysteria2':
-        ip = extract_ip_from_config(config)
-        sni = extract_sni_domain(config)
-        if not (ip or sni):
-            return False
-        return '@' in config
-    return True
 
 def extract_sni_domain(config: str) -> Optional[str]:
     protocol = None
@@ -245,27 +135,98 @@ def extract_sni_domain(config: str) -> Optional[str]:
         return None
     return None
 
-def extract_type_from_config(config: str) -> str:
-    protocol = None
-    for p in PROTOCOL_PATTERNS:
-        if config.startswith(p + "://"):
-            protocol = p
-            break
-    if not protocol:
-        return "unknown"
-    body = config[len(protocol)+3:]
-    if '?' in body:
-        query_part = body.split('?', 1)[1]
-        params = parse_qs(query_part)
-        if 'type' in params:
-            t = params['type'][0].lower()
-            if t == 'ws':
-                return "WebSocket"
-            return t.upper()
-    if protocol == 'hysteria2':
-        return "HYSTERIA2"
-    return "unknown"
+def decode_vmess_config(config: str) -> Optional[Dict]:
+    try:
+        if config.startswith('vmess://'):
+            encoded = config[8:]
+            decoded = base64.b64decode(encoded).decode('utf-8')
+            return json.loads(decoded)
+    except Exception:
+        pass
+    return None
 
+def validate_config(config: str, protocol: str) -> bool:
+    if len(config) < 20:
+        return False
+    if protocol == 'vmess':
+        decoded = decode_vmess_config(config)
+        if decoded and all(k in decoded for k in ('v', 'ps', 'add', 'port', 'id')):
+            return True
+        return False
+    elif protocol == 'vless':
+        sni = extract_sni_domain(config)
+        ip = extract_ip_from_config(config)
+        if not (sni or ip):
+            return False
+        return True
+    elif protocol == 'trojan':
+        sni = extract_sni_domain(config)
+        ip = extract_ip_from_config(config)
+        if not (sni or ip):
+            return False
+        return True
+    elif protocol == 'hysteria2':
+        ip = extract_ip_from_config(config)
+        sni = extract_sni_domain(config)
+        if not (ip or sni):
+            return False
+        return True
+    return True
+
+# === ГЕОЛОКАЦИЯ (IPinfo с ротацией токенов) ===
+async def get_next_token():
+    global TOKEN_INDEX
+    async with TOKEN_LOCK:
+        token = IPINFO_TOKENS[TOKEN_INDEX % len(IPINFO_TOKENS)]
+        TOKEN_INDEX += 1
+        return token
+
+async def resolve_country(ip: str, session: aiohttp.ClientSession) -> str:
+    async with GEOIP_SEMAPHORE:
+        if ip in GEOIP_CACHE:
+            return GEOIP_CACHE[ip]
+        country = 'XX'
+        token = await get_next_token()
+        try:
+            url = f"https://api.ipinfo.io/lite/{ip}/country?token={token}"
+            async with session.get(url, timeout=5) as resp:
+                if resp.status == 200:
+                    country = (await resp.text()).strip()
+                    if not country:
+                        country = 'XX'
+                    if len(GEOIP_CACHE) < 5 and country != 'XX':
+                        logger.info(f"✅ IPinfo (token {token[:4]}...): {ip} -> {country}")
+                elif resp.status == 429:
+                    logger.warning(f"⚠️ Токен {token[:4]}... лимит, переключаюсь")
+                    return await resolve_country(ip, session)
+                else:
+                    logger.debug(f"⚠️ IPinfo ошибка {resp.status} для {ip}")
+        except Exception as e:
+            logger.debug(f"Ошибка IPinfo для {ip}: {e}")
+        GEOIP_CACHE[ip] = country
+        return country
+
+async def resolve_countries_parallel(ips: List[str]) -> Dict[str, str]:
+    if not ips:
+        return {}
+    unique_ips = [ip for ip in set(ips) if ip not in GEOIP_CACHE]
+    if not unique_ips:
+        return GEOIP_CACHE.copy()
+    total = len(unique_ips)
+    logger.info(f"🌍 Определяю страны для {total} уникальных IP через IPinfo (параллельно {GEOIP_PARALLEL})")
+    processed = 0
+    async with aiohttp.ClientSession() as session:
+        tasks = [resolve_country(ip, session) for ip in unique_ips]
+        for future in asyncio.as_completed(tasks):
+            await future
+            processed += 1
+            if processed % 100 == 0 or processed == total:
+                logger.info(f"   Прогресс геолокации: {processed}/{total} IP обработано")
+            await asyncio.sleep(GEOIP_DELAY)
+    logger.info("✅ Геолокация завершена")
+    return GEOIP_CACHE.copy()
+
+# === ФУНКЦИЯ ПЕРЕИМЕНОВАНИЯ (ДОБАВЛЯЕТ СТРАНУ В КОММЕНТАРИЙ) ===
 def rename_config(config: str, country: str = '') -> str:
     protocol = None
     for p in PROTOCOL_PATTERNS:
@@ -278,7 +239,19 @@ def rename_config(config: str, country: str = '') -> str:
         config = config.rsplit('#', 1)[0].rstrip()
     sni = extract_sni_domain(config)
     ip = extract_ip_from_config(config)
-    conn_type = extract_type_from_config(config)
+    conn_type = "unknown"
+    body = config[len(protocol)+3:]
+    if '?' in body:
+        query_part = body.split('?', 1)[1]
+        params = parse_qs(query_part)
+        if 'type' in params:
+            t = params['type'][0].lower()
+            if t == 'ws':
+                conn_type = "WebSocket"
+            else:
+                conn_type = t.upper()
+    if protocol == 'hysteria2':
+        conn_type = "HYSTERIA2"
     parts = []
     if ip and country and country != 'XX':
         parts.append(country)
@@ -294,10 +267,10 @@ def rename_config(config: str, country: str = '') -> str:
     comment = "#" + " | ".join(parts)
     return config + comment
 
+# === ЗАГРУЗКА БЕЛЫХ СПИСКОВ ===
 def ensure_lists_dir():
     if not os.path.exists(LISTS_DIR):
         os.makedirs(LISTS_DIR)
-        logger.info(f"📁 Создана папка {LISTS_DIR}")
 
 def load_whitelist() -> Set[str]:
     ensure_lists_dir()
@@ -305,7 +278,9 @@ def load_whitelist() -> Set[str]:
     if not os.path.exists(WHITELIST_FILE):
         with open(WHITELIST_FILE, 'w', encoding='utf-8') as f:
             f.write("# Домены для LTE (приоритет 1)\n")
+            f.write("# Поддерживаются субдомены и зона .yandex\n")
             f.write("example.com\n")
+            f.write(".yandex\n")
         logger.info(f"📝 Создан пример {WHITELIST_FILE}")
         return whitelist
     with open(WHITELIST_FILE, 'r', encoding='utf-8') as f:
@@ -313,7 +288,7 @@ def load_whitelist() -> Set[str]:
             line = line.strip()
             if line and not line.startswith('#'):
                 whitelist.add(line)
-    logger.info(f"📋 Загружено {len(whitelist)} доменов")
+    logger.info(f"📋 Загружено {len(whitelist)} доменов/зон")
     return whitelist
 
 def load_cidr_whitelist() -> List[ipaddress.ip_network]:
@@ -347,15 +322,30 @@ def is_ip_in_cidr_list(ip_str: str, cidr_list: List[ipaddress.ip_network]) -> bo
     except ValueError:
         return False
 
+def is_domain_allowed(domain: str, whitelist: Set[str]) -> bool:
+    if not domain:
+        return False
+    domain = domain.lower()
+    for allowed in whitelist:
+        allowed_lower = allowed.lower()
+        if allowed_lower.startswith('.'):
+            if domain.endswith(allowed_lower):
+                return True
+        else:
+            if domain == allowed_lower or domain.endswith('.' + allowed_lower):
+                return True
+    return False
+
 def get_config_priority(config: str, whitelist: Set[str], cidr_list: List[ipaddress.ip_network]) -> int:
     sni = extract_sni_domain(config)
-    if sni and sni in whitelist:
+    if sni and is_domain_allowed(sni, whitelist):
         return 0
     ip = extract_ip_from_config(config)
     if ip and is_ip_in_cidr_list(ip, cidr_list):
         return 1
     return 2
 
+# === ОСНОВНОЙ СБОР С ГЕОЛОКАЦИЕЙ ===
 async def collect_configs_async(contents: Dict[str, Optional[str]]) -> Set[str]:
     raw_configs = []
     all_ips = set()
@@ -395,48 +385,15 @@ async def collect_configs_async(contents: Dict[str, Optional[str]]) -> Set[str]:
     logger.info(f"📊 Собрано уникальных конфигов: {len(all_configs_set)} (дубликатов: {duplicates})")
     return all_configs_set
 
-def get_protocol_from_config(config: str) -> str:
-    for protocol in PROTOCOL_PATTERNS:
-        if config.startswith(protocol + "://"):
-            return protocol
-    return "unknown"
-
-def update_readme(stats: Dict, sources_count: int):
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    readme_content = (
-        "# 🚀 LinSpisokObhod\n\n"
-        "## 📅 Время последнего сбора\n"
-        f"`{now}`\n\n"
-        "## 📊 Статистика\n\n"
-        "| Файл | Количество |\n"
-        "|------|------------|\n"
-        f"| 📁 **all.txt** | `{stats['total_configs']}` |\n"
-        f"| 📱 **LTE.txt** | `{stats['filtered']['lte']}` |\n"
-        f"| 📶 **WiFi.txt** | `{stats['filtered']['wifi']}` |\n\n"
-        "## 📡 Протоколы\n\n"
-        "| Протокол | Количество |\n"
-        "|----------|------------|\n"
-        f"| 🔗 VLESS | `{stats['by_protocol'].get('vless', 0)}` |\n"
-        f"| 📦 VMess | `{stats['by_protocol'].get('vmess', 0)}` |\n"
-        f"| 🛡️ Trojan | `{stats['by_protocol'].get('trojan', 0)}` |\n"
-        f"| ⚡ Hysteria2 | `{stats['by_protocol'].get('hysteria2', 0)}` |\n\n"
-        "## 🗂️ Логика LTE.txt\n\n"
-        "1. **Приоритет 1**: sni домен из `whitelist.txt`\n"
-        "2. **Приоритет 2**: IP сервера входит в CIDR из `cidrwhitelist.txt`\n"
-        "3. **WiFi.txt**: все остальные конфиги\n\n"
-        "## 📋 Источники белых списков\n\n"
-        "Файлы `whitelist.txt` и `cidrwhitelist.txt` взяты из репозитория:\n"
-        "🔗 [hxehex/russia-mobile-internet-whitelist](https://github.com/hxehex/russia-mobile-internet-whitelist)\n\n"
-        "## 📁 Файлы\n\n"
-        "- `sub/all.txt` – все конфиги\n"
-        "- `sub/LTE.txt` – отфильтрованные по whitelist/CIDR и отсортированные\n"
-        "- `sub/WiFi.txt` – остальные\n\n"
-        "## 🔄 Автообновление\n\n"
-        f"Скрипт запускается **каждый час**.\n\n---\n*LinSpisokObhod v3.8*\n"
-    )
-    with open(README_FILE, 'w', encoding='utf-8') as f:
-        f.write(readme_content)
-    logger.info("📄 README.md обновлён")
+# === СОХРАНЕНИЕ И ФИЛЬТРАЦИЯ ===
+def save_base64_encoded(original_path: str, encoded_path: str):
+    if os.path.exists(original_path):
+        with open(original_path, 'rb') as f:
+            data = f.read()
+        b64_data = base64.b64encode(data).decode('ascii')
+        with open(encoded_path, 'w', encoding='ascii') as f:
+            f.write(b64_data)
+        logger.info(f"🔐 Base64 сохранён: {encoded_path}")
 
 def save_configs(all_configs_set: Set[str]):
     if os.path.exists(CONFIG_DIR):
@@ -446,10 +403,9 @@ def save_configs(all_configs_set: Set[str]):
     logger.info(f"📁 Папка {CONFIG_DIR} создана заново")
 
     update_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
+    
     tagged_set = {f"{cfg} {GLOBAL_TAG}" for cfg in all_configs_set}
-    sorted_all = sorted(tagged_set)
-
+    
     header_all = f"""#profile-title: #LSO-#LinSpisokObhod
 #profile-update-interval: 1
 #support-url: https://t.me/LinSpisokObhod
@@ -471,12 +427,11 @@ def save_configs(all_configs_set: Set[str]):
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
 """
-
-    all_path = os.path.join(CONFIG_DIR, "all.txt")
+    all_path = os.path.join(CONFIG_DIR, "ALL.txt")
     with open(all_path, 'w', encoding='utf-8') as f:
         f.write(header_all)
-        f.write("\n".join(sorted_all) + "\n")
-    logger.info(f"💾 all.txt: {len(sorted_all)}")
+        f.write("\n".join(sorted(tagged_set)) + "\n")
+    logger.info(f"💾 ALL.txt: {len(tagged_set)}")
 
     whitelist = load_whitelist()
     cidr_list = load_cidr_whitelist()
@@ -485,55 +440,41 @@ def save_configs(all_configs_set: Set[str]):
     wifi_set = set()
     for line in tagged_set:
         clean = line.replace(f" {GLOBAL_TAG}", "")
-        prio = get_config_priority(clean, whitelist, cidr_list)
-        if prio in (0, 1):
+        if get_config_priority(clean, whitelist, cidr_list) in (0, 1):
             lte_set.add(line)
         else:
             wifi_set.add(line)
 
     lte_list = sorted(lte_set, key=lambda x: get_config_priority(x.replace(f" {GLOBAL_TAG}", ""), whitelist, cidr_list))
+    wifi_list = sorted(wifi_set)
     
     lte_path = os.path.join(CONFIG_DIR, "LTE.txt")
     with open(lte_path, 'w', encoding='utf-8') as f:
         f.write(header_lte)
         f.write("\n".join(lte_list) + "\n")
-    logger.info(f"📱 LTE.txt: {len(lte_list)} (отфильтровано по whitelist/CIDR, отсортировано)")
+    logger.info(f"📱 LTE.txt: {len(lte_list)} (отфильтровано)")
 
     wifi_path = os.path.join(CONFIG_DIR, "WiFi.txt")
     with open(wifi_path, 'w', encoding='utf-8') as f:
         f.write(header_wifi)
-        f.write("\n".join(sorted(wifi_set)) + "\n")
-    logger.info(f"📶 WiFi.txt: {len(wifi_set)}")
+        f.write("\n".join(wifi_list) + "\n")
+    logger.info(f"📶 WiFi.txt: {len(wifi_list)}")
 
-    protocol_stats = {proto: 0 for proto in PROTOCOL_PATTERNS}
-    for cfg in all_configs_set:
-        proto = get_protocol_from_config(cfg)
-        if proto in protocol_stats:
-            protocol_stats[proto] += 1
+    # Base64
+    save_base64_encoded(all_path, os.path.join(CONFIG_DIR, "ALL.64.txt"))
+    save_base64_encoded(lte_path, os.path.join(CONFIG_DIR, "LTE.64.txt"))
+    save_base64_encoded(wifi_path, os.path.join(CONFIG_DIR, "WIFI.64.txt"))
 
-    stats = {
-        "timestamp": datetime.now().isoformat(),
-        "total_configs": len(tagged_set),
-        "by_protocol": protocol_stats,
-        "filtered": {"lte": len(lte_list), "wifi": len(wifi_set)}
-    }
-    stats_path = os.path.join(CONFIG_DIR, "stats.json")
-    with open(stats_path, 'w', encoding='utf-8') as f:
-        json.dump(stats, f, indent=2, ensure_ascii=False)
-    logger.info("📊 Статистика сохранена")
+    # Статистика НЕ СОЗДАЁТСЯ
+    logger.info("✅ Готово. Файлы stats.json и collector.log не создавались.")
 
-    update_readme(stats, len(SOURCES))
-    return stats
-
+# === ЗАПУСК ===
 async def main_async():
     start_time = time.time()
     print("=" * 60)
-    print("🚀 LinSpisokObhod v3.8 (ротация токенов IPinfo, без ip-api.com)")
+    print("🚀 LinSpisokObhod (геолокация, поддержка субдоменов и .yandex, base64)")
     print("=" * 60)
     print(f"📋 Источников: {len(SOURCES)}")
-    print(f"🔄 Протоколы: {', '.join(PROTOCOL_PATTERNS.keys())}")
-    print(f"📄 Whitelist: {WHITELIST_FILE}")
-    print(f"🗂️ CIDR whitelist: {CIDR_WHITELIST_FILE}")
     print(f"📁 Результаты в папке: {CONFIG_DIR}")
     if ENABLE_GEOIP:
         print(f"🌍 Геолокация: ВКЛЮЧЕНА (IPinfo, токенов: {len(IPINFO_TOKENS)})")
@@ -543,18 +484,13 @@ async def main_async():
 
     contents = await fetch_all_sources()
     all_configs = await collect_configs_async(contents)
-    stats = save_configs(all_configs)
+    save_configs(all_configs)
 
     elapsed = time.time() - start_time
     print("\n" + "=" * 60)
     print("📊 ИТОГИ СБОРА:")
     print("=" * 60)
-    print(f"📈 Всего уникальных: {stats['total_configs']}")
-    print(f"   📱 LTE: {stats['filtered']['lte']}")
-    print(f"   📶 WiFi: {stats['filtered']['wifi']}")
-    for proto, count in stats['by_protocol'].items():
-        if count:
-            print(f"   {proto.upper()}: {count}")
+    print(f"📈 Всего уникальных: {len(all_configs)}")
     print(f"⏱️ Время: {elapsed:.2f} секунд")
     print("=" * 60)
 
