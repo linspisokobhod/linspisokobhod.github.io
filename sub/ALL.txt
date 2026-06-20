@@ -1,7 +1,7 @@
 #profile-title: #LSO-#LinSpisokObhod
 #profile-update-interval: 1
 #support-url: https://t.me/LinSpisokObhod
-#announce: LinSpisokObhod подписка all.txt. Время: 2026-06-20 14:16:01
+#announce: LinSpisokObhod подписка all.txt. Время: 2026-06-20 16:56:47
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
 
