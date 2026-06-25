@@ -25,7 +25,7 @@ jobs:
     - name: Run collector script
       run: python "parser[#LSO-#LinSpisokObhod].py"
 
-    # ========== Синхронизация с hub.mos.ru (base64) ==========
+    # ========== 1. Синхронизация с hub.mos.ru (base64 в папке sub) ==========
     - name: Sync to hub.mos.ru
       env:
         TOKEN: ${{ secrets.MOS_HUB_TOKEN }}
@@ -33,19 +33,20 @@ jobs:
       run: |
         git clone https://oauth2:${TOKEN}@hub.mos.ru/LinSpisokObhod/LInSpisokObhod.git mos-repo
         cd mos-repo
-        rm -f ALL.txt LTE.txt WiFi.txt
-        cp ../sub/ALL.64.txt ./ALL.txt
-        cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WiFi.txt
+        rm -rf sub
+        mkdir -p sub
+        cp ../sub/ALL.64.txt sub/ALL.txt
+        cp ../sub/LTE.64.txt sub/LTE.txt
+        cp ../sub/WIFI.64.txt sub/WiFi.txt
         cp ../README.md ./
-        git add ALL.txt LTE.txt WiFi.txt README.md
+        git add sub/ README.md
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
         git push
         cd ..
 
-    # ========== Синхронизация с gitverse.ru (base64) ==========
+    # ========== 2. Синхронизация с gitverse.ru (base64 в папке sub) ==========
     - name: Sync to gitverse.ru
       env:
         TOKEN: ${{ secrets.GITVERSE_TOKEN }}
@@ -53,19 +54,20 @@ jobs:
       run: |
         git clone https://oauth2:${TOKEN}@gitverse.ru/LinSpisokObhod/LSO.git gitverse-repo
         cd gitverse-repo
-        rm -f ALL.txt LTE.txt WiFi.txt
-        cp ../sub/ALL.64.txt ./ALL.txt
-        cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WiFi.txt
+        rm -rf sub
+        mkdir -p sub
+        cp ../sub/ALL.64.txt sub/ALL.txt
+        cp ../sub/LTE.64.txt sub/LTE.txt
+        cp ../sub/WIFI.64.txt sub/WiFi.txt
         cp ../README.md ./
-        git add ALL.txt LTE.txt WiFi.txt README.md
+        git add sub/ README.md
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
         git push
         cd ..
 
-    # ========== Синхронизация с gitflic.ru (base64) ==========
+    # ========== 3. Синхронизация с gitflic.ru (base64 в папке sub) ==========
     - name: Setup gitflic.ru auth via .netrc
       env:
         GITFLIC_EMAIL: ${{ secrets.GITFLIC_EMAIL }}
@@ -83,23 +85,24 @@ jobs:
       run: |
         git clone https://gitflic.ru/project/liniptv/lso.git gitflic-repo
         cd gitflic-repo
-        rm -f ALL.txt LTE.txt WiFi.txt
-        cp ../sub/ALL.64.txt ./ALL.txt
-        cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WiFi.txt
+        rm -rf sub
+        mkdir -p sub
+        cp ../sub/ALL.64.txt sub/ALL.txt
+        cp ../sub/LTE.64.txt sub/LTE.txt
+        cp ../sub/WIFI.64.txt sub/WiFi.txt
         cp ../README.md ./
-        git add ALL.txt LTE.txt WiFi.txt README.md
+        git add sub/ README.md
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
         git push
         cd ..
 
-    # ========== Удаляем base64 файлы перед пушем на GitHub ==========
+    # ========== 4. Удаляем base64 файлы перед пушем на GitHub ==========
     - name: Remove base64 files from sub
       run: rm -f sub/*.64.txt
 
-    # ========== Сохраняем обычные файлы на GitHub ==========
+    # ========== 5. Сохраняем обычные файлы на GitHub (в папке sub) ==========
     - name: Commit and push plain text files to GitHub
       run: |
         git config user.name "github-actions[bot]"
