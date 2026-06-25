@@ -2,7 +2,7 @@ name: Collect & Sync Proxies
 
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
       run: pip install aiohttp
 
     - name: Run collector script
-      run: python parser[#LSO-#LinSpisokObhod].py
+      run: python "parser[#LSO-#LinSpisokObhod].py"
 
     # ========== Сохраняем обычные файлы для GitHub ==========
     - name: Commit and push plain text files to GitHub
@@ -34,7 +34,7 @@ jobs:
         git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update proxy configs [skip ci]"
         git push
 
-    # ========== Синхронизация с hub.mos.ru (base64 под именами .txt) ==========
+    # ========== Синхронизация с hub.mos.ru ==========
     - name: Sync to hub.mos.ru
       env:
         TOKEN: ${{ secrets.MOS_HUB_TOKEN }}
@@ -42,13 +42,10 @@ jobs:
       run: |
         git clone https://oauth2:${TOKEN}@hub.mos.ru/LinSpisokObhod/LInSpisokObhod.git mos-repo
         cd mos-repo
-        # Удаляем старые текстовые файлы (если есть)
         rm -f ALL.txt LTE.txt WiFi.txt
-        # Копируем base64-файлы как обычные .txt
         cp ../sub/ALL.64.txt ./ALL.txt
         cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WiFi.txt
-        # Копируем README как есть (можно оставить текстовый)
+        cp ../sub/WiFi.64.txt ./WiFi.txt
         cp ../README.md ./
         git add ALL.txt LTE.txt WiFi.txt README.md
         git config user.name "github-actions[bot]"
@@ -57,7 +54,7 @@ jobs:
         git push
         cd ..
 
-    # ========== Синхронизация с gitverse.ru (base64 под именами .txt) ==========
+    # ========== Синхронизация с gitverse.ru ==========
     - name: Sync to gitverse.ru
       env:
         TOKEN: ${{ secrets.GITVERSE_TOKEN }}
@@ -68,7 +65,7 @@ jobs:
         rm -f ALL.txt LTE.txt WiFi.txt
         cp ../sub/ALL.64.txt ./ALL.txt
         cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WiFi.txt
+        cp ../sub/WiFi.64.txt ./WiFi.txt
         cp ../README.md ./
         git add ALL.txt LTE.txt WiFi.txt README.md
         git config user.name "github-actions[bot]"
@@ -98,7 +95,7 @@ jobs:
         rm -f ALL.txt LTE.txt WiFi.txt
         cp ../sub/ALL.64.txt ./ALL.txt
         cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WiFi.txt
+        cp ../sub/WiFi.64.txt ./WiFi.txt
         cp ../README.md ./
         git add ALL.txt LTE.txt WiFi.txt README.md
         git config user.name "github-actions[bot]"
