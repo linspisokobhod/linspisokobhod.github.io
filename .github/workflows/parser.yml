@@ -37,7 +37,7 @@ jobs:
         mkdir -p sub
         cp ../sub/ALL.64.txt sub/ALL.txt
         cp ../sub/LTE.64.txt sub/LTE.txt
-        cp ../sub/WIFI.64.txt sub/WiFi.txt
+        cp ../sub/WiFi.64.txt sub/WiFi.txt
         cp ../README.md ./
         git add sub/ README.md
         git config user.name "github-actions[bot]"
@@ -58,7 +58,7 @@ jobs:
         mkdir -p sub
         cp ../sub/ALL.64.txt sub/ALL.txt
         cp ../sub/LTE.64.txt sub/LTE.txt
-        cp ../sub/WIFI.64.txt sub/WiFi.txt
+        cp ../sub/WiFi.64.txt sub/WiFi.txt
         cp ../README.md ./
         git add sub/ README.md
         git config user.name "github-actions[bot]"
@@ -89,7 +89,7 @@ jobs:
         mkdir -p sub
         cp ../sub/ALL.64.txt sub/ALL.txt
         cp ../sub/LTE.64.txt sub/LTE.txt
-        cp ../sub/WIFI.64.txt sub/WiFi.txt
+        cp ../sub/WiFi.64.txt sub/WiFi.txt
         cp ../README.md ./
         git add sub/ README.md
         git config user.name "github-actions[bot]"
