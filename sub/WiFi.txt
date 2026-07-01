@@ -1,10 +1,10 @@
-vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-07-01 18:22:13
+vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-07-01 20:30:55
 vless://about@1.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=about.lso#подписка #LSO© ЭТО: подписка с конфигами для WIFI
 vless://about2@2.about.lso:443?security=none&encryption=none&headerType=none&type=tcp#и обхода блокировок РКН
-vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 670
+vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 672
 trojan://trojan@trojan.about.lso:443?security=tls&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=trojan.lso#Подписка #LSO© Trojan: 104
 hysteria2://hy2@hy2.about.lso:443?security=tls&obfs=salamander&obfs-password=hy2&insecure=0&mport=67%2C%201488%2C%2069%2C%2052%2C%2042%2C%201337%2C%20228%2C%2025&sni=hy2.lso#Подписка #LSO© Hy2: 12
-ss://YWVzLTI1Ni1nY206c3M@ss.about.lso:443#Подписка #LSO© SS: 290
+ss://YWVzLTI1Ni1nY206c3M@ss.about.lso:443#Подписка #LSO© SS: 292
 vless://vmess@vmess.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vmess.about.lso#Подписка #LSO© Vmess: 1
 vless://tg@tg.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=tg.lso#Подписка #LSO© ТГ КАНАЛ: @LSOVPN
 hysteria2://00dcd873-9211-4d61-ad35-87999906e5c8@fta.fontanvpn.com:443?headerType=none&encryption=none&sni=fta.fontanvpn.com&insecure=0#unknown | fta.fontanvpn.com | HYSTERIA2 [#LSO - #LinSpisokObhod]
@@ -302,6 +302,8 @@ ss://f4411bac-3360-4004-8a21-879031dbfb83@37.49.224.32:443?encryption=none&amp;f
 ss://f4411bac-3360-4004-8a21-879031dbfb83@37.49.224.93:443?encryption=none&amp;flow=xtls-rprx-vision&amp;type=tcp&amp;security=reality&amp;sni=dev.max.ru&amp;fp=safari&amp;pbk=QWxSKVguwUnPvmYaOR4DvxpmVxCJfPEaipbjdAfAbG4&amp;sid=c338fe2b01cf271a#The Netherlands | 37.49.224.93 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://f978f967-5726-42f1-e023-58e0b01abb93@103.252.119.61:45678?type=tcp&headerType=none&security=none&encryption=none#Hong Kong | 103.252.119.61 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://facb7de8-1aa1-436c-b7f0-81a4b749491c@37.156.43.207:15281?fp=firefox&pbk=7Tl6MxuH1PZpbKIETVPK1he_MjOLtUeMTFiEek9HQiM&security=reality&sid=7118&sni=yahoo.com&spx=/nhrI9ne7Hi5Irol&type=tcp#Switzerland | 37.156.43.207 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
+ss://fcc38fdc-ef0a-46f3-a30a-cd3de28d3aee@213.226.112.113:443?type=tcp&headerType=none&security=reality&encryption=none&sni=rutube.ru&fp=qq&pbk=l0R5_L16z0BMq5HhYvA538EJd3ztzHgIOtysCl6Q60U&sid=e78c4073&flow=xtls-rprx-vision#Russia | 213.226.112.113 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
+ss://fcc38fdc-ef0a-46f3-a30a-cd3de28d3aee@45.11.27.86:443?type=tcp&headerType=none&security=reality&encryption=none&sni=5post-gate.x5.ru&fp=qq&pbk=IBzFSziv_xISB-Q6X90PocTBde6jb4X6swEvdZQhqzk&sid=d0aae44f&flow=xtls-rprx-vision#Russia | 45.11.27.86 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://fd5f3dfa-bba9-4205-b95f-ac37b8587cda@89.124.64.16:443?type=tcp&headerType=none&security=reality&encryption=none&sni=www.sony.com&fp=firefox&pbk=UGKx4Kydrtu6oCJJPXOtR57bzIUIPK9meIy5ubEDHQM&sid=94&flow=xtls-rprx-vision#The Netherlands | 89.124.64.16 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://fdba43e2-9dc3-4c3e-a890-08ab21e60081@152.233.54.86:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=auto.malina24.xyz&fp=firefox&pbk=V6FabatADtcX7aO9KMjGCadJC4LuQ_5nRViab-z-nFQ&sid=abcd&type=tcp&headerType=none#Finland | 152.233.54.86 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://ff18dc84-c8f8-4cdc-873d-a8a9eb0a59e2@plan.opann.ir:443?type=tcp&security=none&encryption=none#unknown | unknown | SHADOWSOCKS [#LSO - #LinSpisokObhod]
