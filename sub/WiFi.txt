@@ -1,10 +1,10 @@
-vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-07-04 07:22:14
+vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-07-04 10:25:03
 vless://about@1.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=about.lso#подписка #LSO© ЭТО: подписка с конфигами для WIFI
 vless://about2@2.about.lso:443?security=none&encryption=none&headerType=none&type=tcp#и обхода блокировок РКН
-vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 544
+vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 545
 trojan://trojan@trojan.about.lso:443?security=tls&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=trojan.lso#Подписка #LSO© Trojan: 25
 hysteria2://hy2@hy2.about.lso:443?security=tls&obfs=salamander&obfs-password=hy2&insecure=0&mport=67%2C%201488%2C%2069%2C%2052%2C%2042%2C%201337%2C%20228%2C%2025&sni=hy2.lso#Подписка #LSO© Hy2: 23
-ss://YWVzLTI1Ni1nY206c3M@ss.about.lso:443#Подписка #LSO© SS: 270
+ss://YWVzLTI1Ni1nY206c3M@ss.about.lso:443#Подписка #LSO© SS: 271
 vless://vmess@vmess.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vmess.about.lso#Подписка #LSO© Vmess: 1
 vless://tg@tg.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=tg.lso#Подписка #LSO© ТГ КАНАЛ: @LSOVPN
 hysteria2://2f4c3fc5-8fa2-4576-a583-8f98a6026887@hkt.ccwink.cc:56309?headerType=none&encryption=none&sni=hkt.ccwink.cc&insecure=0#unknown | hkt.ccwink.cc | HYSTERIA2 [#LSO - #LinSpisokObhod]
@@ -137,6 +137,7 @@ ss://802eb951-c1dd-4897-be50-855f46024e2a@31.56.188.161:443?encryption=none&amp;
 ss://802eb951-c1dd-4897-be50-855f46024e2a@37.49.224.32:443?encryption=none&amp;flow=xtls-rprx-vision&amp;type=tcp&amp;security=reality&amp;sni=dev.max.ru&amp;fp=safari&amp;pbk=QWxSKVguwUnPvmYaOR4DvxpmVxCJfPEaipbjdAfAbG4&amp;sid=c338fe2b01cf271a#The Netherlands | 37.49.224.32 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://802eb951-c1dd-4897-be50-855f46024e2a@37.49.224.93:443?encryption=none&amp;flow=xtls-rprx-vision&amp;type=tcp&amp;security=reality&amp;sni=dev.max.ru&amp;fp=safari&amp;pbk=QWxSKVguwUnPvmYaOR4DvxpmVxCJfPEaipbjdAfAbG4&amp;sid=c338fe2b01cf271a#The Netherlands | 37.49.224.93 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://833f628c-1d6b-4dd1-89c9-40a8320f1a2c@144.31.159.84:443?flow=xtls-rprx-vision&fp=firefox&pbk=e3pn9C1M3g6zh0CMZS3L-GuDH71NNUcoy18quvlgfWw&security=reality&sid=165b0fe73e74&sni=www.nvidia.com&type=tcp#Germany | 144.31.159.84 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
+ss://837e9ea2-cf0b-46a1-93a8-7e25c3a4066c@185.170.10.248:48350?type=tcp&headerType=none&security=reality&encryption=none&sni=stats.vk-portal.net&fp=chrome&pbk=Ea23HWLvV6k7UjJ8xCsUH2UI0oyasSLjXV84aTXQ6Uk&flow=xtls-rprx-vision#Russia | 185.170.10.248 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://83bbdb45-4824-4870-b191-427b1e3d7a29@31.13.208.240:20828?fp=firefox&mode=auto&pbk=8zjnXMiPQTiSQPEDqUtEu5Em6UVM-w5wXEoNc5z2UjM&security=reality&sid=5b&sni=www.nvidia.com&spx=/U95Zg1JNVDF9zmx&type=xhttp&x_padding_bytes=100-1000#Finland | 31.13.208.240 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://83bbdb45-4824-4870-b191-427b1e3d7a29@31.13.208.240:57176?flow=xtls-rprx-vision&fp=firefox&pbk=UvZM3FjG0QECXEojqtYLxfUYqw96Q5J56ylZOWp4FBM&security=reality&sid=3818373396cb&sni=www.amd.com&spx=/bNb4I3Ud9uh2m5v&type=tcp#Finland | 31.13.208.240 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://83bbdb45-4824-4870-b191-427b1e3d7a29@bosttt.duckdns.org:57176?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=UvZM3FjG0QECXEojqtYLxfUYqw96Q5J56ylZOWp4FBM&security=reality&sid=3818373396cb&sni=www.amd.com&spx=%2FbNb4I3Ud9uh2m5v&type=tcp#unknown | unknown | SHADOWSOCKS [#LSO - #LinSpisokObhod]
