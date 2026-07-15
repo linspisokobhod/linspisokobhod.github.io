@@ -1,4 +1,4 @@
-vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-07-16 00:09:00
+vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-07-16 01:33:08
 vless://about@1.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=about.lso#подписка #LSO© ЭТО: подписка с конфигами для WIFI и LTE
 vless://about2@2.about.lso:443?security=none&encryption=none&headerType=none&type=tcp#и обхода блокировок РКН
 vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 3190
