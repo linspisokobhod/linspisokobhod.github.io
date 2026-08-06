@@ -1,29 +1,15 @@
-vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-08-06 07:19:34
+vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-08-06 10:18:45
 vless://about@1.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=about.lso#подписка #LSO© ЭТО: подписка с конфигами для LTE
 vless://about2@2.about.lso:443?security=none&encryption=none&headerType=none&type=tcp#и обхода блокировок РКН
-vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 20
+vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 6
 trojan://trojan@trojan.about.lso:443?security=tls&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=trojan.lso#Подписка #LSO© Trojan: 0
 hysteria2://hy2@hy2.about.lso:443?security=tls&obfs=salamander&obfs-password=hy2&insecure=0&mport=67%2C%201488%2C%2069%2C%2052%2C%2042%2C%201337%2C%20228%2C%2025&sni=hy2.lso#Подписка #LSO© Hy2: 4
-ss://YWVzLTI1Ni1nY206c3M@ss.about.lso:443#Подписка #LSO© SS: 7
+ss://YWVzLTI1Ni1nY206c3M@ss.about.lso:443#Подписка #LSO© SS: 1
 vless://vmess@vmess.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vmess.about.lso#Подписка #LSO© Vmess: 0
 vless://tg@tg.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=tg.lso#Подписка #LSO© ТГ КАНАЛ: @LSOVPN
-vless://d7fb86a1-2dda-433c-9401-a2ccd91ee015@51.250.7.122:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=Ec54Eop0jZft7rcJsPN4RHc4xG9smXhtenM52pJFUQI&security=reality&sid=27e53bbcab7593d7&sni=yandex.ru&spx=%2F&type=raw#Russia | yandex.ru | RAW [#LSO - #LinSpisokObhod]
-vless://d7fb86a1-2dda-433c-9401-a2ccd91ee015@31.177.111.151:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=wqT1qRUUDgqpKigqaWCOepUhCKnuR1jWr5LX8RiTgTU&security=reality&sid=59bcf19dc2a0b93e&sni=wap.yandex.ru&spx=%2F&type=raw#Russia | wap.yandex.ru | RAW [#LSO - #LinSpisokObhod]
-vless://3a8cde1f-108f-4573-9e38-1edd5d61a3da@188.68.218.120:443?encryption=none&fp=firefox&mode=gun&pbk=VaKp9XjMqT7lA4F3b6hpdF6fmsiY4B_hz6MzT6fv938&security=reality&sni=ads.x5.ru&type=grpc#Russia | ads.x5.ru | GRPC [#LSO - #LinSpisokObhod]
-vless://d7fb86a1-2dda-433c-9401-a2ccd91ee015@91.240.87.166:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=2ZUQYIhUijdJ1vRL8iR8RxjmJvRVHYp-JoWevQ2LyR4&security=reality&sid=7bb730e3e6616d31&sni=yandex.ru&spx=%2F&type=raw#Russia | yandex.ru | RAW [#LSO - #LinSpisokObhod]
-vless://3a8cde1f-108f-4573-9e38-1edd5d61a3da@5.188.115.159:8446?encryption=none&fp=firefox&mode=gun&pbk=rUCHk3_64Wv_f_v46OfVNYldKu9fUqHpX937bmGeeDs&security=reality&sni=360.yandex.ru&type=grpc#Russia | 360.yandex.ru | GRPC [#LSO - #LinSpisokObhod]
-vless://eb135f2b-4b9e-4abb-9a89-78242613da61@185.247.16.4:2200?encryption=none&amp;type=ws&amp;security=none&amp;path=%2Fv1&amp;host=rzd.ru#Russia | 185.247.16.4 | unknown [#LSO - #LinSpisokObhod]
-ss://3a8cde1f-108f-4573-9e38-1edd5d61a3da@5.188.115.159:8446?encryption=none&fp=firefox&mode=gun&pbk=rUCHk3_64Wv_f_v46OfVNYldKu9fUqHpX937bmGeeDs&security=reality&sni=360.yandex.ru&type=grpc#Russia | 5.188.115.159 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
-vless://be264701-edb4-46c1-9f9c-12a1fd7e4067@62.152.56.73:443?encryption=none&flow=xtls-rprx-vision&fp=qq&pbk=lh3qj3VX335HGH2T3xQ8RHZ4v3zEStbz6ENiPwkILSg&security=reality&sid=cf43c0c197cd464a&sni=wl-12.nodes.ac&type=raw#Russia | wl-12.nodes.ac | RAW [#LSO - #LinSpisokObhod]
-ss://ec7c33d4-a88b-4b2f-9762-24c1770bac9e@51.250.72.51:443?encryption=none&amp;flow=xtls-rprx-vision&amp;fp=chrome&amp;pbk=JxwG7rAbNCd_C82p9K69AZDWh51fri2nm3wLHHrfyiw&amp;security=reality&amp;sid=7755e972daf8eec8&amp;sni=max.ru&amp;type=raw#Russia | 51.250.72.51 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
-ss://eb135f2b-4b9e-4abb-9a89-78242613da61@185.247.16.4:2200?encryption=none&amp;type=ws&amp;security=none&amp;path=%2Fv1&amp;host=rzd.ru#Russia | 185.247.16.4 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
-ss://be264701-edb4-46c1-9f9c-12a1fd7e4067@62.152.56.73:443?encryption=none&flow=xtls-rprx-vision&fp=qq&pbk=lh3qj3VX335HGH2T3xQ8RHZ4v3zEStbz6ENiPwkILSg&security=reality&sid=cf43c0c197cd464a&sni=wl-12.nodes.ac&type=raw#Russia | 62.152.56.73 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
-vless://dd8b69d3-5ef6-418c-a94c-2f4f37d88a7f@185.246.223.158:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=dGF9csm2FGTtmgL5ZOxfU_wOMVilKOVq60lwD7F-MVw&security=reality&sni=germanag.online&type=tcp#Germany | germanag.online | TCP [#LSO - #LinSpisokObhod]
-ss://3a8cde1f-108f-4573-9e38-1edd5d61a3da@188.68.218.120:443?encryption=none&fp=firefox&mode=gun&pbk=VaKp9XjMqT7lA4F3b6hpdF6fmsiY4B_hz6MzT6fv938&security=reality&sni=ads.x5.ru&type=grpc#Russia | 188.68.218.120 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
-hysteria2://vpn-hy2-lv-2026@185.236.22.119:8444?sni=185.236.22.119#Latvia | 185.236.22.119 | HYSTERIA2 [#LSO - #LinSpisokObhod]
-vless://ec7c33d4-a88b-4b2f-9762-24c1770bac9e@51.250.72.51:443?encryption=none&amp;flow=xtls-rprx-vision&amp;fp=chrome&amp;pbk=JxwG7rAbNCd_C82p9K69AZDWh51fri2nm3wLHHrfyiw&amp;security=reality&amp;sid=7755e972daf8eec8&amp;sni=max.ru&amp;type=raw#Russia | 51.250.72.51 | unknown [#LSO - #LinSpisokObhod]
+vless://8cae18ca-1844-44ef-bfbe-e2724af88718@188.68.218.120:443?encryption=none&fp=firefox&mode=gun&pbk=VaKp9XjMqT7lA4F3b6hpdF6fmsiY4B_hz6MzT6fv938&security=reality&sni=ads.x5.ru&type=grpc#Russia | ads.x5.ru | GRPC [#LSO - #LinSpisokObhod]
 hysteria2://h_B9x3942fJ9x_Kpx3914KQ_nZ934HFg_rT@185.79.138.71:8080?sni=hopp-legend-se.roxa.org#Finland | hopp-legend-se.roxa.org | HYSTERIA2 [#LSO - #LinSpisokObhod]
-ss://d7fb86a1-2dda-433c-9401-a2ccd91ee015@91.240.87.166:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=2ZUQYIhUijdJ1vRL8iR8RxjmJvRVHYp-JoWevQ2LyR4&security=reality&sid=7bb730e3e6616d31&sni=yandex.ru&spx=%2F&type=raw#Russia | 91.240.87.166 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 hysteria2://h_B9x3942fJ9x_Kpx3914KQ_nZ934HFg_rT@185.79.138.71:8443?sni=hopp-legend-se.roxa.org#Finland | hopp-legend-se.roxa.org | HYSTERIA2 [#LSO - #LinSpisokObhod]
+ss://8cae18ca-1844-44ef-bfbe-e2724af88718@188.68.218.120:443?encryption=none&fp=firefox&mode=gun&pbk=VaKp9XjMqT7lA4F3b6hpdF6fmsiY4B_hz6MzT6fv938&security=reality&sni=ads.x5.ru&type=grpc#Russia | 188.68.218.120 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 hysteria2://vpn-hy2-lv-2026@185.236.22.119:8444?insecure=1&sni=185.236.22.119#Latvia | 185.236.22.119 | HYSTERIA2 [#LSO - #LinSpisokObhod]
-ss://dd8b69d3-5ef6-418c-a94c-2f4f37d88a7f@185.246.223.158:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=dGF9csm2FGTtmgL5ZOxfU_wOMVilKOVq60lwD7F-MVw&security=reality&sni=germanag.online&type=tcp#Germany | 185.246.223.158 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
+hysteria2://vpn-hy2-lv-2026@185.236.22.119:8444?sni=185.236.22.119#Latvia | 185.236.22.119 | HYSTERIA2 [#LSO - #LinSpisokObhod]
