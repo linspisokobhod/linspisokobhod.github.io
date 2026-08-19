@@ -1,4 +1,4 @@
-vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-08-19 17:40:43
+vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-08-19 18:37:56
 vless://about@1.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=about.lso#подписка #LSO© ЭТО: подписка с конфигами для LTE
 vless://about2@2.about.lso:443?security=none&encryption=none&headerType=none&type=tcp#и обхода блокировок РКН
 vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 3
@@ -7,6 +7,6 @@ hysteria2://hy2@hy2.about.lso:443?security=tls&obfs=salamander&obfs-password=hy2
 ss://YWVzLTI1Ni1nY206c3M@ss.about.lso:443#Подписка #LSO© SS: 0
 vless://vmess@vmess.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vmess.about.lso#Подписка #LSO© Vmess: 0
 vless://tg@tg.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=tg.lso#Подписка #LSO© ТГ КАНАЛ: @LSOVPN
-vless://7d42e1f8-a63b-4e8a-b415-f2f20f78f004@185.23.18.168:27439?encryption=none&fp=firefox&pbk=Re0aWbYgk775QZ2eiIzh9fwPANq8HfLlrp9vbTC8vXQ&security=reality&sid=3a1e&sni=www.vk.com&spx=/f8a0651d0026da0&type=tcp#Germany | www.vk.com | TCP [#LSO - #LinSpisokObhod]
 vless://e7c15d94-3d4a-445d-9043-17dbc59e3e3d@ru.verymad.net:20468/?flow=&type=tcp&headerType=none&security=reality&fp=firefox&sni=www.vk.com&pbk=fZN3RaPoUpvSEE07sPTzvQva27vY3ooA3RYci5KL42Q&sid=a198d287017f32&spx=/f8a0651d0026da0#unknown | www.vk.com | TCP [#LSO - #LinSpisokObhod]
+vless://7d42e1f8-a63b-4e8a-b415-f2f20f78f004@185.23.18.168:27439?encryption=none&fp=firefox&pbk=Re0aWbYgk775QZ2eiIzh9fwPANq8HfLlrp9vbTC8vXQ&security=reality&sid=3a1e&sni=www.vk.com&spx=/f8a0651d0026da0&type=tcp#Germany | www.vk.com | TCP [#LSO - #LinSpisokObhod]
 hysteria2://391f093f-85fc-473d-abe2-ea607b9ff567@46.243.235.23:8443?sni=quic.tyr-agentstvo.tech#Russia | quic.tyr-agentstvo.tech | HYSTERIA2 [#LSO - #LinSpisokObhod]
