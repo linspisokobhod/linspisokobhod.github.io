@@ -1,4 +1,4 @@
-vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-08-23 20:50:02
+vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-08-23 21:39:06
 vless://about@1.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=about.lso#подписка #LSO© ЭТО: подписка с конфигами для LTE
 vless://about2@2.about.lso:443?security=none&encryption=none&headerType=none&type=tcp#и обхода блокировок РКН
 vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 8
@@ -8,10 +8,10 @@ ss://YWVzLTI1Ni1nY206c3M@ss.about.lso:443#Подписка #LSO© SS: 3
 vless://vmess@vmess.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vmess.about.lso#Подписка #LSO© Vmess: 0
 vless://tg@tg.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=tg.lso#Подписка #LSO© ТГ КАНАЛ: @LSOVPN
 vless://699ce9a1-abbb-4525-988e-b940381352e8@151.241.215.109:8443?encryption=none&fp=firefox&pbk=UQ6dyuQKvCZjFH3BiGswrecUsrptDXQ67dvKFuQC5DA&security=reality&sid=74933f39a9693c&sni=yandex.ru&spx=/zs7f4r0oqra0jtf&type=tcp#Italy | yandex.ru | TCP [#LSO - #LinSpisokObhod]
-vless://a42939a4-c61c-4ecc-886b-3a317bdf4452@185.22.235.203:443?type=tcp&headerType=none&security=reality&encryption=none&sni=google.com&fp=firefox&pbk=vZ22ThhkpXUd5-tY-v5TTrouLHjgYYmeQgqeLt7HRz0&flow=xtls-rprx-vision#Russia | google.com | TCP [#LSO - #LinSpisokObhod]
-vless://a42939a4-c61c-4ecc-886b-3a317bdf4452@185.91.54.240:443?type=tcp&headerType=none&security=reality&encryption=none&sni=google.com&fp=firefox&pbk=vZ22ThhkpXUd5-tY-v5TTrouLHjgYYmeQgqeLt7HRz0&flow=xtls-rprx-vision#Russia | google.com | TCP [#LSO - #LinSpisokObhod]
 hysteria2://e5gqbtu97umt992j@185.230.44.170:9443?sni=185.230.44.170#Germany | 185.230.44.170 | HYSTERIA2 [#LSO - #LinSpisokObhod]
 vless://815630f6-0c67-4d61-aa0f-d783b18ae661@79.174.92.133:8443?type=tcp&security=reality&sni=max.ru&pbk=M_V1dM8_wcpwnmh2VZp-s3LCBjy38ZWCRpxLrBc58Do&sid=a48d397391861a3c&fp=firefox&encryption=none#Russia | max.ru | TCP [#LSO - #LinSpisokObhod]
-ss://815630f6-0c67-4d61-aa0f-d783b18ae661@79.174.92.133:8443?type=tcp&security=reality&sni=max.ru&pbk=M_V1dM8_wcpwnmh2VZp-s3LCBjy38ZWCRpxLrBc58Do&sid=a48d397391861a3c&fp=firefox&encryption=none#Russia | 79.174.92.133 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
 ss://a42939a4-c61c-4ecc-886b-3a317bdf4452@185.22.235.203:443?type=tcp&headerType=none&security=reality&encryption=none&sni=google.com&fp=firefox&pbk=vZ22ThhkpXUd5-tY-v5TTrouLHjgYYmeQgqeLt7HRz0&flow=xtls-rprx-vision#Russia | 185.22.235.203 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
+vless://a42939a4-c61c-4ecc-886b-3a317bdf4452@185.91.54.240:443?type=tcp&headerType=none&security=reality&encryption=none&sni=google.com&fp=firefox&pbk=vZ22ThhkpXUd5-tY-v5TTrouLHjgYYmeQgqeLt7HRz0&flow=xtls-rprx-vision#Russia | google.com | TCP [#LSO - #LinSpisokObhod]
 ss://a42939a4-c61c-4ecc-886b-3a317bdf4452@185.91.54.240:443?type=tcp&headerType=none&security=reality&encryption=none&sni=google.com&fp=firefox&pbk=vZ22ThhkpXUd5-tY-v5TTrouLHjgYYmeQgqeLt7HRz0&flow=xtls-rprx-vision#Russia | 185.91.54.240 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
+vless://a42939a4-c61c-4ecc-886b-3a317bdf4452@185.22.235.203:443?type=tcp&headerType=none&security=reality&encryption=none&sni=google.com&fp=firefox&pbk=vZ22ThhkpXUd5-tY-v5TTrouLHjgYYmeQgqeLt7HRz0&flow=xtls-rprx-vision#Russia | google.com | TCP [#LSO - #LinSpisokObhod]
+ss://815630f6-0c67-4d61-aa0f-d783b18ae661@79.174.92.133:8443?type=tcp&security=reality&sni=max.ru&pbk=M_V1dM8_wcpwnmh2VZp-s3LCBjy38ZWCRpxLrBc58Do&sid=a48d397391861a3c&fp=firefox&encryption=none#Russia | 79.174.92.133 | SHADOWSOCKS [#LSO - #LinSpisokObhod]
