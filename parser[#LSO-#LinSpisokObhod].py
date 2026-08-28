@@ -31,7 +31,7 @@ TOKEN_INDEX = 0
 TOKEN_LOCK = asyncio.Lock()
 
 SOURCES = [
-    "https://mifa.world/bingo"
+    "https://mifa.world/bingo",
     "https://raw.githubusercontent.com/Diversan313/apex-parser/refs/heads/main/alive_bs.txt",
     "https://hub.mos.ru/kfwl/sub/raw/main/sub.txt",
     "https://raw.githubusercontent.com/RKPchannel/RKP_bypass_configs/refs/heads/main/blacklist.txt",
