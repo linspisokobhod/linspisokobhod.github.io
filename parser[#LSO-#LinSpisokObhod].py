@@ -366,7 +366,7 @@ def get_config_priority(config: str, whitelist: Set[str], cidr_list: List[ipaddr
     ip = extract_ip_from_config(config)
     if ip and is_ip_in_cidr_list(ip, cidr_list):
         return 1  # LTE
-    return 2      # WiFi
+    return 2      # WIF
 
 # === ОСНОВНОЙ СБОР С TCP-ТЕСТИРОВАНИЕМ ===
 async def collect_configs_async(contents: Dict[str, Optional[str]]) -> Set[str]:
@@ -486,7 +486,7 @@ def update_readme(total: int, lte: int, wifi: int, espd: int, protocols: Dict[st
 |------|------------|
 | 📁 ALL.txt / ALL.64.txt | `{total}` |
 | 📱 LTE.txt / LTE.64.txt | `{lte}` |
-| 📶 WiFi.txt / WIFI.64.txt | `{wifi}` |
+| 📶 WIFI.txt / WIFI.64.txt | `{wifi}` |
 | 🏫 LinObhodESPD.txt / LinObhodESPD.64.txt | `{espd}` |
 
 ## 📡 Протоколы
@@ -502,7 +502,7 @@ def update_readme(total: int, lte: int, wifi: int, espd: int, protocols: Dict[st
 
 1. **Приоритет 1**: sni домен из `whitelist.txt`
 2. **Приоритет 2**: IP сервера входит в CIDR из `cidrwhitelist.txt`
-3. **WiFi.txt**: все остальные конфиги
+3. **WIFI.txt**: все остальные конфиги
 
 ## 📁 Файлы
 
@@ -510,7 +510,7 @@ def update_readme(total: int, lte: int, wifi: int, espd: int, protocols: Dict[st
 - `sub/ALL.64.txt` – все конфиги, закодированные в base64
 - `sub/LTE.txt` – отфильтрованные по whitelist/CIDR (обычный текст)
 - `sub/LTE.64.txt` – отфильтрованные, закодированные в base64
-- `sub/WiFi.txt` – остальные конфиги (обычный текст)
+- `sub/WIFI.txt` – остальные конфиги (обычный текст)
 - `sub/WIFI.64.txt` – остальные, закодированные в base64
 - `sub/LinObhodESPD.txt` – конфиги с SNI max.ru или api-maps.yandex.ru (обычный текст)
 - `sub/LinObhodESPD.64.txt` – конфиги с SNI max.ru или api-maps.yandex.ru (base64)
@@ -704,14 +704,14 @@ def save_configs(all_configs_set: Set[str]):
         f.write("\n".join(lte_list) + "\n")
     logger.info(f"📱 LTE.txt: {len(lte_list)}")
 
-    # ---- СОХРАНЯЕМ WiFi.txt ----
+    # ---- СОХРАНЯЕМ WIFI.txt ----
     wifi_extra = generate_extra_lines(len(wifi_list), protocol_counts_wifi, update_time, "WIFI")
-    wifi_path = os.path.join(CONFIG_DIR, "WiFi.txt")
+    wifi_path = os.path.join(CONFIG_DIR, "WIFI.txt")
     with open(wifi_path, 'w', encoding='utf-8') as f:
         f.write(header_wifi)
         f.write("\n".join(wifi_extra) + "\n")
         f.write("\n".join(wifi_list) + "\n")
-    logger.info(f"📶 WiFi.txt: {len(wifi_list)}")
+    logger.info(f"📶 WIFI.txt: {len(wifi_list)}")
 
     # ---- СОХРАНЯЕМ LinObhodESPD.txt ----
     if espd_tagged:
