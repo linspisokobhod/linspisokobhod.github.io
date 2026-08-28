@@ -43,10 +43,10 @@ jobs:
         git clone https://oauth2:${TOKEN}@hub.mos.ru/LinSpisokObhod/LInSpisokObhod.git mos-repo
         cd mos-repo
         rm -f ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt
-        cp ../sub/ALL.64.txt ./ALL.txt
-        cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WIFI.txt
-        cp ../sub/LinObhodESPD.64.txt ./LinObhodESPD.txt
+        cp ../sub/ALL.64.txt ./sub/ALL.txt
+        cp ../sub/LTE.64.txt ./sub/LTE.txt
+        cp ../sub/WIFI.64.txt ./sub/WIFI.txt
+        cp ../sub/LinObhodESPD.64.txt ./sub/LinObhodESPD.txt
         cp ../README.md ./
         git add ALL.txt LTE.txt WIFI.txt LinObhodESPD.txt README.md
         git config user.name "github-actions[bot]"
@@ -74,10 +74,10 @@ jobs:
         git clone https://gitflic.ru/project/liniptv/lso.git gitflic-repo
         cd gitflic-repo
         rm -f ALL.txt LTE.txt WIFI.txt LinObhodESPD.txt
-        cp ../sub/ALL.64.txt ./ALL.txt
-        cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WIFI.txt
-        cp ../sub/LinObhodESPD.64.txt ./LinObhodESPD.txt
+        cp ../sub/ALL.64.txt ./sub/ALL.txt
+        cp ../sub/LTE.64.txt ./sub/LTE.txt
+        cp ../sub/WIFI.64.txt ./sub/WIFI.txt
+        cp ../sub/LinObhodESPD.64.txt ./sub/LinObhodESPD.txt
         cp ../README.md ./
         git add ALL.txt LTE.txt WIFI.txt LinObhodESPD.txt README.md
         git config user.name "github-actions[bot]"
