@@ -73,7 +73,7 @@ jobs:
       run: |
         git clone https://gitflic.ru/project/liniptv/lso.git gitflic-repo
         cd gitflic-repo
-        rm -f ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt
+        rm -f ALL.txt LTE.txt WIFI.txt LinObhodESPD.txt
         cp ../sub/ALL.64.txt ./ALL.txt
         cp ../sub/LTE.64.txt ./LTE.txt
         cp ../sub/WIFI.64.txt ./WIFI.txt
@@ -94,7 +94,7 @@ jobs:
     - name: Commit and push plain text files to GitHub
       run: |
         git config user.name "github-actions[bot]"
-        git config.user.email "github-actions[bot]@users.noreply.github.com"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
         git add sub/ README.md
         git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update proxy configs [skip ci]"
         git push
