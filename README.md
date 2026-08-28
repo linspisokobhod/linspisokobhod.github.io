@@ -2,7 +2,7 @@
 
 ## 📅 Время последнего сбора
 
-`2026-08-28 17:42:28 (UTC+3)`
+`2026-08-28 17:53:09 (UTC+3)`
 
 ## 📊 Статистика
 
@@ -10,7 +10,7 @@
 |------|------------|
 | 📁 ALL.txt / ALL.64.txt | `461` |
 | 📱 LTE.txt / LTE.64.txt | `57` |
-| 📶 WiFi.txt / WIFI.64.txt | `404` |
+| 📶 WIFI.txt / WIFI.64.txt | `404` |
 | 🏫 LinObhodESPD.txt / LinObhodESPD.64.txt | `31` |
 
 ## 📡 Протоколы
@@ -26,7 +26,7 @@
 
 1. **Приоритет 1**: sni домен из `whitelist.txt`
 2. **Приоритет 2**: IP сервера входит в CIDR из `cidrwhitelist.txt`
-3. **WiFi.txt**: все остальные конфиги
+3. **WIFI.txt**: все остальные конфиги
 
 ## 📁 Файлы
 
@@ -34,7 +34,7 @@
 - `sub/ALL.64.txt` – все конфиги, закодированные в base64
 - `sub/LTE.txt` – отфильтрованные по whitelist/CIDR (обычный текст)
 - `sub/LTE.64.txt` – отфильтрованные, закодированные в base64
-- `sub/WiFi.txt` – остальные конфиги (обычный текст)
+- `sub/WIFI.txt` – остальные конфиги (обычный текст)
 - `sub/WIFI.64.txt` – остальные, закодированные в base64
 - `sub/LinObhodESPD.txt` – конфиги с SNI max.ru или api-maps.yandex.ru (обычный текст)
 - `sub/LinObhodESPD.64.txt` – конфиги с SNI max.ru или api-maps.yandex.ru (base64)
