@@ -2,22 +2,22 @@
 
 ## 📅 Время последнего сбора
 
-`2026-08-28 17:53:09 (UTC+3)`
+`2026-08-28 18:01:58 (UTC+3)`
 
 ## 📊 Статистика
 
 | Файл | Количество |
 |------|------------|
-| 📁 ALL.txt / ALL.64.txt | `461` |
-| 📱 LTE.txt / LTE.64.txt | `57` |
-| 📶 WIFI.txt / WIFI.64.txt | `404` |
-| 🏫 LinObhodESPD.txt / LinObhodESPD.64.txt | `31` |
+| 📁 ALL.txt / ALL.64.txt | `446` |
+| 📱 LTE.txt / LTE.64.txt | `52` |
+| 📶 WIFI.txt / WIFI.64.txt | `394` |
+| 🏫 LinObhodESPD.txt / LinObhodESPD.64.txt | `29` |
 
 ## 📡 Протоколы
 
 | Протокол | Количество |
 |----------|------------|
-| 🔗 VLESS | `424` |
+| 🔗 VLESS | `409` |
 | 📦 VMess | `0` |
 | 🛡️ Trojan | `24` |
 | ⚡ Hysteria2 | `13` |
