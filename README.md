@@ -2,23 +2,24 @@
 
 ## 📅 Время последнего сбора
 
-`2026-08-28 15:25:31 (UTC+3)`
+`2026-08-28 16:47:57 (UTC+3)`
 
 ## 📊 Статистика
 
 | Файл | Количество |
 |------|------------|
-| 📁 ALL.txt / ALL.64.txt | `458` |
-| 📱 LTE.txt / LTE.64.txt | `56` |
-| 📶 WiFi.txt / WIFI.64.txt | `402` |
+| 📁 ALL.txt / ALL.64.txt | `418` |
+| 📱 LTE.txt / LTE.64.txt | `50` |
+| 📶 WiFi.txt / WIFI.64.txt | `368` |
+| 🏫 LinObhodESPD.txt / LinObhodESPD.64.txt | `29` |
 
 ## 📡 Протоколы
 
 | Протокол | Количество |
 |----------|------------|
-| 🔗 VLESS | `417` |
+| 🔗 VLESS | `381` |
 | 📦 VMess | `0` |
-| 🛡️ Trojan | `28` |
+| 🛡️ Trojan | `24` |
 | ⚡ Hysteria2 | `13` |
 
 ## 🗂️ Логика LTE.txt
@@ -35,6 +36,8 @@
 - `sub/LTE.64.txt` – отфильтрованные, закодированные в base64
 - `sub/WiFi.txt` – остальные конфиги (обычный текст)
 - `sub/WIFI.64.txt` – остальные, закодированные в base64
+- `sub/LinObhodESPD.txt` – конфиги с SNI max.ru или api-maps.yandex.ru (обычный текст)
+- `sub/LinObhodESPD.64.txt` – конфиги с SNI max.ru или api-maps.yandex.ru (base64)
 
 ## 🔄 Автообновление
 
