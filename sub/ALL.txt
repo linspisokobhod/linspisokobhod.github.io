@@ -4,11 +4,11 @@
 #announce: #LSO© ALL
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
-vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-08-28 17:06:00
+vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-08-28 17:09:22
 vless://about@1.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=about.lso#подписка #LSO© ЭТО: подписка с конфигами для WIFI и LTE
 vless://about2@2.about.lso:443?security=none&encryption=none&headerType=none&type=tcp#и обхода блокировок РКН
-vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 426
-vless://vless@vless.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vless.about.lso#Подписка #LSO© Vless: 389
+vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 427
+vless://vless@vless.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vless.about.lso#Подписка #LSO© Vless: 390
 trojan://trojan@trojan.about.lso:443?security=tls&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=trojan.lso#Подписка #LSO© Trojan: 24
 hysteria2://hy2@hy2.about.lso:443?security=tls&obfs=salamander&obfs-password=hy2&insecure=0&mport=67%2C%201488%2C%2069%2C%2052%2C%2042%2C%201337%2C%20228%2C%2025&sni=hy2.lso#Подписка #LSO© Hy2: 13
 vless://vmess@vmess.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vmess.about.lso#Подписка #LSO© Vmess: 0
@@ -360,6 +360,7 @@ vless://cf39fab0-bb85-42cb-9945-2ad69d78e575@rubifen.adaspoloandco.com:443?type=
 vless://d00105ee-8e9e-4620-9c07-596ca3c113fe@ad-1.yandex-cloud.org:443?flow=xtls-rprx-vision&encryption=none&security=reality&sni=deepl.com&fp=safari&pbk=r5WB5FnSCt4eeBC1FJMfkWHbzsMuabo0Rc6wuAhlZUs&sid=a8&type=tcp&headerType=none#unknown | deepl.com | TCP [#LSO - #LinSpisokObhod]
 vless://d00105ee-8e9e-4620-9c07-596ca3c113fe@ads.yandex-api.org:443?flow=xtls-rprx-vision&encryption=none&security=reality&sni=deepl.com&fp=edge&pbk=r5WB5FnSCt4eeBC1FJMfkWHbzsMuabo0Rc6wuAhlZUs&sid=a8&type=tcp&headerType=none#unknown | deepl.com | TCP [#LSO - #LinSpisokObhod]
 vless://d00105ee-8e9e-4620-9c07-596ca3c113fe@api.yandex-dev.online:443?flow=xtls-rprx-vision&encryption=none&security=reality&sni=api.yandex-dev.online&fp=qq&pbk=IuvAXlAWBpeXehmEk0P-FIGTctUhny2H3UilbWWfJC0&sid=122218f4c1f172e4&type=tcp&headerType=none#unknown | api.yandex-dev.online | TCP [#LSO - #LinSpisokObhod]
+vless://d00105ee-8e9e-4620-9c07-596ca3c113fe@api.yandex-developer.org:443?flow=xtls-rprx-vision&encryption=none&security=reality&sni=api.yandex-developer.org&fp=qq&pbk=IuvAXlAWBpeXehmEk0P-FIGTctUhny2H3UilbWWfJC0&sid=122218f4c1f172e4&type=tcp&headerType=none#unknown | api.yandex-developer.org | TCP [#LSO - #LinSpisokObhod]
 vless://d00105ee-8e9e-4620-9c07-596ca3c113fe@gcdn.yandex-dev.online:443?security=reality&flow=xtls-rprx-vision&sni=gcdn.yandex-dev.online&fp=qq&pbk=IuvAXlAWBpeXehmEk0P-FIGTctUhny2H3UilbWWfJC0&sid=122218f4c1f172e4#unknown | gcdn.yandex-dev.online | unknown [#LSO - #LinSpisokObhod]
 vless://d091ad65-d948-4b45-b9c2-b880552ede4e@94.183.157.200:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=1FryqGmMpa7T_bHmy3Uy11C5GWe6F2uzcsCYa9QXJBw&security=reality&sid=ff993907a731979a&sni=pol1.panel11.ru&type=tcp#Poland | pol1.panel11.ru | TCP [#LSO - #LinSpisokObhod]
 vless://d091ad65-d948-4b45-b9c2-b880552ede4e@94.183.157.246:443?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=dkaIImQrQ1ZVQGNfyrNZbtkE-8hxp_u8AH99XDFgfHw&security=reality&sid=75c55b707d25ae8d&sni=pol2.panel11.ru&type=tcp#Poland | pol2.panel11.ru | TCP [#LSO - #LinSpisokObhod]
