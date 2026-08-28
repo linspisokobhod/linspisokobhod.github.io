@@ -46,28 +46,7 @@ jobs:
         git push
         cd ..
 
-    # ========== 2. Синхронизация с gitverse.ru (base64 в папке sub) ==========
-    - name: Sync to gitverse.ru
-      env:
-        TOKEN: ${{ secrets.GITVERSE_TOKEN }}
-      if: env.TOKEN != ''
-      run: |
-        git clone https://oauth2:${TOKEN}@gitverse.ru/LinSpisokObhod/LSO.git gitverse-repo
-        cd gitverse-repo
-        rm -rf sub
-        mkdir -p sub
-        cp ../sub/ALL.64.txt sub/ALL.txt
-        cp ../sub/LTE.64.txt sub/LTE.txt
-        cp ../sub/WIFI.64.txt sub/WIFI.txt
-        cp ../README.md ./
-        git add sub/ README.md
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
-        git push
-        cd ..
-
-    # ========== 3. Синхронизация с gitflic.ru (base64 в папке sub) ==========
+   # ========== 3. Синхронизация с gitflic.ru (base64 в папке sub) ==========
     - name: Setup gitflic.ru auth via .netrc
       env:
         GITFLIC_EMAIL: ${{ secrets.GITFLIC_EMAIL }}
