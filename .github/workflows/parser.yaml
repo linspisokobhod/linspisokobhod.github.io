@@ -1,0 +1,121 @@
+name: Collect & Sync Proxies
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+    - name: Checkout GitHub repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install Python dependencies
+      run: pip install aiohttp
+
+    - name: Run collector script
+      run: python "parser[#LSO-#LinSpisokObhod].py"
+
+    # ========== Сохраняем обычные файлы для GitHub ==========
+    - name: Commit and push plain text files to GitHub
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add sub/ README.md
+        git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update proxy configs [skip ci]"
+        git push
+
+    # ========== Синхронизация с hub.mos.ru ==========
+    - name: Sync to hub.mos.ru
+      env:
+        TOKEN: ${{ secrets.MOS_HUB_TOKEN }}
+      if: env.TOKEN != ''
+      run: |
+        git clone https://oauth2:${TOKEN}@hub.mos.ru/LinSpisokObhod/LInSpisokObhod.git mos-repo
+        cd mos-repo
+        rm -f ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt
+        cp ../sub/ALL.64.txt ./ALL.txt
+        cp ../sub/LTE.64.txt ./LTE.txt
+        cp ../sub/WIFI.64.txt ./WiFi.txt
+        cp ../sub/LinObhodESPD.64.txt ./LinObhodESPD.txt
+        cp ../README.md ./
+        git add ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt README.md
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
+        git push
+        cd ..
+
+    # ========== Синхронизация с gitverse.ru ==========
+    - name: Sync to gitverse.ru
+      env:
+        TOKEN: ${{ secrets.GITVERSE_TOKEN }}
+      if: env.TOKEN != ''
+      run: |
+        git clone https://oauth2:${TOKEN}@gitverse.ru/LinSpisokObhod/LSO.git gitverse-repo
+        cd gitverse-repo
+        rm -f ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt
+        cp ../sub/ALL.64.txt ./ALL.txt
+        cp ../sub/LTE.64.txt ./LTE.txt
+        cp ../sub/WIFI.64.txt ./WiFi.txt
+        cp ../sub/LinObhodESPD.64.txt ./LinObhodESPD.txt
+        cp ../README.md ./
+        git add ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt README.md
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
+        git push
+        cd ..
+
+    # ========== gitflic.ru ==========
+    - name: Setup gitflic.ru auth via .netrc
+      env:
+        GITFLIC_EMAIL: ${{ secrets.GITFLIC_EMAIL }}
+        GITFLIC_PASSWORD: ${{ secrets.GITFLIC_PASSWORD }}
+      if: env.GITFLIC_EMAIL != '' && env.GITFLIC_PASSWORD != ''
+      run: |
+        echo "machine gitflic.ru login ${GITFLIC_EMAIL} password ${GITFLIC_PASSWORD}" >> ~/.netrc
+        chmod 600 ~/.netrc
+
+    - name: Sync to gitflic.ru
+      env:
+        GITFLIC_EMAIL: ${{ secrets.GITFLIC_EMAIL }}
+        GITFLIC_PASSWORD: ${{ secrets.GITFLIC_PASSWORD }}
+      if: env.GITFLIC_EMAIL != '' && env.GITFLIC_PASSWORD != ''
+      run: |
+        git clone https://gitflic.ru/project/liniptv/lso.git gitflic-repo
+        cd gitflic-repo
+        rm -f ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt
+        cp ../sub/ALL.64.txt ./ALL.txt
+        cp ../sub/LTE.64.txt ./LTE.txt
+        cp ../sub/WIFI.64.txt ./WiFi.txt
+        cp ../sub/LinObhodESPD.64.txt ./LinObhodESPD.txt
+        cp ../README.md ./
+        git add ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt README.md
+        git config user.name "github-actions[bot]"
+        git config.user.email "github-actions[bot]@users.noreply.github.com"
+        git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
+        git push
+        cd ..
+
+    # ========== Удаляем base64 файлы перед пушем на GitHub ==========
+    - name: Remove base64 files from sub
+      run: rm -f sub/*.64.txt
+
+    # ========== Сохраняем обычные файлы на GitHub ==========
+    - name: Commit and push plain text files to GitHub
+      run: |
+        git config user.name "github-actions[bot]"
+        git config.user.email "github-actions[bot]@users.noreply.github.com"
+        git add sub/ README.md
+        git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update proxy configs [skip ci]"
+        git push
