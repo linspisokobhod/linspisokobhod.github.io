@@ -45,31 +45,10 @@ jobs:
         rm -f ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt
         cp ../sub/ALL.64.txt ./ALL.txt
         cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WiFi.txt
+        cp ../sub/WIFI.64.txt ./WIFI.txt
         cp ../sub/LinObhodESPD.64.txt ./LinObhodESPD.txt
         cp ../README.md ./
-        git add ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt README.md
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
-        git push
-        cd ..
-
-    # ========== Синхронизация с gitverse.ru ==========
-    - name: Sync to gitverse.ru
-      env:
-        TOKEN: ${{ secrets.GITVERSE_TOKEN }}
-      if: env.TOKEN != ''
-      run: |
-        git clone https://oauth2:${TOKEN}@gitverse.ru/LinSpisokObhod/LSO.git gitverse-repo
-        cd gitverse-repo
-        rm -f ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt
-        cp ../sub/ALL.64.txt ./ALL.txt
-        cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WiFi.txt
-        cp ../sub/LinObhodESPD.64.txt ./LinObhodESPD.txt
-        cp ../README.md ./
-        git add ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt README.md
+        git add ALL.txt LTE.txt WIFI.txt LinObhodESPD.txt README.md
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
@@ -97,10 +76,10 @@ jobs:
         rm -f ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt
         cp ../sub/ALL.64.txt ./ALL.txt
         cp ../sub/LTE.64.txt ./LTE.txt
-        cp ../sub/WIFI.64.txt ./WiFi.txt
+        cp ../sub/WIFI.64.txt ./WIFI.txt
         cp ../sub/LinObhodESPD.64.txt ./LinObhodESPD.txt
         cp ../README.md ./
-        git add ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt README.md
+        git add ALL.txt LTE.txt WIFI.txt LinObhodESPD.txt README.md
         git config user.name "github-actions[bot]"
         git config.user.email "github-actions[bot]@users.noreply.github.com"
         git commit -m "Update from GitHub Actions [skip ci]" || echo "Nothing to commit"
