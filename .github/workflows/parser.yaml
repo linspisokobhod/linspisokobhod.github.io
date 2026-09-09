@@ -42,7 +42,7 @@ jobs:
       run: |
         git clone https://oauth2:${TOKEN}@hub.mos.ru/LinSpisokObhod/LInSpisokObhod.git mos-repo
         cd mos-repo
-        rm -f ALL.txt LTE.txt WiFi.txt LinObhodESPD.txt
+        rm -f ALL.txt LTE.txt WIFI.txt LinObhodESPD.txt
         cp ../sub/ALL.64.txt ./sub/ALL.txt
         cp ../sub/LTE.64.txt ./sub/LTE.txt
         cp ../sub/WIFI.64.txt ./sub/WIFI.txt
