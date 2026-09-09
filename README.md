@@ -2,27 +2,27 @@
 
 ## 📅 Время последнего сбора
 
-`2026-09-02 04:20:52 (UTC+3)`
+`2026-09-09 07:12:25 (UTC+3)`
 
 ## 📊 Статистика
 
 | Файл | Количество |
 |------|------------|
-| 📁 ALL.txt / ALL.64.txt | `398` |
-| 📱 LTE.txt / LTE.64.txt | `18` |
-| 📶 WIFI.txt / WIFI.64.txt | `380` |
-| 🏫 LinObhodESPD.txt / LinObhodESPD.64.txt | `1` |
+| 📁 ALL.txt / ALL.64.txt | `2338` |
+| 📱 LTE.txt / LTE.64.txt | `98` |
+| 📶 WIFI.txt / WIFI.64.txt | `2240` |
+| 🏫 LinObhodESPD.txt / LinObhodESPD.64.txt | `14` |
 
 ## 📡 Протоколы
 
 | Протокол | Количество |
 |----------|------------|
-| 🔗 VLESS | `371` |
+| 🔗 VLESS | `2240` |
 | 📦 VMess | `0` |
-| 🛡️ Trojan | `18` |
-| ⚡ Hysteria2 | `9` |
+| 🛡️ Trojan | `79` |
+| ⚡ Hysteria2 | `19` |
 
-## 🗂️ Логика LTE.txt
+## 🗂️ Логика WIFI.txt
 
 1. **Приоритет 1**: sni домен из `whitelist.txt`
 2. **Приоритет 2**: IP сервера входит в CIDR из `cidrwhitelist.txt`
