@@ -4,7 +4,7 @@
 #announce: #LinObhodESPD©
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
-vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LOESPD© обновлена 2026-10-10 03:16:05
+vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LOESPD© обновлена 2026-10-10 09:16:55
 vless://about@1.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=about.lso#подписка #LOESPD© ЭТО: подписка с конфигами для ESPD
 vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LOESPD© Всего конфигов: 3
 vless://vless@vless.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vless.about.lso#Подписка #LOESPD© Vless: 3
@@ -13,4 +13,4 @@ hysteria2://hy2@hy2.about.lso:443?security=tls&obfs=salamander&obfs-password=hy2
 vless://vmess@vmess.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vmess.about.lso#Подписка #LOESPD© Vmess: 0
 vless://342ab7e4-5a89-0001-8809-304120d4aa83@95.85.224.51:443?security=reality&flow=xtls-rprx-vision&pbk=WWeAHWUVD-phmnjNJ823cer0c4CMIbEs08AhsuEZmDc&sid=a696de84963656de&fp=qq&sni=max.ru&type=tcp&headerType=none&host=max.ru&path=%2F&encryption=none#Estonia | max.ru | TCP [#LOESPD - #LinSpisokObhod]
 vless://342ab7e4-5a89-0001-8809-304120d4aa83@95.85.224.51:443?type=tcp&security=reality&flow=xtls-rprx-vision&fp=chrome&pbk=WWeAHWUVD-phmnjNJ823cer0c4CMIbEs08AhsuEZmDc&sid=a696de84963656de&sni=max.ru&encryption=none#Estonia | max.ru | TCP [#LOESPD - #LinSpisokObhod]
-vless://98b3d53b-9f34-4cf1-ba87-3be5db6d4c5a@185.207.1.121:10470?type=tcp&security=reality&flow=xtls-rprx-vision&fp=random&pbk=90jWc7mGJ9NeEI0HpwQ844SjP0W9_MP5bNX6cDOdFnM&sid=53c6ae&sni=www.max.ru&encryption=none#Russia | www.max.ru | TCP [#LOESPD - #LinSpisokObhod]
+vless://98b3d53b-9f34-4cf1-ba87-3be5db6d4c5a@185.207.1.121:10470?security=reality&flow=xtls-rprx-vision&fp=firefox&pbk=90jWc7mGJ9NeEI0HpwQ844SjP0W9_MP5bNX6cDOdFnM&sid=53c6ae&sni=www.max.ru&encryption=none&type=tcp#Russia | www.max.ru | TCP [#LOESPD - #LinSpisokObhod]
