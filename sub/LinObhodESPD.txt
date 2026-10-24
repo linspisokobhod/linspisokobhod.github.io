@@ -4,13 +4,15 @@
 #announce: #LinObhodESPD©
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
-vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LOESPD© обновлена 2026-10-24 02:58:54
+vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LOESPD© обновлена 2026-10-24 07:10:37
 vless://about@1.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=about.lso#подписка #LOESPD© ЭТО: подписка с конфигами для ESPD
-vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LOESPD© Всего конфигов: 3
-vless://vless@vless.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vless.about.lso#Подписка #LOESPD© Vless: 3
+vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LOESPD© Всего конфигов: 5
+vless://vless@vless.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vless.about.lso#Подписка #LOESPD© Vless: 5
 trojan://trojan@trojan.about.lso:443?security=tls&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=trojan.lso#Подписка #LOESPD© Trojan: 0
 hysteria2://hy2@hy2.about.lso:443?security=tls&obfs=salamander&obfs-password=hy2&insecure=0&mport=67%2C%201488%2C%2069%2C%2052%2C%2042%2C%201337%2C%20228%2C%2025&sni=hy2.lso#Подписка #LOESPD© Hy2: 0
 vless://vmess@vmess.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vmess.about.lso#Подписка #LOESPD© Vmess: 0
 vless://46785352-db89-4839-8079-d4c69ad87996@45.11.26.97:3443?flow=xtls-rprx-vision&security=reality&sni=api-maps.yandex.ru&fp=firefox&pbk=KH6R_C4Hma_ipb2Di1O-IHMdfCzwkdyRyr66N55gVgI&encryption=none&type=tcp#Russia | api-maps.yandex.ru | TCP [#LOESPD - #LinSpisokObhod]
 vless://88b744bb-8ac7-484e-a376-136193452a2c@72.56.241.230:443?mode=gun&security=reality&encryption=none&pbk=SCQ-mhDUvmeQzJvctQYDDSha1R_rggGFkWK_9IRuvH4&fp=chrome&type=grpc&serviceName=api.v1.StreamService&sni=max.ru&sid=aabbccdd#Russia | max.ru | GRPC [#LOESPD - #LinSpisokObhod]
 vless://88b744bb-8ac7-484e-a376-136193452a2c@72.56.241.230:443?security=reality&encryption=none&pbk=SCQ-mhDUvmeQzJvctQYDDSha1R_rggGFkWK_9IRuvH4&fp=random&type=grpc&serviceName=api.v1.StreamService&sni=max.ru&sid=aabbccdd#Russia | max.ru | GRPC [#LOESPD - #LinSpisokObhod]
+vless://b8df3f50-ffef-4c7e-9ef3-d5b156a47c02@144.31.238.115:2443?encryption=none&type=grpc&serviceName=grpc&security=reality&sni=api-maps.yandex.ru&pbk=rRg3JiP2006ldJYh2TDPAn7dtlXLcSHdgHgkGI_HZTE&sid=ef567890&fp=chrome#Germany | api-maps.yandex.ru | GRPC [#LOESPD - #LinSpisokObhod]
+vless://b8df3f50-ffef-4c7e-9ef3-d5b156a47c02@144.31.238.115:2443?mode=gun&security=reality&encryption=none&pbk=rRg3JiP2006ldJYh2TDPAn7dtlXLcSHdgHgkGI_HZTE&fp=chrome&type=grpc&serviceName=grpc&sni=api-maps.yandex.ru&sid=ef567890#Germany | api-maps.yandex.ru | GRPC [#LOESPD - #LinSpisokObhod]
