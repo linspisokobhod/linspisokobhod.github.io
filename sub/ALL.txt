@@ -4,11 +4,11 @@
 #announce: #LSO© ALL
 #subscription-userinfo: upload=0; download=0; total=0; expire=0
 
-vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-10-29 02:10:48
+vless://update@update.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=update.lso#подписка #LSO© обновлена 2026-10-29 05:45:37
 vless://about@1.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=about.lso#подписка #LSO© ЭТО: подписка с конфигами для WIFI и LTE
 vless://about2@2.about.lso:443?security=none&encryption=none&headerType=none&type=tcp#и обхода блокировок РКН
-vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 581
-vless://vless@vless.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vless.about.lso#Подписка #LSO© Vless: 504
+vless://all@all.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=all.lso#Подписка #LSO© Всего конфигов: 579
+vless://vless@vless.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vless.about.lso#Подписка #LSO© Vless: 502
 trojan://trojan@trojan.about.lso:443?security=tls&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=trojan.lso#Подписка #LSO© Trojan: 68
 hysteria2://hy2@hy2.about.lso:443?security=tls&obfs=salamander&obfs-password=hy2&insecure=0&mport=67%2C%201488%2C%2069%2C%2052%2C%2042%2C%201337%2C%20228%2C%2025&sni=hy2.lso#Подписка #LSO© Hy2: 9
 vless://vmess@vmess.about.lso:443?security=tls&encryption=none&insecure=0&headerType=none&type=tcp&allowInsecure=0&sni=vmess.about.lso#Подписка #LSO© Vmess: 0
@@ -269,7 +269,6 @@ vless://4e4f1f70-5e56-4a76-bb9d-db087f4690c4@43.170.8.95:443?fp=chrome&host=jp3.
 vless://4ee88ef0-8922-48ce-9cd4-5f67ef201b35@31.76.252.113:51593?encryption=none&flow=xtls-rprx-vision&fp=firefox&pbk=bnA5VC6PhGD2cYZyoZPr8Ah43WgQtzHuZbpywgoZH2k&security=reality&sid=167afe9a97a1&sni=intel.com&type=tcp#The Netherlands | intel.com | TCP [#LSO - #LinSpisokObhod]
 vless://4f1f5604-a256-4432-a477-52c3dce7dded@129.153.71.28:28863?security=tls&type=ws&path=%2F&host=wkytah9k8oggj60.qzfi0skkopy875xhtc0l9pwds.workers.dev&packetEncoding=xudp&sni=wkytah9k8oggj60.qzfi0skkopy875xhtc0l9pwds.workers.dev&fp=chrome&encryption=none#United States | wkytah9k8oggj60.qzfi0skkopy875xhtc0l9pwds.workers.dev | WebSocket [#LSO - #LinSpisokObhod]
 vless://4f34bc04-479c-49ba-91a8-6bb9ed15031c@177.3.208.65:443?security=tls&fp=firefox&sni=tgmansion.site&type=ws&headerType=none&path=%2Fvless-tr&encryption=none#The Netherlands | tgmansion.site | WebSocket [#LSO - #LinSpisokObhod]
-vless://4f35274e-006f-43e7-87be-c8cba4882b0c@132.243.65.82:443?encryption=none&type=xhttp&mode=auto&path=%2F&security=reality&pbk=UZKrOusu0M0i3gnqDanh2yXXkTibNEjj41Hsvah2XlI&sni=player.vimeo.com#Estonia | player.vimeo.com | XHTTP [#LSO - #LinSpisokObhod]
 vless://4f51ca84-43ea-4087-b8a2-938e0ccbe27a@13.143.173.15:443?type=raw&security=reality&flow=xtls-rprx-vision&fp=firefox&pbk=mDDDyruO33nuqcTS7pZOjd9oOpDHUf0aEv2TQ1DFGV4&sni=google.com&encryption=none#Finland | google.com | RAW [#LSO - #LinSpisokObhod]
 vless://4f51ca84-43ea-4087-b8a2-938e0ccbe27a@31.77.18.220:443?type=raw&security=reality&flow=xtls-rprx-vision&fp=chrome&pbk=mDDDyruO33nuqcTS7pZOjd9oOpDHUf0aEv2TQ1DFGV4&sni=google.com&encryption=none#Finland | google.com | RAW [#LSO - #LinSpisokObhod]
 vless://501a2da5-cb22-4a3f-915e-e3b821d1d62d@87.199.205.28:443?type=tcp&security=reality&flow=xtls-rprx-vision&fp=qq&pbk=W-9zyiOq287RtXVTZlTFbSDJ0Mx8joyBLJoA7ZE7eBw&sid=6b196d2f190f32b3&sni=vkvd754.okcdn.ru&encryption=none#The Netherlands | vkvd754.okcdn.ru | TCP [#LSO - #LinSpisokObhod]
@@ -586,7 +585,6 @@ vless://f90b7d43-69e2-4b46-a672-8029bc6796a2@79.182.39.232:25895?encryption=none
 vless://fafc7c16-f890-45ee-a856-02df225172dd@31.77.10.167:24503?type=tcp&security=reality&flow=xtls-rprx-vision&fp=firefox&pbk=iiApJD_tVRzp1t8EfIpG7T4dnx-O0ai5nkzD9GUV9Fc&sid=02ea11017a1c951f&sni=nl3-gkv6mb.vpvr4ib84nuv6hdkt.ru&encryption=none#Germany | nl3-gkv6mb.vpvr4ib84nuv6hdkt.ru | TCP [#LSO - #LinSpisokObhod]
 vless://fd1d80da-3b27-457a-810b-2b28a309edc1@2.27.14.244:443?type=tcp&security=reality&flow=xtls-rprx-vision&fp=chrome&pbk=uakxTTpl0pQZxA-wu_QEsyVDUlErAxEKmFcnQrzABXw&sid=c24b46e36cc6d6fa&sni=www.google.com&encryption=none#Finland | www.google.com | TCP [#LSO - #LinSpisokObhod]
 vless://fdaafea8-afc7-4ece-9dc4-1e2609c43913@46.243.235.170:8449?security=reality&sni=akashi.vk-portal.net&fp=firefox&pbk=XF3wXFapd311fC0M0APxbrf3cIaGnyKU7BR4Pv_l7Rs&sid=15954a1c5a3d5bfc&flow=xtls-rprx-vision&type=tcp&encryption=none#Russia | akashi.vk-portal.net | TCP [#LSO - #LinSpisokObhod]
-vless://fe40f32a-b03d-4ada-8bee-00f41b766098@122.10.117.1:11674?encryption=none&security=reality&pbk=F-yU1O5Q00eeyUdst7ZGDsgo4xS5mrdNwg0UcfsrVQs&sid=d889b977&flow=xtls-rprx-vision&sni=apple.com&fp=firefox&type=tcp#Hong Kong | apple.com | TCP [#LSO - #LinSpisokObhod]
 vless://fe551942-d6e5-4361-ae5c-1f2e9077cd79@83.219.97.18:443?type=raw&security=reality&flow=xtls-rprx-vision&fp=firefox&pbk=32XFmS-ifqooBFY89KNP3ZrqgSBOd3vel9GlNinL6yw&sid=03&sni=fi5.silalink.sbs&encryption=none#Finland | fi5.silalink.sbs | RAW [#LSO - #LinSpisokObhod]
 vless://ff0b6ba8-bed0-4c4d-bbc9-23af47582615@188.225.33.141:443?security=tls&encryption=none&fp=chrome&type=ws&sni=wstg.datasynctrue.online&host=wstg.datasynctrue.online&path=%2Fapi%2Fconnect#Russia | wstg.datasynctrue.online | WebSocket [#LSO - #LinSpisokObhod]
 vless://ff0b6ba8-bed0-4c4d-bbc9-23af47582615@188.225.33.141:443?security=tls&sni=wstg.datasynctrue.online&insecure=0&allowInsecure=0&type=ws&host=wstg.datasynctrue.online&path=%2Fapi%2Fconnect&encryption=none#Russia | wstg.datasynctrue.online | WebSocket [#LSO - #LinSpisokObhod]
